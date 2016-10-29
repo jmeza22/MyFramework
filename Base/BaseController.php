@@ -24,6 +24,7 @@ class BaseController {
 
     public function __construct() {
         $this->db = new SQLDatabase('localhost', 'testphp', 'root', '', 'mysql');
+        connect();
     }
 
     public function connect() {
@@ -34,6 +35,14 @@ class BaseController {
         $this->db->disconnect();
     }
     
+    public function setToken($token) {
+        $this->token=$token;
+    }
+    
+    public function setModel($model) {
+        $this->model=$model;
+    }
+    
     public function setAction($action) {
         $this->action=$action;
     }
@@ -41,6 +50,24 @@ class BaseController {
     public function setFindBy($findBy) {
         $this->findBy=$findBy;
     }
+    
+    public function getToken() {
+        return $this->token;
+    }
+    
+    public function getModel() {
+        return $this->model;
+    }
+    
+    public function getAction() {
+        return $this->action;
+    }
+    
+    public function getFindBy() {
+        return $this->findBy;
+    }
+    
+    
     
     private function parseWhereParam($param) {
         if(is_nan($param)){
@@ -141,6 +168,15 @@ class BaseController {
             }
         }
         return false;
+    }
+    
+    public function getComboboxData($colname, $colvalue, $where = '' ) {
+        $result=null;
+        if(isset($this->db) && isset($this->model) && isset($colname) && isset($colvalue)){
+            $result=  $this->db->selectJSON($colname.' as iname, '.$colvalue.' as ivalue ', $this->model, $where);
+            return $result;
+        }
+        return null;
     }
 
 }
