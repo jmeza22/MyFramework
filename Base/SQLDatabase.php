@@ -48,7 +48,7 @@ class SQLDatabase {
     }
     
     private function printError($error, $sql) {
-        print 'Error: ' . $error . ' IN [' . $sql . ']';
+        print 'Error: ' . $error . ' IN [... ' . $sql . ' ...]';
     }
 
     public function setHost($host) {

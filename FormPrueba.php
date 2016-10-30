@@ -18,13 +18,7 @@
         <script type="text/javascript" src="js/jquery-ui.js"></script>
         <script type="text/javascript" src="js/Validator.js"></script>
 
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                var item = document.getElementById("id_persona");
-                //getData(item);
-            }
-            );
-        </script>
+        
 
     </head>
     <body>
@@ -50,16 +44,25 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label>Fecha Nacimiento</label>
-                        <input type="date" date="true" name="fechanacimiento_persona" id="fechanacimiento_persona" value="" placeholder="1992-04-22" maxlength="10" class="form-control" required="true">
+                        <input type="date" date="true" name="fechanacimiento_persona" id="fechanacimiento_persona" value="" placeholder="1992-04-22" maxlength="10" class="form-control">
                     </div>
                     <div class="col-sm-6">
                         <label>Email</label>
                         <input type="email" name="email_persona" id="email_persona" value="" maxlength="100"  class="form-control">
                     </div>
                 </div>
+                
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Ocupacion</label>
+                        <select name="ocupacion_persona" id="ocupacion_persona" required="true" url="Base/Combobox.php" model="ocupacion" colvalue="id_ocupacion" colname="nombre_ocupacion" selected="0" class="form-control" style="width: 100%; min-width: 100%;" >
+                            <option value="0">Ninguna</option> 
+                        </select>
+                    </div>
+                </div>
 
                 <center>
-                    <button id="Guardar" name="Guardar" type="button" action="update" onclick="submitForm(this);" class="btn btn-primary" >Guardar</button>        
+                    <button id="Guardar" name="Guardar" type="button" action="insert" onclick="submitForm(this);" class="btn btn-primary" >Guardar</button>        
                 </center>
             </form>
         </div>
@@ -93,5 +96,12 @@
             </div>
         </div>
 
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                var item = document.getElementById("ocupacion_persona");
+                getComboboxData(item);
+            }
+            );
+        </script>
     </body>
 </html>

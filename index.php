@@ -7,11 +7,13 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>Pagina de Inicio</title>
     </head>
     <body>
+        
         <?php
         // put your code here... Prueba GitHub
+        header('location: FormPrueba.php');
         ?>
     </body>
 </html>

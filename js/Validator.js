@@ -393,7 +393,7 @@ function getActionFromButton(button) {
         if (button.getAttribute("action") !== null && button.getAttribute("action") !== '') {
             form = getForm(button);
 
-            if (button.getAttribute("action") === 'save') {
+            if (button.getAttribute("action") === 'insert') {
                 form.setAttribute('do', '1');
             }
             if (button.getAttribute("action") === 'update') {
@@ -418,6 +418,42 @@ function getTD(item) {
             return item.parentNode;
         } else {
             return getTD(item.parentNode);
+        }
+    }
+    return null;
+}
+
+function getColName(combo) {
+    if (combo != null && combo.tagName === "SELECT") {
+        if (combo.getAttribute("colname") != null && combo.getAttribute("colname") != '') {
+            return combo.getAttribute("colname");
+        }
+    }
+    return null;
+}
+
+function getColValue(combo) {
+    if (combo != null && combo.tagName === "SELECT") {
+        if (combo.getAttribute("colvalue") != null && combo.getAttribute("colvalue") != '') {
+            return combo.getAttribute("colvalue");
+        }
+    }
+    return null;
+}
+
+function getModelCombo(combo) {
+    if (combo != null && combo.tagName === "SELECT") {
+        if (combo.getAttribute("model") != null && combo.getAttribute("model") != '') {
+            return combo.getAttribute("model");
+        }
+    }
+    return null;
+}
+
+function getUrlCombo(combo) {
+    if (combo != null && combo.tagName === "SELECT") {
+        if (combo.getAttribute("url") != null && combo.getAttribute("url") != '') {
+            return combo.getAttribute("url");
         }
     }
     return null;
@@ -513,6 +549,87 @@ function getData(element) {
         );
     }
 }
+
+function setComboboxOptions(combo, model, json) {
+    var option = null;
+    if (combo != null && model != null && json != null) {
+        
+        
+        if (json.length==null) {
+            console.log('Objeto JSON');
+            for (var child in json) {
+                json = json[child];
+                break;
+            }
+        }
+        console.log(json);
+        for (var i = 0; i < json.length; i++) {
+            option = document.createElement('option');
+            option.setAttribute('id', json[i]['ivalue']);
+            option.setAttribute('value', json[i]['ivalue']);
+            option.innerHTML=json[i]['iname'];
+            
+            combo.appendChild(option);
+            option=null;
+            console.log(json[i]['ivalue']+' => '+json[i]['iname']);
+        }
+        return true;
+    }
+    return false;
+}
+
+function getComboboxData(element) {
+    var url = null;
+    var model = null;
+    var colname = null;
+    var colvalue = null;
+    var object = null;
+    var vals = null;
+
+    url = getUrlCombo(element);
+    model = getModelCombo(element);
+    colname = getColName(element);
+    colvalue = getColValue(element);
+    vals = {
+        "model": model,
+        "colname": colname,
+        "colvalue": colvalue
+    };
+
+    if (element != null &&
+            url != null && url != '' &&
+            model != null && model != '' &&
+            colname != null && colname != '' &&
+            colvalue != null && colvalue != '') {
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: vals,
+            success: function (result) {
+                console.log(result);
+                if (result != null && result != '') {
+                    try {
+                        object = JSON.parse(result);
+                    } catch (e) {
+                        object = null;
+                        alert('Error: ' + result);
+                    }
+                    if (object != null) {
+                        console.log('Conversion Exitosa a JSON!');
+                        setComboboxOptions(element, model, object);
+                    }
+                } else {
+                    alert('Servicio Web Falló!.');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert("Hubo un Error de Conexion. Intente Nuevamente.");
+            }
+        }
+        );
+    }
+}
+
 
 function validateForm(form) {
 

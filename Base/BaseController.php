@@ -24,7 +24,7 @@ class BaseController {
 
     public function __construct() {
         $this->db = new SQLDatabase('localhost', 'testphp', 'root', '', 'mysql');
-        connect();
+        $this->connect();
     }
 
     public function connect() {
@@ -122,7 +122,6 @@ class BaseController {
 
     public function insert() {
         if (isset($this->db) && isset($this->postData)) {
-            print_r($this->postData);
             if ($this->db->insertStmt($this->model, $this->postData)) {
                 return true;
             }
