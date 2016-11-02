@@ -10,6 +10,12 @@ function getErrorMessage() {
     return message;
 }
 
+function clearForm(form) {
+    if (form != null && form.tagName === "FORM") {
+        form.reset();
+    }
+}
+
 function showNotification(text) {
     var notifications = document.getElementById("notification");
     if (text != null || text != "") {
@@ -297,6 +303,7 @@ function createInputHidden(form, name, value) {
         element.setAttribute('name', name);
         element.setAttribute('value', value);
         form.appendChild(element);
+        console.log('Creado Input '+name);
         return true;
     }
     return false;
@@ -308,6 +315,7 @@ function createInputHiddenTemp(form, name, value) {
         element = getElementForm(form, name);
         if (element !== null) {
             element.setAttribute('temp', 'true');
+            console.log('Input Oculto '+name);
             return true;
         }
     }
@@ -317,7 +325,7 @@ function createInputHiddenTemp(form, name, value) {
 function deleteElement(element) {
     var parent = null;
     if (element !== null) {
-        parent.parentNode;
+        parent = element.parentNode;
         parent.removeChild(element);
         return true;
     }
@@ -393,23 +401,45 @@ function getActionFromButton(button) {
         if (button.getAttribute("action") !== null && button.getAttribute("action") !== '') {
             form = getForm(button);
 
-            if (button.getAttribute("action") === 'insert') {
+            if (button.getAttribute("action") == 'insert') {
                 form.setAttribute('do', '1');
             }
-            if (button.getAttribute("action") === 'update') {
+            if (button.getAttribute("action") == 'update') {
                 form.setAttribute('do', '2');
             }
-            if (button.getAttribute("action") === 'delete') {
+            if (button.getAttribute("action") == 'delete') {
                 form.setAttribute('do', '3');
             }
-            if (button.getAttribute("action") === 'select') {
+            if (button.getAttribute("action") == 'find') {
                 form.setAttribute('do', '4');
+            }
+            if (button.getAttribute("action") == 'findAll') {
+                form.setAttribute('do', '5');
             }
 
             return button.getAttribute("action");
         }
     }
     return null;
+}
+
+function createTempInputs(form) {
+    deleteElement(getElementForm(form, 'token'));
+    if (getElementForm(form, 'token') == null && getTokenForm(form) != null && getTokenForm(form) != '') {
+        createInputHiddenTemp(form, 'token', getTokenForm(form));
+    }
+    deleteElement(getElementForm(form, 'model'));
+    if (getElementForm(form, 'model') == null && getModelForm(form) != null && getModelForm(form) != '') {
+        createInputHiddenTemp(form, 'model', getModelForm(form));
+    }
+    deleteElement(getElementForm(form, 'action'));
+    if (getElementForm(form, 'action') == null && getActionForm(form) != null && getActionForm(form) != '') {
+        createInputHiddenTemp(form, 'action', getActionForm(form));
+    }
+    deleteElement(getElementForm(form, 'findBy'));
+    if (getElementForm(form, 'findBy') == null && getFindByForm(form) != null && getFindByForm(form) != '') {
+        createInputHiddenTemp(form, 'findBy', getFindByForm(form));
+    }
 }
 
 function getTD(item) {
@@ -459,6 +489,15 @@ function getUrlCombo(combo) {
     return null;
 }
 
+function getSelectedCombo(combo) {
+    if (combo != null && combo.tagName === "SELECT") {
+        if (combo.getAttribute("selected") != null && combo.getAttribute("selected") != '') {
+            return combo.getAttribute("selected");
+        }
+    }
+    return null;
+}
+
 function submitAjax(formData, url) {
     $.ajax({
         method: "POST",
@@ -480,9 +519,9 @@ function submitAjax(formData, url) {
 
 function setDataForm(myform, json) {
     var attrib = null, values = null, i = null, col = null, item = null;
-    if (myform != null && myform.tagName === "FORM") {
+    if (json != null && myform != null && myform.tagName === "FORM") {
         attrib = Array();
-        if (json.length > 0) {
+        if (json.length != null) {
             attrib = null;
         } else {
             for (var child in json) {
@@ -506,6 +545,10 @@ function setDataForm(myform, json) {
                 if (item != null) {
                     item.value = "";
                     item.value = values[col];
+                    if (item.tagName === "SELECT") {
+                        item.setAttribute('selected', values[col]);
+                        item.selected = values[col];
+                    }
                 }
             }
         }
@@ -517,8 +560,10 @@ function setDataForm(myform, json) {
 function getData(element) {
     var myform = null, obj = null, url = null, formData = null;
     myform = getForm(element);
-    formData = new FormData(myform);
     url = getUrlForm(myform);
+    createTempInputs(myform);
+    formData = new FormData(myform);
+    deleteTemporalElements(myform);
     if (formData != null && url != null && url != '') {
         $.ajax({
             method: "POST",
@@ -530,12 +575,12 @@ function getData(element) {
                 if (result != null && result != '') {
                     try {
                         obj = JSON.parse(result);
-                        alert(result);
                     } catch (e) {
                         obj = null;
-                        alert('Error: ' + result);
+                        console.log('Error: ' + result);
                     }
                     if (obj != null) {
+                        console.log('Conversion Exitosa a JSON!');
                         setDataForm(myform, obj);
                     }
                 } else {
@@ -548,14 +593,15 @@ function getData(element) {
         }
         );
     }
+    
 }
 
 function setComboboxOptions(combo, model, json) {
     var option = null;
+    var selected = null;
     if (combo != null && model != null && json != null) {
-        
-        
-        if (json.length==null) {
+
+        if (json.length == null) {
             console.log('Objeto JSON');
             for (var child in json) {
                 json = json[child];
@@ -563,15 +609,19 @@ function setComboboxOptions(combo, model, json) {
             }
         }
         console.log(json);
+        selected = combo.getAttribute("selected");
+
         for (var i = 0; i < json.length; i++) {
             option = document.createElement('option');
             option.setAttribute('id', json[i]['ivalue']);
             option.setAttribute('value', json[i]['ivalue']);
-            option.innerHTML=json[i]['iname'];
-            
+            option.innerHTML = json[i]['iname'];
+            if (option.id == selected) {
+                option.setAttribute('selected', 'true');
+            }
             combo.appendChild(option);
-            option=null;
-            console.log(json[i]['ivalue']+' => '+json[i]['iname']);
+            option = null;
+            console.log(json[i]['ivalue'] + ' => ' + json[i]['iname']);
         }
         return true;
     }
@@ -652,6 +702,7 @@ function validateForm(form) {
                         next = false;
                         break;
                     }
+
                     if (item.getAttribute('type') == 'text') {
                         if (!validateText(item.value)) {
                             alert('Campo Vacio: Texto');
@@ -729,18 +780,7 @@ function submitForm(button) {
         if (url != null && url != "") {
             next = validateForm(form);
             if (next == true) {
-                if (getElementForm(form, 'token') == null && getTokenForm(form) != null && getTokenForm(form) != '') {
-                    createInputHiddenTemp(form, 'token', getTokenForm(form));
-                }
-                if (getElementForm(form, 'model') == null && getModelForm(form) != null && getModelForm(form) != '') {
-                    createInputHiddenTemp(form, 'model', getModelForm(form));
-                }
-                if (getElementForm(form, 'action') == null && getActionForm(form) != null && getActionForm(form) != '') {
-                    createInputHiddenTemp(form, 'action', getActionForm(form));
-                }
-                if (getElementForm(form, 'findBy') == null && getFindByForm(form) != null && getFindByForm(form) != '') {
-                    createInputHiddenTemp(form, 'findBy', getFindByForm(form));
-                }
+                createTempInputs(form);
                 formdata = null;
                 formdata = new FormData(form);
                 if (formdata != null) {

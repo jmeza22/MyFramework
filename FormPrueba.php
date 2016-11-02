@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <meta name="author" content="">
+        <meta name="author" content="Jose Meza">
 
         <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
@@ -25,8 +25,8 @@
 
         <div class="panel panel-primary" style="width: 50% !important;">
             <div class="panel-heading">Registro Persona</div>
-            <form class="panel-body" method="POST" autocomplete="false" url="Base/PruebaFramework.php" model="personas" findBy="id_persona" >
-                <input type="hidden" integer="true" name="id_persona" id="id_persona" value="0" required="true" maxlength="30" min="0" class="form-control">
+            <form class="panel-body" method="POST" autocomplete="false" url="Base/PruebaFramework.php" model="personas" findBy="id_persona" do="4" >
+                <input type="hidden" integer="true" name="id_persona" id="id_persona" value="1" required="true" maxlength="30" min="0" class="form-control">
 
 
                 <div class="row">
@@ -56,13 +56,13 @@
                     <div class="col-sm-12">
                         <label>Ocupacion</label>
                         <select name="ocupacion_persona" id="ocupacion_persona" required="true" url="Base/Combobox.php" model="ocupacion" colvalue="id_ocupacion" colname="nombre_ocupacion" selected="0" class="form-control" style="width: 100%; min-width: 100%;" >
-                            <option value="0">Ninguna</option> 
+                            <option value="0" disabled="true" >Ninguna</option> 
                         </select>
                     </div>
                 </div>
 
                 <center>
-                    <button id="Guardar" name="Guardar" type="button" action="insert" onclick="submitForm(this);" class="btn btn-primary" >Guardar</button>        
+                    <button id="Guardar" name="Guardar" type="button" action="update" onclick="submitForm(this);" class="btn btn-primary" >Guardar</button>        
                 </center>
             </form>
         </div>
@@ -99,7 +99,9 @@
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 var item = document.getElementById("ocupacion_persona");
+                var form = document.forms[0];
                 getComboboxData(item);
+                getData(item);
             }
             );
         </script>

@@ -1,14 +1,14 @@
 <?php
 include_once 'BaseController.php';
+$result=null;
 $bc=new BaseController();
 $bc->connect();
 $bc->preparePostData();
-print_r($_REQUEST);
-if($bc->execute()){
-    echo 'OK';
-}else{
-    echo 'Error Fatal.';
+$result=$bc->execute(true);
+if(!is_bool($result)){
+    echo $result;
 }
+$result=null;
 $bc->disconnect();
 ?>
 

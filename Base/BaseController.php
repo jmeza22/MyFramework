@@ -34,45 +34,43 @@ class BaseController {
     public function disconnect() {
         $this->db->disconnect();
     }
-    
+
     public function setToken($token) {
-        $this->token=$token;
+        $this->token = $token;
     }
-    
+
     public function setModel($model) {
-        $this->model=$model;
+        $this->model = $model;
     }
-    
+
     public function setAction($action) {
-        $this->action=$action;
+        $this->action = $action;
     }
-    
+
     public function setFindBy($findBy) {
-        $this->findBy=$findBy;
+        $this->findBy = $findBy;
     }
-    
+
     public function getToken() {
         return $this->token;
     }
-    
+
     public function getModel() {
         return $this->model;
     }
-    
+
     public function getAction() {
         return $this->action;
     }
-    
+
     public function getFindBy() {
         return $this->findBy;
     }
-    
-    
-    
+
     private function parseWhereParam($param) {
-        if(is_nan($param)){
-            return "'".$param."'";
-        }else{
+        if (is_nan($param)) {
+            return "'" . $param . "'";
+        } else {
             return $param;
         }
         return null;
@@ -130,8 +128,8 @@ class BaseController {
     }
 
     public function update() {
-        if (isset($this->db) && isset($this->postData) && isset($this->findBy) && isset($this->postData[$this->findBy])) {
-            if ($this->db->updateStmt($this->model, $this->postData, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]) )) {
+        if (isset($this->db) && isset($this->postData) && isset($this->findBy)) {
+            if ($this->db->updateStmt($this->model, $this->postData, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]))) {
                 return true;
             }
         }
@@ -139,8 +137,8 @@ class BaseController {
     }
 
     public function delete() {
-        if (isset($this->db) && isset($this->postData) && isset($this->findBy) && isset($this->postData[$this->findBy])) {
-            if ($this->db->deleteStmt($this->model, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]) )) {
+        if (isset($this->db) && isset($this->postData) && isset($this->findBy)) {
+            if ($this->db->deleteStmt($this->model, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]))) {
                 return true;
             }
         }
@@ -148,31 +146,48 @@ class BaseController {
     }
 
     public function select() {
-        return false;
-    }
-
-    public function execute() {
-        if (isset($this->action)) {
-            if (strcmp($this->action, 'insert') == 0 || strcmp($this->action, '1') == 0) {
-                return $this->insert();
-            }
-            if (strcmp($this->action, 'update') == 0 || strcmp($this->action, '2') == 0) {
-                return $this->update();
-            }
-            if (strcmp($this->action, 'delete') == 0 || strcmp($this->action, '3') == 0) {
-                return $this->delete();
-            }
-            if (strcmp($this->action, 'select') == 0 || strcmp($this->action, '4') == 0) {
-                return $this->select();
-            }
+        $result = null;
+        if (isset($this->db) && isset($this->postData) && isset($this->findBy)) {
+            $result = $this->db->selectJSON("*", $this->model, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]));
+            return $result;
         }
         return false;
     }
-    
-    public function getComboboxData($colname, $colvalue, $where = '' ) {
-        $result=null;
-        if(isset($this->db) && isset($this->model) && isset($colname) && isset($colvalue)){
-            $result=  $this->db->selectJSON($colname.' as iname, '.$colvalue.' as ivalue ', $this->model, $where);
+
+    public function execute($print = false, $messageSuccess = 'OK', $messageError = 'Error Found!') {
+        $result = false;
+        if (isset($this->action)) {
+            if (strcmp($this->action, 'insert') == 0 || strcmp($this->action, '1') == 0) {
+                $result = $this->insert();
+            }
+            if (strcmp($this->action, 'update') == 0 || strcmp($this->action, '2') == 0) {
+                $result = $this->update();
+            }
+            if (strcmp($this->action, 'delete') == 0 || strcmp($this->action, '3') == 0) {
+                $result = $this->delete();
+            }
+            if (strcmp($this->action, 'find') == 0 || strcmp($this->action, '4') == 0) {
+                $result = $this->select();
+            }
+            if (strcmp($this->action, 'findAll') == 0 || strcmp($this->action, '5') == 0) {
+                $result = $this->select();
+            }
+        }
+        if ($print == true) {
+            if ($result === true) {
+                echo $messageSuccess;
+            }
+            if ($result === false) {
+                echo $messageError;
+            }
+        }
+        return $result;
+    }
+
+    public function getComboboxData($colname, $colvalue, $where = '') {
+        $result = null;
+        if (isset($this->db) && isset($this->model) && isset($colname) && isset($colvalue)) {
+            $result = $this->db->selectJSON($colname . ' as iname, ' . $colvalue . ' as ivalue ', $this->model, $where);
             return $result;
         }
         return null;

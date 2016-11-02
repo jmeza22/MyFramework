@@ -38,9 +38,15 @@ a:hover{
 }
 
 input{
-    display: block !important;
     font-family: 'Voltaire', sans-serif !important;
-    opacity: 1 !important;
+}
+
+option{
+    font-family: 'Voltaire', sans-serif !important;
+}
+
+select{
+    font-family: 'Voltaire', sans-serif !important;
 }
 
 button{
