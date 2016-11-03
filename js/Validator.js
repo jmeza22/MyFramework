@@ -33,15 +33,6 @@ function noBackButton() {
     }
 }
 
-function isLocalStorage() {
-    if (window.sessionStorage && window.localStorage) {
-        return true;
-    } else {
-        alert('Your Device is not Compatible.');
-        return false;
-    }
-}
-
 (function ($) {
     $.get = function (key) {
         key = key.replace(/[\[]/, '\\[');
