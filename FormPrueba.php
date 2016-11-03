@@ -17,8 +17,10 @@
         <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
         <script type="text/javascript" src="js/Validator.js"></script>
+        <script type="text/javascript" src="js/localStorageData.js"></script>
+        <script type="text/javascript" src="js/SimplexFramework.js"></script>
 
-        
+
 
     </head>
     <body>
@@ -51,7 +53,7 @@
                         <input type="email" name="email_persona" id="email_persona" value="" maxlength="100"  class="form-control">
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Ocupacion</label>
@@ -62,7 +64,10 @@
                 </div>
 
                 <center>
-                    <button id="Guardar" name="Guardar" type="button" action="update" onclick="submitForm(this);" class="btn btn-primary" >Guardar</button>        
+                    <button id="Guardar" name="Guardar" type="button" action="update" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                </center>
+                <center>
+                    <input type="reset" class="btn btn-danger" value="Borrar" > 
                 </center>
             </form>
         </div>
@@ -99,11 +104,19 @@
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 var item = document.getElementById("ocupacion_persona");
-                var form = document.forms[0];
                 getComboboxData(item);
                 getData(item);
             }
             );
+
+            function Send(item) {
+                var form = getForm(item);
+                if (validateForm(form)) {
+                    submitForm(item);
+                }
+            }
+
+
         </script>
     </body>
 </html>

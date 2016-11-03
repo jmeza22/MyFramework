@@ -37,12 +37,22 @@ a:hover{
     text-decoration: none !important;
 }
 
+input[type="button"], input[type="submit"]{
+    font-family: 'Orbitron', sans-serif !important;
+}
+
+input[value="Borrar"]{
+    background-color: black !important;
+    border-color: black !important;
+}
+
 input{
     font-family: 'Voltaire', sans-serif !important;
 }
 
 option{
     font-family: 'Voltaire', sans-serif !important;
+    height: auto !important;
 }
 
 select{
