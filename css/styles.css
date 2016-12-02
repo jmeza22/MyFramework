@@ -65,7 +65,7 @@ button{
 }
 
 .panel-body .btn{
-    min-width: 180px !important;
+    min-width: 120px !important;
     font-weight: bolder !important;
     font-family: 'Orbitron', sans-serif !important;
 }

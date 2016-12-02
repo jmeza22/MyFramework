@@ -4,21 +4,21 @@
  * and open the template in the editor.
  */
 
-
-function localStorage() {
-    if (window.sessionStorage && window.localStorage) {
+function LocalStorageStatus() {
+    if (sessionStorage && window.localStorage) {
+        console.log('Local Storage OK.');
         return true;
     } else {
         console.log('Your Device is not Compatible with Local Storage.');
         return false;
     }
+    return false;
 }
 
 function saveWebServicePath(path) {
-    if (localStorage()) {
+    if (LocalStorageStatus()) {
         if (path !== null) {
-            var localSt = window.localStorage;
-            localSt.setItem("WebServicePath", path);
+            LocalStorageStatus().setItem("WebServicePath", path);
             return true;
         }
     }
@@ -26,23 +26,30 @@ function saveWebServicePath(path) {
 }
 
 function getWebServicePath() {
-    if (localStorage()) {
-        var localSt = window.localStorage;
+    if (LocalStorageStatus()) {
+        var localSt = localStorage;
         var path = null;
-        path = localSt.getItem("WebServicePath");
+        path = localStorage.getItem("WebServicePath");
         return path;
     }
     return null;
 }
 
 
+function setUsernameLogin(username) {
+    if (LocalStorageStatus()) {
+        if (username !== null && username !== '') {
+            localStorage.setItem("UsernameLogin", "" + username);
+            return true;
+        }
+    }
+    return false;
+}
 
-function saveDataLogin(username, password) {
-    if (localStorage()) {
-        if (username !== null && password !== null && username !== '' && password !== '') {
-            var localSt = window.localStorage;
-            localSt.setItem("UsernameLogin", username);
-            localSt.setItem("PasswordLogin", password);
+function setPasswordLogin(password) {
+    if (LocalStorageStatus()) {
+        if (password !== null && password !== '') {
+            localStorage.setItem("PasswordLogin", "" + password);
             return true;
         }
     }
@@ -50,30 +57,27 @@ function saveDataLogin(username, password) {
 }
 
 function getUsernameLogin() {
-    if (localStorage()) {
-        var localSt = window.localStorage;
+    if (LocalStorageStatus()) {
         var username = null;
-        username = localSt.getItem("UsernameLogin");
+        username = localStorage.getItem("UsernameLogin");
         return username;
     }
     return null;
 }
 
 function getPasswordLogin() {
-    if (localStorage()) {
-        var localSt = window.localStorage;
+    if (LocalStorageStatus()) {
         var password = null;
-        password = localSt.getItem("PasswordLogin");
+        password = localStorage.getItem("PasswordLogin");
         return password;
     }
     return null;
 }
 
 function setUserIdSession(userid) {
-    if (localStorage()) {
+    if (LocalStorageStatus()) {
         if (userid !== null && userid !== '') {
-            var sessionSt = window.sessionStorage;
-            sessionSt.setItem("UserIdSession", userid);
+            sessionStorage.setItem("UserIdSession", userid);
             return true;
         }
     }
@@ -81,10 +85,9 @@ function setUserIdSession(userid) {
 }
 
 function setUserRoleSession(userrole) {
-    if (localStorage()) {
+    if (LocalStorageStatus()) {
         if (userrole !== null && userrole !== '') {
-            var sessionSt = window.sessionStorage;
-            sessionSt.setItem("UserRoleSession", userrole);
+            sessionStorage.setItem("UserRoleSession", userrole);
             return true;
         }
     }
@@ -92,10 +95,9 @@ function setUserRoleSession(userrole) {
 }
 
 function setUsernameSession(username) {
-    if (localStorage()) {
+    if (LocalStorageStatus()) {
         if (username !== null && username !== '') {
-            var sessionSt = window.sessionStorage;
-            sessionSt.setItem("UsernameSession", username);
+            sessionStorage.setItem("UsernameSession", username);
             return true;
         }
     }
@@ -103,10 +105,9 @@ function setUsernameSession(username) {
 }
 
 function setPasswordSession(password) {
-    if (localStorage()) {
+    if (LocalStorageStatus()) {
         if (password !== null && password !== '') {
-            var sessionSt = window.sessionStorage;
-            sessionSt.setItem("PasswordSession", password);
+            sessionStorage.setItem("PasswordSession", password);
             return true;
         }
     }
@@ -114,41 +115,119 @@ function setPasswordSession(password) {
 }
 
 function getUserIdSession() {
-    if (localStorage()) {
-        var sessionSt = window.sessionStorage;
+    if (LocalStorageStatus()) {
         var userid = null;
-        userid = sessionSt.getItem("UserIdSession");
+        userid = sessionStorage.getItem("UserIdSession");
         return userid;
     }
     return null;
 }
 
 function getUserRoleSession() {
-    if (localStorage()) {
-        var sessionSt = window.sessionStorage;
+    if (LocalStorageStatus()) {
         var userrole = null;
-        userrole = sessionSt.getItem("UserRoleSession");
+        userrole = sessionStorage.getItem("UserRoleSession");
         return userrole;
     }
     return null;
 }
 
 function getUsernameSession() {
-    if (localStorage()) {
-        var sessionSt = window.sessionStorage;
+    if (LocalStorageStatus()) {
         var username = null;
-        username = sessionSt.getItem("UsernameSession");
+        username = sessionStorage.getItem("UsernameSession");
         return username;
     }
     return null;
 }
 
 function getPasswordSession() {
-    if (localStorage()) {
-        var sessionSt = window.sessionStorage;
+    if (LocalStorageStatus()) {
         var password = null;
-        password = sessionSt.getItem("PasswordSession");
+        password = sessionStorage.getItem("PasswordSession");
         return password;
     }
     return null;
 }
+
+function setPOST(pname, pvalue) {
+    if (LocalStorageStatus()) {
+        if (pname !== null && pvalue !== null) {
+            var post = null;
+            var element = null;
+            post = sessionStorage.getItem("POSTData");
+            if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
+                post = JSON.parse(post);
+            } else {
+                post = null;
+                post = new Array();
+            }
+            if (post !== null) {
+                element = new Object();
+                element[pname] = pvalue;
+                post.push(element);
+                post = JSON.stringify(post);
+                console.log('Datos: ' + post);
+                sessionStorage.setItem("POSTData", post);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function getPOST(pname) {
+    if (LocalStorageStatus()) {
+        if (pname !== null) {
+            var post = null;
+            var pvalue = null;
+            post = sessionStorage.getItem("POSTData");
+            if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
+                post = JSON.parse(post);
+                if (post !== null) {
+                    for (var i = 0; i < post.length; i++) {
+                        if (Object.keys(post[i])[0] == pname) {
+                            pvalue = post[i][pname];
+                            console.log("Found: " + pname);
+                        }
+                    }
+                }
+            }
+            return pvalue;
+        }
+    }
+    return null;
+}
+
+function unsetPOST(pname) {
+    if (LocalStorageStatus()) {
+        if (pname !== null) {
+            var post = null;
+            post = sessionStorage.getItem("POSTData");
+            if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
+                post = JSON.parse(post);
+                if (post !== null) {
+                    for (var i = 0; i < post.length; i++) {
+                        if (Object.keys(post[i])[0] == pname) {
+                            post[i] = null;
+                            post.splice(i,1);
+                        }
+                    }
+                }
+            }
+            post = JSON.stringify(post);
+            sessionStorage.setItem("POSTData", post);
+            return true;
+        }
+    }
+    return false;
+}
+
+function nullPOST() {
+    if (LocalStorageStatus()) {
+        sessionStorage.removeItem("POSTData");
+        return true;
+    }
+    return false;
+}
+

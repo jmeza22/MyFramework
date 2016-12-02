@@ -6,7 +6,7 @@
 
 function clickButton(){
 	document.getElementById('image_file').click();
-	$( '#image-photo' ).click(function() {
+	$( '#image' ).click(function() {
 		$( '#image_file' ).click();
 	});
 }

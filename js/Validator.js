@@ -171,7 +171,7 @@ function validateForm(form) {
             for (j = 0; j < elements.length; j++) {
                 item = null;
                 item = elements[j];
-                if (item.getAttribute('required') === 'true' && item.getAttribute('disabled') === null) {
+                if ((item.getAttribute('required') === 'true' || item.getAttribute('required') === 'required') && item.getAttribute('disabled') === null) {
                     if (item.value === null || item.value === '') {
                         alert('Campo Vacio: Obligatorio');
                         item.focus();

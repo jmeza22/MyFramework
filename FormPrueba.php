@@ -14,6 +14,8 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css"/>
+
         <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
         <script type="text/javascript" src="js/Validator.js"></script>
@@ -28,18 +30,18 @@
         <div class="panel panel-primary" style="width: 50% !important;">
             <div class="panel-heading">Registro Persona</div>
             <form class="panel-body" method="POST" autocomplete="false" url="Base/PruebaFramework.php" model="personas" findBy="id_persona" do="4" >
-                <input type="hidden" integer="true" name="id_persona" id="id_persona" value="1" required="true" maxlength="30" min="0" class="form-control">
+                <input type="hidden" integer="true" name="id_persona" id="id_persona" value="1" required="required" maxlength="30" min="0" class="form-control">
 
 
                 <div class="row">
                     <div class="col-sm-6">
                         <label>Nombres</label>
-                        <input type="text" name="nombre_persona" id="nombre_persona" value="" required="true" maxlength="50" class="form-control" title="Nombre Completo">
+                        <input type="text" name="nombre_persona" id="nombre_persona" value="" required="required" maxlength="50" class="form-control" title="Nombre Completo">
                     </div>
 
                     <div class="col-sm-6">
                         <label>Apellidos</label>
-                        <input type="text" name="apellido_persona" id="apellido_persona" value="" required="true" maxlength="100" class="form-control" >
+                        <input type="text" name="apellido_persona" id="apellido_persona" value="" required="required" maxlength="100" class="form-control" >
                     </div>
                 </div>
 
@@ -57,8 +59,8 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Ocupacion</label>
-                        <select name="ocupacion_persona" id="ocupacion_persona" required="true" url="Base/Combobox.php" model="ocupacion" colvalue="id_ocupacion" colname="nombre_ocupacion" selected="0" class="form-control" style="width: 100%; min-width: 100%;" >
-                            <option value="0" disabled="true" >Ninguna</option> 
+                        <select name="ocupacion_persona" id="ocupacion_persona" required="required" url="Base/Combobox.php" model="ocupacion" colvalue="id_ocupacion" colname="nombre_ocupacion" selected="0" class="form-control" style="width: 100%; min-width: 100%;" >
+                            <option value="0" disabled="disabled" >Ninguna</option> 
                         </select>
                     </div>
                 </div>
@@ -72,34 +74,7 @@
             </form>
         </div>
 
-        <div class="panel panel-default" style="width: 50% !important;">
-            <div class="panel-heading">Listado Personas</div>
-            <div class="panel-body">
-                <div>
-                    <form method="POST" autocomplete="false" id="List" >
-                        <input type="hidden" name="url" id="url" value="Base/Prueba.php" required="true" disabled="true" >
-                        <input type="hidden" name="ListarPersona" id="ListarPersona" value="Listar" required="true" >
-                        <center>
-                            <button id="Listar" name="Listar" type="button" onclick="submitForm(this);" class="btn btn-success" >Guardar</button>        
-                        </center>
-                    </form>
-                    <table id="table-list" border="0">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Fec. Nac</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        
 
         <script type="text/javascript">
             jQuery(document).ready(function () {

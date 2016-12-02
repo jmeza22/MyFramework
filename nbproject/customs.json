@@ -1,0 +1,17 @@
+{
+    "elements": {},
+    "attributes": {
+        "date": {
+            "context": "input"
+        },
+        "action": {
+            "context": "button"
+        },
+        "integer": {
+            "context": "input"
+        },
+        "url": {
+            "context": "select"
+        }
+    }
+}
