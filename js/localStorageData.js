@@ -5,8 +5,7 @@
  */
 
 function LocalStorageStatus() {
-    if (sessionStorage && window.localStorage) {
-        console.log('Local Storage OK.');
+    if (window.sessionStorage && window.localStorage) {
         return true;
     } else {
         console.log('Your Device is not Compatible with Local Storage.');
@@ -56,6 +55,16 @@ function setPasswordLogin(password) {
     return false;
 }
 
+function setUserIdLogin(userid) {
+    if (LocalStorageStatus()) {
+        if (userid !== null && userid !== '') {
+            localStorage.setItem("UserIdLogin", userid);
+            return true;
+        }
+    }
+    return false;
+}
+
 function getUsernameLogin() {
     if (LocalStorageStatus()) {
         var username = null;
@@ -70,6 +79,15 @@ function getPasswordLogin() {
         var password = null;
         password = localStorage.getItem("PasswordLogin");
         return password;
+    }
+    return null;
+}
+
+function getUserIdLogin() {
+    if (LocalStorageStatus()) {
+        var userid = null;
+        userid = localStorage.getItem("UserIdLogin");
+        return userid;
     }
     return null;
 }
@@ -150,12 +168,60 @@ function getPasswordSession() {
     return null;
 }
 
+function setLocalPOST(post) {
+    if (LocalStorageStatus()) {
+        if (post !== null) {
+            localStorage.removeItem("POST");
+            localStorage.setItem("POST", post);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getLocalPOST() {
+    if (LocalStorageStatus()) {
+        var post = null;
+        post = localStorage.getItem("POST");
+        if (post == null) {
+            console.log("LocalPOST is null");
+        }
+        return post;
+    }
+    return null;
+}
+
+function setSessionPOST(post) {
+    if (LocalStorageStatus()) {
+        if (post !== null) {
+            sessionStorage.removeItem("POSTData");
+            sessionStorage.setItem("POSTData", post);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getSessionPOST() {
+    if (LocalStorageStatus()) {
+        var post = null;
+        post = sessionStorage.getItem("POSTData");
+        if (post == null) {
+            console.log("SessionPOST is null. Try LocalPOST");
+            post = getLocalPOST();
+            setSessionPOST(post);
+        }
+        return post;
+    }
+    return null;
+}
+
 function setPOST(pname, pvalue) {
     if (LocalStorageStatus()) {
         if (pname !== null && pvalue !== null) {
             var post = null;
             var element = null;
-            post = sessionStorage.getItem("POSTData");
+            post = getSessionPOST();
             if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
                 post = JSON.parse(post);
             } else {
@@ -168,7 +234,7 @@ function setPOST(pname, pvalue) {
                 post.push(element);
                 post = JSON.stringify(post);
                 console.log('Datos: ' + post);
-                sessionStorage.setItem("POSTData", post);
+                setSessionPOST(post);
                 return true;
             }
         }
@@ -181,7 +247,7 @@ function getPOST(pname) {
         if (pname !== null) {
             var post = null;
             var pvalue = null;
-            post = sessionStorage.getItem("POSTData");
+            post = getSessionPOST();
             if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
                 post = JSON.parse(post);
                 if (post !== null) {
@@ -203,27 +269,27 @@ function unsetPOST(pname) {
     if (LocalStorageStatus()) {
         if (pname !== null) {
             var post = null;
-            post = sessionStorage.getItem("POSTData");
+            post = getSessionPOST();
             if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
                 post = JSON.parse(post);
                 if (post !== null) {
                     for (var i = 0; i < post.length; i++) {
                         if (Object.keys(post[i])[0] == pname) {
                             post[i] = null;
-                            post.splice(i,1);
+                            post.splice(i, 1);
                         }
                     }
                 }
             }
             post = JSON.stringify(post);
-            sessionStorage.setItem("POSTData", post);
+            setSessionPOST(post);
             return true;
         }
     }
     return false;
 }
 
-function nullPOST() {
+function resetPOST(){
     if (LocalStorageStatus()) {
         sessionStorage.removeItem("POSTData");
         return true;
@@ -231,3 +297,17 @@ function nullPOST() {
     return false;
 }
 
+function nullPOST() {
+    if (LocalStorageStatus()) {
+        sessionStorage.removeItem("POSTData");
+        localStorage.removeItem("POST");
+        return true;
+    }
+    return false;
+}
+
+function savePOST(){
+    setLocalPOST(getSessionPOST());
+}
+
+    

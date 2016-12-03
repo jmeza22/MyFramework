@@ -30,13 +30,13 @@ and open the template in the editor.
     <body>
         <div class="panel panel-default" style="width: 50% !important;">
             <div class="panel-heading">POST</div>
-            <form class="panel-body" method="POST" autocomplete="off" >
+            <form class="panel-body" method="POST" autocomplete="off" onsubmit="" >
                 <input type="hidden" integer="true" name="id_usuario" id="id_usuario" value="1" required="required" maxlength="30" min="0" class="form-control">
 
                 <div class="row">
                     <div class="col-sm-12">
                         <label>JSON</label>
-                        <textarea name="contenido" id="contenido" required="required" maxlength="1000" class="form-control" title="Nombre Completo"></textarea>
+                        <textarea name="contenido" id="contenido" required="required" maxlength="1000" class="form-control" title="Nombre Completo" disabled="disabled" ></textarea>
                     </div>
                 </div>
 
@@ -84,7 +84,9 @@ and open the template in the editor.
             jQuery(document).ready(function () {
                 document.getElementById("variable").value = 'post';
                 document.getElementById("valor").value = getPOST('post');
+                getSessionPOST();
                 getMyJSON();
+
             }
             );
 
@@ -100,6 +102,7 @@ and open the template in the editor.
             function Grabar(item) {
                 setPOST(document.getElementById("variable").value, document.getElementById("valor").value);
                 getMyJSON();
+                setLocalPOST(getSessionPOST());
             }
 
             function Borrar(item) {

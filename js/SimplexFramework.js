@@ -3,6 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+jQuery(document).ready(function () {
+    createAjaxLoading();
+    AjaxLoading();
+});
 
 function noContextMenu() {
     document.oncontextmenu = function () {
@@ -56,6 +60,64 @@ function showNotification(text) {
         }
     };
 })(jQuery);
+
+
+
+function AjaxLoading() {
+    $(document).on("ajaxStart", function () {
+        showAjaxLoading();
+    }).on("ajaxStop", function () {
+        hideAjaxLoading();
+    });
+}
+
+function createAjaxLoading(){
+    var maindiv=null;
+    var subdiv=null;
+    var imgload=null;
+    var text=null;
+    
+    maindiv=document.createElement("div");
+    subdiv=document.createElement("div");
+    imgload=document.createElement("img");
+    text=document.createElement("p");
+    
+    maindiv.setAttribute("id","AjaxLoading");
+    maindiv.setAttribute("class","AjaxLoading");
+    maindiv.setAttribute("style","display:none;");
+    subdiv.setAttribute("id","SubLoading");
+    subdiv.setAttribute("class","SubLoading");
+    imgload.setAttribute("id","ImageLoading");
+    imgload.setAttribute("class","ImageLoading");
+    imgload.setAttribute("src","css/loadingAnimation.gif");
+    text.setAttribute("class","TextLoading");
+    text.innerHTML='...CARGANDO...';
+    
+    maindiv.appendChild(subdiv);
+    subdiv.appendChild(imgload);
+    subdiv.appendChild(text);
+    document.body.appendChild(maindiv);
+}
+
+function showAjaxLoading() {
+    var loading = null;
+    loading = document.getElementById("AjaxLoading");
+    if (loading !== null) {
+        loading.style = "display: block;";
+        return true;
+    }
+    return false;
+}
+
+function hideAjaxLoading() {
+    var loading = null;
+    loading = document.getElementById("AjaxLoading");
+    if (loading !== null) {
+        loading.style = "display: none;";
+        return true;
+    }
+    return false;
+}
 
 function getWebservicePath() {
     var path = "http://localhost/";

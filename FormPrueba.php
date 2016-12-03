@@ -30,7 +30,7 @@
         <div class="panel panel-primary" style="width: 50% !important;">
             <div class="panel-heading">Registro Persona</div>
             <form class="panel-body" method="POST" autocomplete="false" url="Base/PruebaFramework.php" model="personas" findBy="id_persona" do="4" >
-                <input type="hidden" integer="true" name="id_persona" id="id_persona" value="1" required="required" maxlength="30" min="0" class="form-control">
+                <input type="hidden" integer="true" name="id_persona" id="id_persona" value="0" required="required" maxlength="30" min="0" class="form-control">
 
 
                 <div class="row">
@@ -74,13 +74,20 @@
             </form>
         </div>
 
-        
+
 
         <script type="text/javascript">
             jQuery(document).ready(function () {
-                var item = document.getElementById("ocupacion_persona");
-                getComboboxData(item);
-                getData(item);
+                
+                resetPOST();
+                var idpersona = document.getElementById("id_persona");
+                var valid = getPOST('id_persona');
+                if (valid !== null) {
+                    idpersona.value = valid;
+                }
+                var combo1 = document.getElementById("ocupacion_persona");
+                getComboboxData(combo1);
+                getData(idpersona);
             }
             );
 
