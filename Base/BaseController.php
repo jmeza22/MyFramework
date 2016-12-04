@@ -23,7 +23,7 @@ class BaseController {
     private $postData = null;
 
     public function __construct() {
-        $this->db = new SQLDatabase('localhost', 'testphp', 'root', '', 'mysql');
+        $this->db = new SQLDatabase('localhost', 'myapp', 'root', '', 'mysql');
         $this->connect();
     }
 

@@ -4,28 +4,28 @@
  * and open the template in the editor.
  */
 
-function clickButton(){
-	document.getElementById('image_file').click();
-	$( '#image' ).click(function() {
-		$( '#image_file' ).click();
-	});
+function clickButton() {
+    document.getElementById('imageFile').click();
+    $('#imagePhoto').click(function () {
+        $('#imageFile').click();
+    });
 }
- 
+
 function showMyImage(fileInput) {
     var files = fileInput.files;
-    for (var i = 0; i < files.length; i++) {           
+    for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        var imageType = /image.*/;     
+        var imageType = /image.*/;
         if (!file.type.match(imageType)) {
             continue;
-        }           
-        var img=document.getElementById("image-photo");            
-        img.file = file;    
+        }
+        var img = document.getElementById("imagePhoto");
+        img.file = file;
         var reader = new FileReader();
-        reader.onload = (function(aImg) { 
-            return function(e) { 
-                aImg.src = e.target.result; 
-            }; 
+        reader.onload = (function (aImg) {
+            return function (e) {
+                aImg.src = e.target.result;
+            };
         })(img);
         reader.readAsDataURL(file);
     }

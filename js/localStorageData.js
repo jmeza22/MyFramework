@@ -168,6 +168,29 @@ function getPasswordSession() {
     return null;
 }
 
+function setIdOrder(order) {
+    if (LocalStorageStatus()) {
+        if (post !== null) {
+            localStorage.removeItem("IdOrder");
+            localStorage.setItem("IdOrder", order);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getIdOrder() {
+    if (LocalStorageStatus()) {
+        var order = null;
+        order = localStorage.getItem("IdOrder");
+        if (order == null) {
+            console.log("Order is null");
+        }
+        return post;
+    }
+    return null;
+}
+
 function setLocalPOST(post) {
     if (LocalStorageStatus()) {
         if (post !== null) {
