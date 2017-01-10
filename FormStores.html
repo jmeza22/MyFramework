@@ -1,18 +1,18 @@
 
 <html>
     <head>
-        <meta charset="UTF-8"/>
-        <title>Productos</title>
+        <meta charset="UTF-8">
+        <title>Tienda</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <meta name="description" content="Registro de Productos"/>
+        <meta name="description" content="Registro de Tienda"/>
         <meta name="author" content="Jose Meza"/>
         <link rel="icon" type="image/png" href="css/IconPage.png" />
         <link rel="shortcut icon" type="image/png" href="css/IconPage.png" />
 
-        <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css' />
-        <link href='https://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css' />
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'/>
+        <link href='https://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'/>
+        <link href="css/styles.css" rel="stylesheet"/>
 
         <!-- Bootstrap Core CSS -->
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
@@ -25,14 +25,16 @@
         <script type="text/javascript" src="js/localStorageData.js"></script>
         <script type="text/javascript" src="js/SimplexFramework.js"></script>
 
+
+
     </head>
     <body>
 
         <div class="panel panel-primary" style="width: 80% !important;">
-            <div class="panel-heading">Registro Producto</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/DefaultController.php" model="ProductsApp" findBy="id_product" >
-                <input type="hidden" integer="true" name="id_product" id="id_product" value="0" required="required" maxlength="30" min="0" class="form-control">
-                <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0" class="form-control" disabled="disabled" >
+            <div class="panel-heading">Registro Tienda</div>
+            <form class="panel-body" method="POST" autocomplete="off" url="Base/DefaultController.php" model="StoreApp" findBy="id_store" >
+                <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0" class="form-control" >
+
 
                 <div class="row">
 
@@ -40,7 +42,7 @@
                         <center>
                             <div class="photoPanel">
                                 <center>
-                                    <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/Products.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
+                                    <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/IconPage.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
                                     <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImage(this)" title="Click to Change Photo" disabled="disabled" />
                                 </center>
                             </div>
@@ -51,40 +53,50 @@
                     <div class="col-sm-8">
 
                         <div class="row">
-                            <div class="col-sm-12">
-                                <label>Nombre de Producto</label>
-                                <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
+                            <div class="col-sm-6">
+                                <label>Nombre de Tienda</label>
+                                <input type="text" name="name_store" id="name_store" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Identificacion</label>
+                                <input type="text" name="doc_store" id="doc_store" maxlength="20" class="form-control" title="NIT o RUT">
                             </div>
                         </div>
+
+
                         <div class="row">
-                            <div class="col-sm-12">
-                                <label>Descripcion</label>
-                                <textarea name="description_product" id="description_product" required="required" maxlength="500" class="form-control" title="Descripcion Larga del Producto" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
+                            <div class="col-sm-6">
+                                <label>Telefono</label>
+                                <input type="tel" name="phone_store" id="phone_store" value="" maxlength="20" class="form-control" title="Telefono" >
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Direccion</label>
+                                <input type="text" name="address_store" id="address_store" maxlength="200" class="form-control" title="Direccion">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-6">
-                                <label>SKU</label>
-                                <input type="text" name="sku_product" id="sku_product" value="" maxlength="30" class="form-control" title="Codigo Interno" >
+                                <label>Email</label>
+                                <input type="email" name="email_store" id="email_store" value="" maxlength="200" class="form-control" title="Correo Electronico" >
                             </div>
                             <div class="col-sm-6">
-                                <label>Precio</label>
-                                <input type="number" name="price_product" id="price_product" value="0" min="0" class="form-control" title="Precio Estandar">
+                                <label>Administrador</label>
+                                <input type="text" name="admin_store" id="admin_store" maxlength="200" class="form-control" title="Nombre del Administrador">
                             </div>
                         </div>
 
                         <div class="row" style="display: none;">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <label>Foto</label>
-                                <input type="text" name="photo_product" id="photo_product" value="Products.png" maxlength="1000" class="form-control" title="Nombre de Foto" disabled="disabled" >
+                                <input type="text" name="logo_store" id="logo_store" value="LogoStore.png" maxlength="1000" class="form-control" title="Nombre de Foto" disabled="disabled" >
                             </div>
                         </div>
 
                         <div class="row" style="margin-top: 20px;">
                             <div class="col-sm-6">
                                 <center>
-                                    <button id="Guardar" name="Guardar" type="button" action="insert" onclick="Send(this);" class="btn btn-primary" >Guardar</button>
+                                    <button id="Guardar" name="Guardar" type="button" action="update" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
                                 </center>
                             </div>
                             <div class="col-sm-6">
@@ -96,7 +108,6 @@
 
 
                     </div>
-
                 </div>
 
 
@@ -109,9 +120,13 @@
 
         <script type="text/javascript">
             jQuery(document).ready(function () {
-                resetPOST();
-                var idproduct = document.getElementById("id_product");
-                getData(idproduct);
+
+                var idstore = document.getElementById("id_store");
+                var valid = getIdStore();
+                if (valid !== null) {
+                    idstore.value = valid;
+                }
+                getData(idstore);
             });
 
             function Send(item) {

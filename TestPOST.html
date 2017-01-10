@@ -43,12 +43,12 @@ and open the template in the editor.
                 <div class="row">
                     <div class="col-sm-6">
                         <label>Variable</label>
-                        <input type="text" name="variable" id="variable" value="" required="required" maxlength="1000" class="form-control" title="Nombre Completo">
+                        <input type="text" name="variable" id="variable" value="name" required="required" maxlength="1000" class="form-control" title="Nombre Completo">
                     </div>
 
                     <div class="col-sm-6">
                         <label>Valor</label>
-                        <input type="text" name="valor" id="valor" value="" required="required" maxlength="1000" class="form-control" >
+                        <input type="text" name="valor" id="valor" value="value" required="required" maxlength="1000" class="form-control" >
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@ and open the template in the editor.
 
         <script type="text/javascript">
             jQuery(document).ready(function () {
-                document.getElementById("variable").value = 'post';
+                document.getElementById("variable").value = 'name';
                 document.getElementById("valor").value = getPOST('post');
                 getSessionPOST();
                 getMyJSON();

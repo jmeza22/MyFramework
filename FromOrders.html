@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Orden</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content="Registro de Orden"/>
+        <meta name="author" content="Jose Meza"/>
+        <link rel="icon" type="image/png" href="css/IconPage.png" />
+        <link rel="shortcut icon" type="image/png" href="css/IconPage.png" />
+
+        <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css' />
+        <link href='https://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css' />
+        <link href="css/styles.css" rel="stylesheet" />
+
+        <!-- Bootstrap Core CSS -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css"/>
+
+        <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/Validator.js"></script>
+        <script type="text/javascript" src="js/LoadImage.js"></script>
+        <script type="text/javascript" src="js/localStorageData.js"></script>
+        <script type="text/javascript" src="js/SimplexFramework.js"></script>
+    </head>
+    <body>
+        <div class="panel panel-primary" style="width: 80% !important;">
+            <div class="panel-heading">Registro de Orden</div>
+            <form class="panel-body" method="POST" autocomplete="off" url="Base/OrderController.php" model="OrdersApp" findBy="id_order" >
+                <input type="hidden" integer="true" name="id_order" id="id_order" value="0" required="required" maxlength="30" min="0" class="form-control"  >
+                <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0" class="form-control"  >
+                <input type="hidden" integer="true" name="id_user" id="id_user" value="0" required="required" maxlength="30" min="0" class="form-control"  >
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Nombre del Cliente</label>
+                        <input type="text" name="name_user" id="name_user" value="" maxlength="100" class="form-control" title="Nombre Completo" disabled="disabled" getname="true" idname="id_user" model="UsersApp" >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Fecha</label>
+                        <input type="date" date="true" name="date_order" id="date_order" value="" required="required" readonly="readonly" class="form-control" >
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>Hora</label>
+                        <input type="time" name="hour_order" id="hour_order" value="" required="required"  readonly="readonly" disabled="disabled" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Nota - Observaciones</label>
+                        <textarea name="note_order" id="note_order" required="required" maxlength="200" class="form-control" title="Descripcion Larga del Producto" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-6">
+                        <center>
+                            <button id="Guardar" name="Guardar" type="button" action="insert" onclick="Send(this);" class="btn btn-primary" >Guardar</button>
+                        </center>
+                    </div>
+                    <div class="col-sm-6">
+                        <center>
+                            <button type="reset" id="reset" class="btn btn-danger">Cancelar</button>  
+                        </center>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                getData(document.getElementById("id_order"));
+                var hh = document.getElementById("hour_order");
+                var dd = document.getElementById("date_order");
+                var store = document.getElementById("id_store");
+                var user = document.getElementById("id_user");
+                if (getIdStore() !== null) {
+                    store.value = getIdStore();
+                }
+                if (getUserIdLogin() !== null) {
+                    user.value = getUserIdLogin();
+                }
+                hh.value=getCurrentTime();
+                dd.value=getCurrentDate();
+
+            });
+
+            function Send(item) {
+                var form = getForm(item);
+                if (validateForm(form)) {
+                    submitForm(item);
+                }
+            }
+        </script> 
+    </body>
+
+</html>

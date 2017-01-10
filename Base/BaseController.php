@@ -154,9 +154,12 @@ class BaseController {
         return false;
     }
 
-    public function execute($print = false, $messageSuccess = 'OK', $messageError = 'Error Found!') {
+    public function execute($print = false, $messageSuccess = 'OK!', $messageError = 'Failled!') {
         $result = false;
         if (isset($this->action)) {
+            if (strcmp($this->action, 'find') == 0 || strcmp($this->action, '0') == 0) {
+                $result = $this->select();
+            }
             if (strcmp($this->action, 'insert') == 0 || strcmp($this->action, '1') == 0) {
                 $result = $this->insert();
             }
@@ -166,10 +169,7 @@ class BaseController {
             if (strcmp($this->action, 'delete') == 0 || strcmp($this->action, '3') == 0) {
                 $result = $this->delete();
             }
-            if (strcmp($this->action, 'find') == 0 || strcmp($this->action, '4') == 0) {
-                $result = $this->select();
-            }
-            if (strcmp($this->action, 'findAll') == 0 || strcmp($this->action, '5') == 0) {
+            if (strcmp($this->action, 'findAll') == 0 || strcmp($this->action, '4') == 0) {
                 $result = $this->select();
             }
         }
@@ -184,10 +184,21 @@ class BaseController {
         return $result;
     }
 
-    public function getComboboxData($colname, $colvalue, $where = '') {
+    public function getComboboxData($colname='colname', $colvalue='colvalue', $where = '') {
         $result = null;
         if (isset($this->db) && isset($this->model) && isset($colname) && isset($colvalue)) {
             $result = $this->db->selectJSON($colname . ' as iname, ' . $colvalue . ' as ivalue ', $this->model, $where);
+            return $result;
+        }
+        return null;
+    }
+
+    public function getValue($column='column', $idname = 'id', $idvalue = '0') {
+        $result = null;
+        $where = null;
+        if (isset($this->db) && isset($this->model) && isset($idname) && isset($idvalue)) {
+            $where = '' . $idname . '=' . $this->parseWhereParam($idvalue);
+            $result = $this->db->selectJSON($column, $this->model, $where);
             return $result;
         }
         return null;

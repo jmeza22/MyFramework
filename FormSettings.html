@@ -1,0 +1,138 @@
+
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Configuracion General</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content="Configuracion General"/>
+        <meta name="author" content="Jose Meza"/>
+        <link rel="icon" type="image/png" href="css/IconPage.png" />
+        <link rel="shortcut icon" type="image/png" href="css/IconPage.png" />
+
+        <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'/>
+        <link href='https://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'/>
+        <link href="css/styles.css" rel="stylesheet"/>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css"/>
+
+        <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/Validator.js"></script>
+        <script type="text/javascript" src="js/LoadImage.js"></script>
+        <script type="text/javascript" src="js/localStorageData.js"></script>
+        <script type="text/javascript" src="js/SimplexFramework.js"></script>
+
+
+
+    </head>
+    <body>
+
+        <div class="panel panel-default" style="width: 80% !important;">
+            <div class="panel-heading">Configuracion General</div>
+            <form class="panel-body" method="POST" autocomplete="off"  >
+
+
+                <div class="row">
+
+                    <div class="col-sm-12">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Direccion Local</label>
+                                <input type="text" name="local_path" id="local_path" value="" required="required" maxlength="1000" class="form-control" title="Direccion para Funcionamiento Local">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Direccion Remota</label>
+                                <input type="text" name="remote_path" id="remote_path" value="" required="required" maxlength="1000" class="form-control" title="Direccion para Funcionamiento Remoto">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Tienda Por Defecto</label>
+                                <input type="number" name="id_store" id="id_store" value="1" min="1" required="required" class="form-control" title="Tienda Por Defecto">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Usuario Por Defecto</label>
+                                <input type="text" name="username" id="username" required="required" class="form-control" title="Tienda Por Defecto">
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Password Por Defecto</label>
+                                <input type="password" name="password" id="password" required="required" class="form-control" title="Tienda Por Defecto">
+                            </div>
+                        </div>
+
+
+
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-sm-6">
+                                <center>
+                                    <button id="Guardar" name="Guardar" type="button" onclick="SaveConfig();" class="btn btn-success" >Guardar</button>
+                                </center>
+                            </div>
+                            <div class="col-sm-6">
+                                <center>
+                                    <button type="reset" id="reset" class="btn btn-danger">Cancelar</button> 
+                                </center>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+
+
+
+
+
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                GetConfig();
+            });
+
+            function GetConfig() {
+                var localpath = document.getElementById("local_path");
+                var remotepath = document.getElementById("remote_path");
+                var idstore = document.getElementById("id_store");
+                var username = document.getElementById("username");
+                var password = document.getElementById("password");
+                
+                localpath.value = getWebServiceLocalPath();
+                remotepath.value = getWebServicePath();
+                idstore.value = getIdStore();
+                username.value= getUsernameLogin();
+                password.value= getPasswordLogin();
+            }
+
+            function SaveConfig() {
+                var localpath = document.getElementById("local_path");
+                var remotepath = document.getElementById("remote_path");
+                var idstore = document.getElementById("id_store");
+                var username = document.getElementById("username");
+                var password = document.getElementById("password");
+
+                setWebServiceLocalPath(localpath.value);
+                setWebServicePath(remotepath.value);
+                setIdStore(idstore.value);
+                setUsernameLogin(username.value);
+                setPasswordLogin(password.value);
+                alert("Datos Guardados");
+            }
+
+
+        </script>
+    </body>
+</html>

@@ -4,6 +4,9 @@
         "date": {
             "context": "input"
         },
+        "idname": {
+            "context": "input"
+        },
         "action": {
             "context": "button"
         },

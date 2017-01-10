@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 function LocalStorageStatus() {
     if (window.sessionStorage && window.localStorage) {
         return true;
@@ -14,10 +13,10 @@ function LocalStorageStatus() {
     return false;
 }
 
-function saveWebServicePath(path) {
+function setWebServicePath(path) {
     if (LocalStorageStatus()) {
         if (path !== null) {
-            LocalStorageStatus().setItem("WebServicePath", path);
+            localStorage.setItem("WebServicePath", path);
             return true;
         }
     }
@@ -26,14 +25,37 @@ function saveWebServicePath(path) {
 
 function getWebServicePath() {
     if (LocalStorageStatus()) {
-        var localSt = localStorage;
         var path = null;
         path = localStorage.getItem("WebServicePath");
+        if (path == null) {
+            console.log("WebServicePath is null");
+        }
         return path;
     }
     return null;
 }
 
+function setWebServiceLocalPath(path) {
+    if (LocalStorageStatus()) {
+        if (path !== null) {
+            localStorage.setItem("WebServiceLocalPath", path);
+            return true;
+        }
+    }
+    return null;
+}
+
+function getWebServiceLocalPath() {
+    if (LocalStorageStatus()) {
+        var path = null;
+        path = localStorage.getItem("WebServiceLocalPath");
+        if (path === null) {
+            console.log("WebServiceLocalPath is null");
+        }
+        return path;
+    }
+    return null;
+}
 
 function setUsernameLogin(username) {
     if (LocalStorageStatus()) {
@@ -170,7 +192,7 @@ function getPasswordSession() {
 
 function setIdOrder(order) {
     if (LocalStorageStatus()) {
-        if (post !== null) {
+        if (order !== null) {
             localStorage.removeItem("IdOrder");
             localStorage.setItem("IdOrder", order);
             return true;
@@ -183,10 +205,33 @@ function getIdOrder() {
     if (LocalStorageStatus()) {
         var order = null;
         order = localStorage.getItem("IdOrder");
-        if (order == null) {
+        if (order === null) {
             console.log("Order is null");
         }
-        return post;
+        return order;
+    }
+    return null;
+}
+
+function setIdStore(store) {
+    if (LocalStorageStatus()) {
+        if (store !== null) {
+            localStorage.removeItem("IdStore");
+            localStorage.setItem("IdStore", store);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getIdStore() {
+    if (LocalStorageStatus()) {
+        var store = null;
+        store = localStorage.getItem("IdStore");
+        if (store === null) {
+            console.log("Store is null");
+        }
+        return store;
     }
     return null;
 }
@@ -206,7 +251,7 @@ function getLocalPOST() {
     if (LocalStorageStatus()) {
         var post = null;
         post = localStorage.getItem("POST");
-        if (post == null) {
+        if (post === null) {
             console.log("LocalPOST is null");
         }
         return post;
@@ -229,7 +274,7 @@ function getSessionPOST() {
     if (LocalStorageStatus()) {
         var post = null;
         post = sessionStorage.getItem("POSTData");
-        if (post == null) {
+        if (post === null) {
             console.log("SessionPOST is null. Try LocalPOST");
             post = getLocalPOST();
             setSessionPOST(post);
@@ -312,7 +357,7 @@ function unsetPOST(pname) {
     return false;
 }
 
-function resetPOST(){
+function resetPOST() {
     if (LocalStorageStatus()) {
         sessionStorage.removeItem("POSTData");
         return true;
@@ -329,8 +374,51 @@ function nullPOST() {
     return false;
 }
 
-function savePOST(){
+function savePOST() {
     setLocalPOST(getSessionPOST());
 }
 
-    
+function getIdPOST() {
+    var frms = document.forms;
+    var form = null;
+    var findby = null;
+    var id = null;
+    var result = false;
+    var item = null;
+    for (var i = 0; i < frms.length; i++) {
+        if (frms[i].getAttribute('findBy') !== null && frms[i].getAttribute('findBy') !== '') {
+            form = frms[i];
+            findby = form.getAttribute('findBy');
+            for (var j = 0; j < form.elements.length; j++) {
+                if (form.elements[j].getAttribute('save') !== null) {
+                    item = form.elements[j];
+                }
+                if (form.elements[j].id === findby || form.elements[j].name === findby) {
+                    id = form.elements[j];
+                    if (getPOST(findby) !== null) {
+                        console.log("FindBy Form POST: " + findby);
+                        id.value = getPOST(findby);
+                        result = true;
+                    }
+                }
+                if (getPOST('action') === 'view') {
+                    form.elements[j].setAttribute("readonly", "readonly");
+                    if (form.elements[j].type === 'select-one' || form.elements[j].type === 'button' || form.elements[j].type === 'submit' || form.elements[j].type === 'reset' || form.elements[j].type === 'radio' || form.elements[j].type === 'range') {
+                        form.elements[j].setAttribute("disabled", "disabled");
+                    }
+                }
+            }
+        }
+    }
+    if (item !== null) {
+        if (getPOST('action') !== null) {
+            item.setAttribute('action', getPOST('action'));
+            console.log("Action POST: " + getPOST('action'));
+        }
+    }
+    return result;
+}
+
+jQuery(document).ready(function () {
+    getIdPOST();
+});

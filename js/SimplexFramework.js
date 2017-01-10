@@ -6,6 +6,7 @@
 jQuery(document).ready(function () {
     createAjaxLoading();
     AjaxLoading();
+    getIdGET();
 });
 
 function noContextMenu() {
@@ -24,12 +25,64 @@ function noBackButton() {
     };
 }
 
+function getCurrentTime() {
+    var hh = new Date().getHours();
+    var mm = new Date().getMinutes();
+    var ss = new Date().getSeconds();
+    var text = '';
+    if (hh < 10) {
+        hh = '0' + hh;
+    }
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    if (ss < 10) {
+        ss = '0' + ss;
+    }
+    text = '' + hh + ':' + mm + ':' + ss;
+    console.log(text);
+    return text;
+}
+
+function getCurrentDate() {
+    var Y = new Date().getFullYear();
+    var M = new Date().getMonth();
+    var D = new Date().getDay();
+    var text = '';
+    M = M + 1;
+    D = D + 1;
+    if (M < 10) {
+        M = '0' + M;
+    }
+    if (D < 10) {
+        D = '0' + D;
+    }
+    text = '' + Y + '-' + M + '-' + D;
+    console.log(text);
+    return text;
+}
+
 function clearForm(form) {
     if (form !== null && form.tagName === "FORM") {
         form.reset();
     }
 }
 
+(function ($) {
+    $.GET = function (key) {
+        key = key.replace(/[\[]/, '\\[');
+        key = key.replace(/[\]]/, '\\]');
+        var pattern = "[\\?&]" + key + "=([^&#]*)";
+        var regex = new RegExp(pattern);
+        var url = unescape(window.location.href);
+        var results = regex.exec(url);
+        if (results === null) {
+            return null;
+        } else {
+            return results[1];
+        }
+    };
+})(jQuery);
 
 function getErrorMessage() {
     var message = 'Connection Error!.';
@@ -45,24 +98,6 @@ function showNotification(text) {
     return notifications;
 }
 
-(function ($) {
-    $.get = function (key) {
-        key = key.replace(/[\[]/, '\\[');
-        key = key.replace(/[\]]/, '\\]');
-        var pattern = "[\\?&]" + key + "=([^&#]*)";
-        var regex = new RegExp(pattern);
-        var url = unescape(window.location.href);
-        var results = regex.exec(url);
-        if (results === null) {
-            return null;
-        } else {
-            return results[1];
-        }
-    };
-})(jQuery);
-
-
-
 function AjaxLoading() {
     $(document).on("ajaxStart", function () {
         showAjaxLoading();
@@ -71,28 +106,28 @@ function AjaxLoading() {
     });
 }
 
-function createAjaxLoading(){
-    var maindiv=null;
-    var subdiv=null;
-    var imgload=null;
-    var text=null;
-    
-    maindiv=document.createElement("div");
-    subdiv=document.createElement("div");
-    imgload=document.createElement("img");
-    text=document.createElement("p");
-    
-    maindiv.setAttribute("id","AjaxLoading");
-    maindiv.setAttribute("class","AjaxLoading");
-    maindiv.setAttribute("style","display:none;");
-    subdiv.setAttribute("id","SubLoading");
-    subdiv.setAttribute("class","SubLoading");
-    imgload.setAttribute("id","ImageLoading");
-    imgload.setAttribute("class","ImageLoading");
-    imgload.setAttribute("src","css/loadingAnimation.gif");
-    text.setAttribute("class","TextLoading");
-    text.innerHTML='...CARGANDO...';
-    
+function createAjaxLoading() {
+    var maindiv = null;
+    var subdiv = null;
+    var imgload = null;
+    var text = null;
+
+    maindiv = document.createElement("div");
+    subdiv = document.createElement("div");
+    imgload = document.createElement("img");
+    text = document.createElement("p");
+
+    maindiv.setAttribute("id", "AjaxLoading");
+    maindiv.setAttribute("class", "AjaxLoading");
+    maindiv.setAttribute("style", "display:none;");
+    subdiv.setAttribute("id", "SubLoading");
+    subdiv.setAttribute("class", "SubLoading");
+    imgload.setAttribute("id", "ImageLoading");
+    imgload.setAttribute("class", "ImageLoading");
+    imgload.setAttribute("src", "css/loadingAnimation.gif");
+    text.setAttribute("class", "TextLoading");
+    text.innerHTML = '...CARGANDO...';
+
     maindiv.appendChild(subdiv);
     subdiv.appendChild(imgload);
     subdiv.appendChild(text);
@@ -117,11 +152,6 @@ function hideAjaxLoading() {
         return true;
     }
     return false;
-}
-
-function getWebservicePath() {
-    var path = "http://localhost/";
-    return path;
 }
 
 function getTitle(Obj) {
@@ -160,6 +190,9 @@ function disableElement(element) {
 
 function getForm(item) {
     if (item !== null) {
+        if (item.tagName === "FORM"){
+            return item;
+        }
         if (item.parentNode.tagName === "FORM") {
             return item.parentNode;
         } else {
@@ -305,6 +338,9 @@ function getActionFromButton(button) {
         if (button.getAttribute("action") !== null && button.getAttribute("action") !== '') {
             form = getForm(button);
 
+            if (button.getAttribute("action") === 'find') {
+                form.setAttribute('do', '0');
+            }
             if (button.getAttribute("action") === 'insert') {
                 form.setAttribute('do', '1');
             }
@@ -315,11 +351,8 @@ function getActionFromButton(button) {
             if (button.getAttribute("action") === 'delete') {
                 form.setAttribute('do', '3');
             }
-            if (button.getAttribute("action") === 'find') {
-                form.setAttribute('do', '4');
-            }
             if (button.getAttribute("action") === 'findAll') {
-                form.setAttribute('do', '5');
+                form.setAttribute('do', '4');
             }
             console.log("action: " + button.getAttribute("action"));
 
@@ -436,7 +469,6 @@ function setDataForm(myform, json) {
                 break;
             }
         }
-
         if (json.length > 0) {
             values = json[0];
             for (var aux in values) {
@@ -467,6 +499,7 @@ function setDataForm(myform, json) {
 function getData(element) {
     var myform = null, obj = null, url = null, formData = null;
     myform = getForm(element);
+    myform.setAttribute("do", "0");
     url = getUrlForm(myform);
     createTempInputs(myform);
     formData = new FormData(myform);
@@ -487,8 +520,8 @@ function getData(element) {
                         console.log('Error: ' + result);
                     }
                     if (obj !== null) {
-                        console.log('Conversion Exitosa a JSON!');
                         setDataForm(myform, obj);
+                        console.log('Conversion Exitosa a JSON - Get Values!');
                     }
                 } else {
                     alert('Servicio Web Falló!.');
@@ -503,22 +536,18 @@ function getData(element) {
 
 }
 
-function setComboboxOptions(combo, model, json) {
+function setComboboxOptions(combo, json) {
     var option = null;
     var selected = null;
-    if (combo !== null && model !== null && json !== null) {
+    if (combo !== null && json !== null) {
         console.log(Object.keys(json));
-        if (Object.keys(json).length === 1 && Object.keys(json)[0] === model) {
+        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelCombo(combo)) {
             for (var child in json) {
                 json = json[child];
                 break;
             }
         }
-        console.log('Objeto JSON');
-        console.log(json);
-
         selected = combo.getAttribute("selected");
-
         for (var i = 0; i < json.length; i++) {
             option = document.createElement('option');
             option.setAttribute('id', json[i]['ivalue']);
@@ -570,14 +599,14 @@ function getComboboxData(element) {
                         object = JSON.parse(result);
                     } catch (e) {
                         object = null;
-                        alert('Error: ' + result);
+                        console.log('Error: ' + result);
                     }
                     if (object !== null) {
-                        console.log('Conversion Exitosa a JSON!');
                         setComboboxOptions(element, model, object);
+                        console.log('Conversion Exitosa a JSON - Get Combobox!');
                     }
                 } else {
-                    alert('Servicio Web Falló!.');
+                    console.log('Servicio Web Falló!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
@@ -633,4 +662,48 @@ function submitFormConfirm(button) {
         return false;
     }
     return false;
+}
+
+function getIdGET() {
+    var frms = document.forms;
+    var form = null;
+    var findby = null;
+    var id = null;
+    var result = false;
+    var item = null;
+    for (var i = 0; i < frms.length; i++) {
+        if (frms[i].getAttribute('findBy') !== null && frms[i].getAttribute('findBy') !== '') {
+            form = frms[i];
+            findby = form.getAttribute('findBy');
+            for (var j = 0; j < form.elements.length; j++) {
+                if (form.elements[j].getAttribute('save') !== null) {
+                    item = form.elements[j];
+                }
+                if (form.elements[j].id === findby || form.elements[j].name === findby) {
+                    id = form.elements[j];
+                    if ($.GET(findby) !== null) {
+                        console.log("FindBy Form GET: " + findby);
+                        id.value = $.GET(findby);
+                        result = true;
+                    }
+
+                }
+                if ($.GET('action') === 'view') {
+                    form.elements[j].setAttribute("readonly", "readonly");
+                    if (form.elements[j].type === 'select-one' || form.elements[j].type === 'button' || form.elements[j].type === 'submit' || form.elements[j].type === 'reset' || form.elements[j].type === 'radio' || form.elements[j].type === 'range') {
+                        form.elements[j].setAttribute("disabled", "disabled");
+                    }
+                }
+
+            }
+        }
+    }
+    if (item !== null) {
+        if ($.GET('action') !== null) {
+            item.setAttribute('action', $.GET('action'));
+            console.log("Action GET: " + $.GET('action'));
+        }
+
+    }
+    return result;
 }
