@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?><Db flnm="TiendaApp" nm="TiendaApp" ver="1.3.4">
+  <VerLbl/>
+  <VerNotes/>
+  <DefTblOpts/>
+  <DocFolder>C:\Users\JOSEMEZA\Documents</DocFolder>
+  <Sch Cm="" nm="schemaA">
+    <Tbl UsSo="1" nm="OrderDetailsApp">
+      <Cm>Detalles de la Orden</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_detail" nm="pkOrderDetailsApp"/>
+      <Cl au="1" df="" nm="id_detail" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_order" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Id Orden</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_product" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Id Producto</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="quantity_detail" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Cantidad del Producto</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="price_detail" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Precio del Producto por Unidad</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="note_detail" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Nota Observacion</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="date_detail" nu="1">
+        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Fecha Hora Detalle</Cm>
+      </Cl>
+      <Cl au="0" df="0" nm="delivery_detail" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Entregado o No Entregado</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="state_detail" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado del Detalle</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_Details_Orders" prLkCl="id_order" upAc="3">
+        <PrTb mn="0" nm="OrdersApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="OrderDetailsApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_order" prCl="id_order"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_Details_Products" prLkCl="id_product" upAc="3">
+        <PrTb mn="0" nm="ProductsApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="OrderDetailsApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_product" prCl="id_product"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="OrdersApp">
+      <Cm>Ordenes Pedidos</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_order" nm="pkOrdersApp"/>
+      <Cl au="1" df="" nm="id_order" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_store" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Id Tienda</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_user" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Id Usuario Cliente</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="date_order" nu="1">
+        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Fecha Orden</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="note_order" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="500" sc="null" sg="1" un="0"/>
+        <Cm>Notas Obervaciones</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="state_order" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado de la Orden</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_Orders_Store" prLkCl="id_store" upAc="3">
+        <PrTb mn="0" nm="StoreApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="OrdersApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_store" prCl="id_store"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_Orders_Users" prLkCl="id_user" upAc="3">
+        <PrTb mn="0" nm="UsersApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="OrdersApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_user" prCl="id_user"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="PaymentsApp">
+      <Cm>Pagos de Cuentas Ordes Pedidos</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_payment" nm="pkPaymentsApp"/>
+      <Cl au="1" df="" nm="id_payment" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_order" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Id Orden a Pagar</Cm>
+      </Cl>
+      <Cl au="0" df="0" nm="amount_payment" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Valor a Pagar</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="date_payment" nu="1">
+        <DT arr="0" ds="Date" en="" id="91" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Fecha del Pago</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="note_payment" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Nota Observacion</Cm>
+      </Cl>
+      <Cl au="0" df="Efectivo" nm="method_payment" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
+        <Cm>Medio de Pago</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="state_payment" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_Payments_Orders" prLkCl="id_order" upAc="3">
+        <PrTb mn="0" nm="OrdersApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="PaymentsApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_order" prCl="id_order"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="ProductsApp">
+      <Cm>Productos de la Tienda</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_product" nm="pkProductsApp"/>
+      <Cl au="1" df="" nm="id_product" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_store" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="sku_product" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
+        <Cm>SKU Referecia Identificacion Interna</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name_product" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Nombre del Producto</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="description_product" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="500" sc="null" sg="1" un="0"/>
+        <Cm>Descripcion Larga del Producto</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="price_product" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Precio Estandar del Producto</Cm>
+      </Cl>
+      <Cl au="0" df="Product.png" nm="photo_product" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="1000" sc="null" sg="1" un="0"/>
+        <Cm>Foto del Producto</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="state_product" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado del Producto</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_Products_Store" prLkCl="id_store" upAc="3">
+        <PrTb mn="0" nm="StoreApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ProductsApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_store" prCl="id_store"/>
+      </Fk>
+      <Idx clu="0" ftx="0" nm="Products_sku_Idx" spa="0" unq="1">
+        <ClNs>sku_product, id_store</ClNs>
+        <OptTx>USES BTREE</OptTx>
+      </Idx>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="StoreApp">
+      <TblOpts/>
+      <Pk ClNs="id_store" nm="pkStoreApp"/>
+      <Cl au="1" df="" nm="id_store" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="doc_store" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="25" sc="null" sg="1" un="0"/>
+        <Cm>Identicacion NIT Tienda</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="email_store" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Email</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name_store" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Nombre de Tienda</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="address_store" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Direccion de Tienda</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="phone_store" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
+        <Cm>Telefono de Tienda</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="admin_store" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Administrador de la Tienda</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="logo_store" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="1000" sc="null" sg="1" un="0"/>
+        <Cm>Logo de Tienda</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="state_store" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado de Tienda en el Sistema.</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="UsersApp">
+      <Cm>Usuarios del Sistema</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_user" nm="pkUsersApp"/>
+      <Cl au="1" df="" nm="id_user" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="doc_user" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="25" sc="null" sg="1" un="0"/>
+        <Cm>Documento de Identidad del Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name_user" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
+        <Cm>Nombre del Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="lastname_user" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
+        <Cm>Apellido del Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="email_user" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Email del Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="address_user" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Direccion Residencia Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="phone_user" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Telefono del Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="birthday_user" nu="1">
+        <DT arr="0" ds="Date" en="" id="91" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Fecha Nacimiento Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="password_user" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Contraseña de Acceso al Sistema</Cm>
+      </Cl>
+      <Cl au="0" df="CL" nm="role_user" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="2" sc="null" sg="1" un="0"/>
+        <Cm>Tipo de Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="Users.png" nm="photo_user" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="1000" sc="null" sg="1" un="0"/>
+        <Cm>Url Foto de Usuario</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="state_user" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado del Usuario en el Sistema</Cm>
+      </Cl>
+      <Idx clu="0" ftx="0" nm="Users_doc_UIdx" spa="0" unq="1">
+        <ClNs>doc_user</ClNs>
+        <OptTx>USES BTREE</OptTx>
+      </Idx>
+      <Idx clu="0" ftx="0" nm="Users_email_UIdx" spa="0" unq="1">
+        <ClNs>email_user</ClNs>
+        <OptTx>USES BTREE</OptTx>
+      </Idx>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <CustomTypes/>
+  </Sch>
+  <Dgm nm="diagramA">
+    <RnCf ClkAct="true" FtSz="11" lkStgy="RightAngleStrategy" zm="1.0">
+      <VbCfg>
+        <Fg ky="Auto Number" vl="0"/>
+        <Fg ky="Check" vl="0"/>
+        <Fg ky="Comment" vl="0"/>
+        <Fg ky="Data Type" vl="1"/>
+        <Fg ky="Default" vl="0"/>
+        <Fg ky="ENUM Values" vl="0"/>
+        <Fg ky="Length" vl="1"/>
+        <Fg ky="Name" vl="1"/>
+        <Fg ky="Nullable" vl="0"/>
+        <Fg ky="Schema Name" vl="0"/>
+        <Fg ky="Signed" vl="0"/>
+      </VbCfg>
+    </RnCf>
+    <DiaProps>
+      <Show AllCols="1" FkCols="1" FkNms="1" PkCols="1"/>
+      <ErNotation>DbwErNotation</ErNotation>
+      <DbTableRectangleFill>HeaderFooterFill</DbTableRectangleFill>
+      <svg path=""/>
+    </DiaProps>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="StoreApp" x="7" y="100"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="UsersApp" x="0" y="293"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ProductsApp" x="1275" y="300"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrdersApp" x="420" y="295"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrderDetailsApp" x="870" y="293"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PaymentsApp" x="396" y="502"/>
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.OrderDetailsApp.fk_Details_Orders" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="SINGLE_LINE" x1="669" x2="847" y1="351" y2="351"/>
+      </positionableLines>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="EAST" nm="schemaA.OrderDetailsApp.fk_Details_Products" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="SINGLE_LINE" x1="1252" x2="1137" y1="353" y2="353"/>
+      </positionableLines>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.OrdersApp.fk_Orders_Store" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="PARENT_LINE" x1="278" x2="529" y1="194" y2="194"/>
+        <positionableLine lineRole="CHILD_LINE" x1="533" x2="533" y1="272" y2="198"/>
+      </positionableLines>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.OrdersApp.fk_Orders_Users" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="SINGLE_LINE" x1="276" x2="397" y1="357" y2="357"/>
+      </positionableLines>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.PaymentsApp.fk_Payments_Orders" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="SINGLE_LINE" x1="533" x2="533" y1="423" y2="479"/>
+      </positionableLines>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.ProductsApp.fk_Products_Store" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="PARENT_LINE" x1="278" x2="1419" y1="149" y2="149"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1423" x2="1423" y1="277" y2="153"/>
+      </positionableLines>
+    </FkGl>
+    <Notes/>
+    <Zones/>
+  </Dgm>
+  <RnmMgr NxRnmId="13">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="StoreApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="7" nNm="id_store" oNm="Id_store"/>
+      <Rnm id="1" nNm="Id_store" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="UsersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="8" nNm="id_user" oNm="Id_user"/>
+      <Rnm id="2" nNm="Id_user" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="UsersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="3" nNm="password_user" oNm="password_usuario"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ProductsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="6" nNm="id_product" oNm="Id_product"/>
+      <Rnm id="4" nNm="Id_product" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ProductsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="5" nNm="sku_product" oNm="sku_producto"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="OrdersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="9" nNm="id_order" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="OrdersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="10" nNm="date_order" oNm="dateopen"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="OrderDetailsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="11" nNm="id_detail" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="PaymentsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="12" nNm="id_payment" oNm="Id"/>
+    </RnmCh>
+  </RnmMgr>
+  <DbDocOptionMgr>
+    <BasicOptionMgr>
+      <Name>db.doc.option.mgr</Name>
+      <BoolOpt lbl="Diagrams" nm="doc.diagrams" on="1" spl="0"/>
+      <BoolOpt lbl="Foreign Keys" nm="doc.fks" on="1" spl="0"/>
+      <BoolOpt lbl="Indexes" nm="doc.indexes" on="1" spl="0"/>
+      <BoolOpt lbl="Overwrite CSS File" nm="doc.overwrite.css" on="1" spl="0"/>
+      <BoolOpt lbl="Procedures" nm="doc.procs" on="1" spl="0"/>
+      <BoolOpt lbl="Schemas" nm="doc.schemas" on="1" spl="0"/>
+      <BoolOpt lbl="Sequences" nm="doc.sequences" on="1" spl="0"/>
+      <BoolOpt lbl="Tables" nm="doc.tables" on="1" spl="0"/>
+      <BoolOpt lbl="Triggers" nm="doc.triggers" on="1" spl="0"/>
+      <BoolOpt lbl="Views" nm="doc.views" on="1" spl="0"/>
+    </BasicOptionMgr>
+  </DbDocOptionMgr>
+  <OpenEditors>
+    <OpenEditor ClsNm="Diagram" fqn="null.diagramA" selected="1"/>
+  </OpenEditors>
+  <TreePaths>
+    <TreePath/>
+  </TreePaths>
+</Db>
