@@ -1,0 +1,135 @@
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Mesas - Lugares</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content="Registro de Lugares O Mesas"/>
+        <meta name="author" content="Jose Meza"/>
+        <link rel="icon" type="image/png" href="css/IconPage.png" />
+        <link rel="shortcut icon" type="image/png" href="css/IconPage.png" />
+
+        <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'/>
+        <link href='https://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'/>
+        <link href="css/styles.css" rel="stylesheet"/>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css"/>
+
+        <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/Validator.js"></script>
+        <script type="text/javascript" src="js/LoadImage.js"></script>
+        <script type="text/javascript" src="js/localStorageData.js"></script>
+        <script type="text/javascript" src="js/SimplexFramework.js"></script>
+
+
+
+    </head>
+    <body>
+
+        <div class="panel panel-primary" style="width: 80% !important;">
+            <div class="panel-heading">Registro Lugares o Mesas</div>
+            <form class="panel-body" method="POST" autocomplete="off" url="Base/DefaultController.php" model="PlacesApp" findBy="id_place" >
+                <input type="hidden" integer="true" name="id_place" id="id_place" value="0" required="required" maxlength="30" min="0"  >
+                <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0"  >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Número</label>
+                        <input type="number" name="number_place" id="number_place" value="" required="required"  class="form-control" title="Numero">
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Descripcion</label>
+                        <textarea name="description_place" id="description_place" required="required" maxlength="200" class="form-control" title="Descripcion Larga" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-6">
+                        <center>
+                            <button id="Guardar" name="Guardar" type="button" action="insert" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                        </center>
+                    </div>
+                    <div class="col-sm-6">
+                        <center>
+                            <button type="reset" id="reset" class="btn btn-danger">Cancelar</button> 
+                        </center>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+        <div class="panel panel-primary" style="width: 80% !important;">
+            <div class="panel-heading">Listado</div>
+            <div class="panel-body">
+                <div>
+                    <table id="dataTable0" loadDataTable="true" model="PlacesApp" url="Base/GetDataTable.php" style="width: 100%;" fillOnLoad="true" >
+                        <thead id="" tsbleHead="true">
+                            <tr rowHead="true">
+                                <th columnName="id_store" showColumn="true" style="width: 10%;" >
+                                    Tienda
+                                </th>
+                                <th columnName="number_place" showColumn="true" style="width: 10%;" >
+                                    Numero
+                                </th>
+                                <th columnName="description_place" showColumn="true" style="width: 60%;" >
+                                    Descripcion
+                                </th>
+                                <th columnName="state_place" showColumn="true" style="width: 20%;" >
+                                    Opciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr rowSample="true">
+                                <td>{{id_store}}</td>
+                                <td>{{number_place}}</td>
+                                <td>{{description_place}}</td>
+                                <td>
+                                    <form method="POST" url="Base/DefaultController.php" model="PlacesApp" findBy="id_place" >
+                                        <input type="hidden" name="id_place" id="id_place" value="{{id_place}}" />
+                                        <button type="button" name="delete" id="delete" action="delete" class="btn btn-danger" onclick="submitForm(this);"><i class="glyphicon glyphicon-remove"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+
+                var idstore = document.getElementById("id_store");
+                var idmesa = document.getElementById("id_place");
+
+                var valid = getIdStore();
+                if (valid !== null) {
+                    idstore.value = valid;
+                }
+
+                getData(idmesa);
+
+                var table0 = document.getElementById("dataTable0");
+                loadDataTable(table0);
+
+            });
+
+            function Send(item) {
+                var form = getForm(item);
+                if (validateForm(form)) {
+                    submitForm(item);
+                    loadDataTable(document.getElementById("dataTable0"));
+                }
+            }
+
+
+        </script>
+    </body>
+</html>

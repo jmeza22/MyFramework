@@ -165,6 +165,13 @@ table form{
 
 th{
     white-space: nowrap !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+td{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
 }
 
 hr{
@@ -264,7 +271,7 @@ hr{
     -moz-opacity:0.75;
     -khtml-opacity:0.75;
     filter: aplha(opacity=75);
-    
+
 }
 
 .SubLoading > p{
@@ -301,7 +308,7 @@ hr{
 }
 
 .ContentPage{
-    
+
     border: 0px !important;
     margin: 0px !important;
     float: left !important;
@@ -318,7 +325,7 @@ hr{
     max-width: 100% !important; 
     border: 0px !important;
     min-height: 100% !important;
-    
+
 }
 
 .MainMenu ul{
@@ -336,7 +343,7 @@ hr{
     padding-left: 10px !important;
     border-radius: 10px 10px 10px 10px !important;
     vertical-align: middle !important;
-    
+
 }
 
 .MainMenu ul li a{
@@ -391,11 +398,11 @@ hr{
     .panel-heading{
         font-size: 10pt !important;
     }
-    
+
     .photoPanel{
         margin-top: 10px !important;
     }
-    
+
     .LeftSideMenu{
         width: 100% !important;
         min-height: 0px !important;

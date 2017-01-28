@@ -4,6 +4,9 @@
         "date": {
             "context": "input"
         },
+        "loaddatatable": {
+            "context": "table"
+        },
         "idname": {
             "context": "input"
         },
@@ -12,6 +15,9 @@
         },
         "integer": {
             "context": "input"
+        },
+        "columnname": {
+            "context": "th"
         },
         "url": {
             "context": "select"

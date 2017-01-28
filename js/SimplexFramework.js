@@ -190,7 +190,7 @@ function disableElement(element) {
 
 function getForm(item) {
     if (item !== null) {
-        if (item.tagName === "FORM"){
+        if (item.tagName === "FORM") {
             return item;
         }
         if (item.parentNode.tagName === "FORM") {
@@ -438,6 +438,24 @@ function getSelectedCombo(combo) {
     return null;
 }
 
+function getModelTable(element) {
+    if (element !== null && element.tagName === "TABLE") {
+        if (element.getAttribute("model") !== null && element.getAttribute("model") !== '') {
+            return element.getAttribute("model");
+        }
+    }
+    return null;
+}
+
+function getUrlTable(element) {
+    if (element !== null && element.tagName === "TABLE") {
+        if (element.getAttribute("url") !== null && element.getAttribute("url") !== '') {
+            return element.getAttribute("url");
+        }
+    }
+    return null;
+}
+
 function submitAjax(formData, url, reload) {
     $.ajax({
         method: "POST",
@@ -460,9 +478,9 @@ function submitAjax(formData, url, reload) {
 }
 
 function setDataForm(myform, json) {
-    var attrib = null, values = null, i = null, col = null, item = null;
+    var columns = null, values = null, col = null, item = null;
     if (json !== null && myform !== null && myform.tagName === "FORM") {
-        attrib = Array();
+        columns = Array();
         if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelForm(myform)) {
             for (var child in json) {
                 json = json[child];
@@ -473,13 +491,13 @@ function setDataForm(myform, json) {
             values = json[0];
             for (var aux in values) {
                 if (isNaN(aux)) {
-                    attrib.push("" + aux);
+                    columns.push("" + aux);
                 }
             }
-            for (i = 0; i < attrib.length; i++) {
+            for (var j = 0; j < columns.length; j++) {
                 col = null;
                 item = null;
-                col = attrib[i];
+                col = columns[j];
                 item = getElementForm(myform, "" + col);
                 if (item !== null) {
                     item.value = "";
@@ -495,6 +513,117 @@ function setDataForm(myform, json) {
     }
 }
 
+function clearDataTable(element) {
+    var TRs = null;
+    if (element !== null && element.tagName === "TABLE") {
+        TRs = element.getElementsByTagName('TR');
+        for (var i = 0; i < TRs.length; i++) {
+            if (TRs[i].getAttribute('rowSample') !== null) {
+                hideElement(TRs[i]);
+                disableElement(TRs[i]);
+            }
+            if (TRs[i].getAttribute('rowHead') === null && TRs[i].getAttribute('rowSample') === null) {
+                deleteElement(TRs[i]);
+            }
+
+        }
+        return true;
+    }
+    return false;
+}
+
+function setDataTable(element, json) {
+    var TRs = null;
+    var rowSample = null;
+    var newrow = null;
+    var tbody = null;
+    var values=null;
+    var columns=null;
+    var col=null;
+    if (element !== null && element.tagName === "TABLE" && json !== null) {
+        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelTable(element)) {
+            for (var child in json) {
+                json = json[child];
+                break;
+            }
+        }
+        TRs = element.getElementsByTagName('TR');
+        for (var i = 0; i < TRs.length; i++) {
+            if (TRs[i].getAttribute('rowSample') !== null) {
+                rowSample = TRs[i].innerHTML;
+            }
+        }
+        console.log("Sample:" + rowSample);
+        tbody = element.getElementsByTagName('TBODY')[0];
+        
+        if (json.length > 0) {
+            values = json[0];
+            columns= Array();
+            for (var aux in values) {
+                if (isNaN(aux)) {
+                    columns.push("" + aux);
+                }
+            }
+            
+            for (var i = 0; i < json.length; i++) {
+                newrow = null;
+                newrow = document.createElement('TR');
+                newrow.setAttribute('rowID', i);
+                newrow.innerHTML = rowSample;
+                for (var j=0; j<columns.length; j++) {
+                    col=columns[j];
+                    console.log(col);
+                    newrow.innerHTML = newrow.innerHTML.replace('{{' + col + '}}', json[i][col]);
+                }
+                tbody.appendChild(newrow);
+            }
+        }
+    }
+}
+
+function loadDataTable(element) {
+    clearDataTable(element);
+    var url = null;
+    var model = null;
+    var vals = null;
+    var object = null;
+    url = getUrlTable(element);
+    model = getModelTable(element);
+    vals = {
+        "model": model,
+        "action": 0
+    };
+
+    if (element !== null && element.tagName === "TABLE" && (element.getAttribute('loadDataTable') !== null)) {
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: vals,
+            success: function (result) {
+                console.log(result);
+                if (result !== null && result !== '') {
+                    try {
+                        object = JSON.parse(result);
+                    } catch (e) {
+                        object = null;
+                        console.error('Error: ' + result);
+                    }
+                    if (object !== null) {
+                        setDataTable(element, object);
+                        console.log('Conversion Exitosa a JSON - Get DataTable!');
+                    }
+                } else {
+                    console.log('Servicio Web Falló!.');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+            }
+        }
+        );
+
+    }
+}
 
 function getData(element) {
     var myform = null, obj = null, url = null, formData = null;
@@ -517,7 +646,7 @@ function getData(element) {
                         obj = JSON.parse(result);
                     } catch (e) {
                         obj = null;
-                        console.log('Error: ' + result);
+                        console.error('Error: ' + result);
                     }
                     if (obj !== null) {
                         setDataForm(myform, obj);
@@ -579,6 +708,7 @@ function getComboboxData(element) {
     colvalue = getColValue(element);
     vals = {
         "model": model,
+        "action": 0,
         "colname": colname,
         "colvalue": colvalue
     };
@@ -599,18 +729,18 @@ function getComboboxData(element) {
                         object = JSON.parse(result);
                     } catch (e) {
                         object = null;
-                        console.log('Error: ' + result);
+                        console.error('Error: ' + result);
                     }
                     if (object !== null) {
-                        setComboboxOptions(element, model, object);
+                        setComboboxOptions(element, object);
                         console.log('Conversion Exitosa a JSON - Get Combobox!');
                     }
                 } else {
-                    console.log('Servicio Web Falló!.');
+                    console.error('Servicio Web Falló!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                alert("Hubo un Error de Conexion. Intente Nuevamente.");
+                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
             }
         }
         );

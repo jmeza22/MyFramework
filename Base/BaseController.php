@@ -184,7 +184,7 @@ class BaseController {
         return $result;
     }
 
-    public function getComboboxData($colname='colname', $colvalue='colvalue', $where = '') {
+    public function getComboboxData($colname = 'colname', $colvalue = 'colvalue', $where = '') {
         $result = null;
         if (isset($this->db) && isset($this->model) && isset($colname) && isset($colvalue)) {
             $result = $this->db->selectJSON($colname . ' as iname, ' . $colvalue . ' as ivalue ', $this->model, $where);
@@ -193,11 +193,20 @@ class BaseController {
         return null;
     }
 
-    public function getValue($column='column', $idname = 'id', $idvalue = '0') {
+    public function getValue($column = 'column', $idname = 'id', $idvalue = '0') {
         $result = null;
         $where = null;
         if (isset($this->db) && isset($this->model) && isset($idname) && isset($idvalue)) {
             $where = '' . $idname . '=' . $this->parseWhereParam($idvalue);
+            $result = $this->db->selectJSON($column, $this->model, $where);
+            return $result;
+        }
+        return null;
+    }
+
+    public function getDataTable($column = '*', $where = null) {
+        $result = null;
+        if (isset($this->db) && isset($this->model) && isset($column)) {
             $result = $this->db->selectJSON($column, $this->model, $where);
             return $result;
         }

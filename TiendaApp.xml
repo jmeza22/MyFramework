@@ -138,6 +138,38 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="PlacesApp">
+      <Cm>Mesa o Lugar. Ubicacion Fisica Interna</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_place" nm="pkPlacesApp"/>
+      <Cl au="0" df="" nm="id_place" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_store" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Id Tienda</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="number_place" nu="1">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Numero</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="description_place" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Descripcion</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="state_place" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_PlaceApp_StoreApp" prLkCl="id_store" upAc="3">
+        <PrTb mn="0" nm="StoreApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="PlacesApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_store" prCl="id_store"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="ProductsApp">
       <Cm>Productos de la Tienda</Cm>
       <TblOpts/>
@@ -320,6 +352,7 @@
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrdersApp" x="420" y="295"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrderDetailsApp" x="870" y="293"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PaymentsApp" x="396" y="502"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PlacesApp" x="366" y="8"/>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.OrderDetailsApp.fk_Details_Orders" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
         <positionableLine lineRole="SINGLE_LINE" x1="669" x2="847" y1="351" y2="351"/>
@@ -346,6 +379,9 @@
         <positionableLine lineRole="SINGLE_LINE" x1="533" x2="533" y1="423" y2="479"/>
       </positionableLines>
     </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.PlacesApp.fk_PlaceApp_StoreApp" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.ProductsApp.fk_Products_Store" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
         <positionableLine lineRole="PARENT_LINE" x1="278" x2="1419" y1="149" y2="149"/>
@@ -355,7 +391,7 @@
     <Notes/>
     <Zones/>
   </Dgm>
-  <RnmMgr NxRnmId="13">
+  <RnmMgr NxRnmId="15">
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="StoreApp" SupCls="Schema" SupNme="schemaA">
       <Rnm id="7" nNm="id_store" oNm="Id_store"/>
       <Rnm id="1" nNm="Id_store" oNm="Id"/>
@@ -385,6 +421,12 @@
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="PaymentsApp" SupCls="Schema" SupNme="schemaA">
       <Rnm id="12" nNm="id_payment" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="PlacesApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="13" nNm="id_place" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+      <Rnm id="14" nNm="PlacesApp" oNm="PlaceApp"/>
     </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
