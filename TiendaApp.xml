@@ -73,6 +73,10 @@
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Id Usuario Cliente</Cm>
       </Cl>
+      <Cl au="0" df="" nm="id_place" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria</Cm>
+      </Cl>
       <Cl au="0" df="" nm="date_order" nu="1">
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Fecha Orden</Cm>
@@ -94,6 +98,11 @@
         <PrTb mn="0" nm="UsersApp" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="OrdersApp" oe="0" sch="schemaA" zr="1"/>
         <ClPr cdCl="id_user" prCl="id_user"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_OrdersApp_PlacesApp" prLkCl="id_place" upAc="3">
+        <PrTb mn="0" nm="PlacesApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="OrdersApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_place" prCl="id_place"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -142,19 +151,19 @@
       <Cm>Mesa o Lugar. Ubicacion Fisica Interna</Cm>
       <TblOpts/>
       <Pk ClNs="id_place" nm="pkPlacesApp"/>
-      <Cl au="0" df="" nm="id_place" nu="0">
+      <Cl au="1" df="" nm="id_place" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Llave Primaria</Cm>
       </Cl>
       <Cl au="0" df="" nm="id_store" nu="1">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Id Tienda</Cm>
+        <Cm>Llave Primaria</Cm>
       </Cl>
       <Cl au="0" df="" nm="number_place" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Numero</Cm>
       </Cl>
-      <Cl au="0" df="" nm="description_place" nu="1">
+      <Cl au="0" df="" nm="description_place" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Descripcion</Cm>
       </Cl>
@@ -162,7 +171,7 @@
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_PlaceApp_StoreApp" prLkCl="id_store" upAc="3">
+      <Fk deAc="3" nm="fk_PlacesApp_StoreApp" prLkCl="id_store" upAc="3">
         <PrTb mn="0" nm="StoreApp" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="PlacesApp" oe="0" sch="schemaA" zr="1"/>
         <ClPr cdCl="id_store" prCl="id_store"/>
@@ -352,7 +361,7 @@
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrdersApp" x="420" y="295"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrderDetailsApp" x="870" y="293"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PaymentsApp" x="396" y="502"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PlacesApp" x="366" y="8"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PlacesApp" x="624" y="179"/>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.OrderDetailsApp.fk_Details_Orders" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
         <positionableLine lineRole="SINGLE_LINE" x1="669" x2="847" y1="351" y2="351"/>
@@ -365,8 +374,8 @@
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.OrdersApp.fk_Orders_Store" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="278" x2="529" y1="194" y2="194"/>
-        <positionableLine lineRole="CHILD_LINE" x1="533" x2="533" y1="272" y2="198"/>
+        <positionableLine lineRole="PARENT_LINE" x1="278" x2="529" y1="225" y2="225"/>
+        <positionableLine lineRole="CHILD_LINE" x1="533" x2="533" y1="272" y2="229"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.OrdersApp.fk_Orders_Users" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
@@ -374,13 +383,20 @@
         <positionableLine lineRole="SINGLE_LINE" x1="276" x2="397" y1="357" y2="357"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.PaymentsApp.fk_Payments_Orders" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.OrdersApp.fk_OrdersApp_PlacesApp" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="533" x2="533" y1="423" y2="479"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="635" x2="635" y1="294" y2="272"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.PlacesApp.fk_PlaceApp_StoreApp" parentEdge="" positioner="">
-      <positionableLines/>
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.PaymentsApp.fk_Payments_Orders" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="SINGLE_LINE" x1="533" x2="533" y1="436" y2="479"/>
+      </positionableLines>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.PlacesApp.fk_PlacesApp_StoreApp" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="SINGLE_LINE" x1="278" x2="601" y1="186" y2="186"/>
+      </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.ProductsApp.fk_Products_Store" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>

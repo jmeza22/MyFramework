@@ -345,7 +345,6 @@ function getActionFromButton(button) {
                 form.setAttribute('do', '1');
             }
             if (button.getAttribute("action") === 'update') {
-
                 form.setAttribute('do', '2');
             }
             if (button.getAttribute("action") === 'delete') {
@@ -487,13 +486,19 @@ function setDataForm(myform, json) {
                 break;
             }
         }
-        if (json.length > 0) {
-            values = json[0];
+        if (json !== null) {
+            values = json;
+            if (json.length === 1 || json.length > 1) {
+                if (json[0].length > 1) {
+                    values = json[0];
+                }
+            }
             for (var aux in values) {
                 if (isNaN(aux)) {
                     columns.push("" + aux);
                 }
             }
+
             for (var j = 0; j < columns.length; j++) {
                 col = null;
                 item = null;
@@ -502,131 +507,27 @@ function setDataForm(myform, json) {
                 if (item !== null) {
                     item.value = "";
                     item.value = values[col];
+                    if (values[col] === null) {
+                        item.value = '';
+                    }
+                    if (item.value === '[object Object]') {
+                        item.value = '';
+                    }
                     if (item.tagName === "SELECT") {
                         item.setAttribute('selected', values[col]);
                         item.selected = values[col];
                     }
                 }
             }
+            return true;
         }
 
-    }
-}
-
-function clearDataTable(element) {
-    var TRs = null;
-    if (element !== null && element.tagName === "TABLE") {
-        TRs = element.getElementsByTagName('TR');
-        for (var i = 0; i < TRs.length; i++) {
-            if (TRs[i].getAttribute('rowSample') !== null) {
-                hideElement(TRs[i]);
-                disableElement(TRs[i]);
-            }
-            if (TRs[i].getAttribute('rowHead') === null && TRs[i].getAttribute('rowSample') === null) {
-                deleteElement(TRs[i]);
-            }
-
-        }
-        return true;
     }
     return false;
 }
 
-function setDataTable(element, json) {
-    var TRs = null;
-    var rowSample = null;
-    var newrow = null;
-    var tbody = null;
-    var values=null;
-    var columns=null;
-    var col=null;
-    if (element !== null && element.tagName === "TABLE" && json !== null) {
-        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelTable(element)) {
-            for (var child in json) {
-                json = json[child];
-                break;
-            }
-        }
-        TRs = element.getElementsByTagName('TR');
-        for (var i = 0; i < TRs.length; i++) {
-            if (TRs[i].getAttribute('rowSample') !== null) {
-                rowSample = TRs[i].innerHTML;
-            }
-        }
-        console.log("Sample:" + rowSample);
-        tbody = element.getElementsByTagName('TBODY')[0];
-        
-        if (json.length > 0) {
-            values = json[0];
-            columns= Array();
-            for (var aux in values) {
-                if (isNaN(aux)) {
-                    columns.push("" + aux);
-                }
-            }
-            
-            for (var i = 0; i < json.length; i++) {
-                newrow = null;
-                newrow = document.createElement('TR');
-                newrow.setAttribute('rowID', i);
-                newrow.innerHTML = rowSample;
-                for (var j=0; j<columns.length; j++) {
-                    col=columns[j];
-                    console.log(col);
-                    newrow.innerHTML = newrow.innerHTML.replace('{{' + col + '}}', json[i][col]);
-                }
-                tbody.appendChild(newrow);
-            }
-        }
-    }
-}
-
-function loadDataTable(element) {
-    clearDataTable(element);
-    var url = null;
-    var model = null;
-    var vals = null;
-    var object = null;
-    url = getUrlTable(element);
-    model = getModelTable(element);
-    vals = {
-        "model": model,
-        "action": 0
-    };
-
-    if (element !== null && element.tagName === "TABLE" && (element.getAttribute('loadDataTable') !== null)) {
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: vals,
-            success: function (result) {
-                console.log(result);
-                if (result !== null && result !== '') {
-                    try {
-                        object = JSON.parse(result);
-                    } catch (e) {
-                        object = null;
-                        console.error('Error: ' + result);
-                    }
-                    if (object !== null) {
-                        setDataTable(element, object);
-                        console.log('Conversion Exitosa a JSON - Get DataTable!');
-                    }
-                } else {
-                    console.log('Servicio Web Falló!.');
-                }
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
-            }
-        }
-        );
-
-    }
-}
-
 function getData(element) {
-    var myform = null, obj = null, url = null, formData = null;
+    var myform = null, object = null, url = null, formData = null;
     myform = getForm(element);
     myform.setAttribute("do", "0");
     url = getUrlForm(myform);
@@ -640,24 +541,19 @@ function getData(element) {
             data: formData,
             processData: false,
             contentType: false,
+            dataType: 'json',
             success: function (result) {
                 if (result !== null && result !== '') {
-                    try {
-                        obj = JSON.parse(result);
-                    } catch (e) {
-                        obj = null;
-                        console.error('Error: ' + result);
-                    }
-                    if (obj !== null) {
-                        setDataForm(myform, obj);
-                        console.log('Conversion Exitosa a JSON - Get Values!');
-                    }
+                    object = result;
+                    console.log(object);
+                    setDataForm(myform, object);
+                    console.log('Conversion Exitosa a JSON - Get Values!');
                 } else {
                     alert('Servicio Web Falló!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                alert("Hubo un Error de Conexion. Intente Nuevamente.");
+                alert("Sin Respuesta.");
             }
         }
         );
@@ -694,7 +590,7 @@ function setComboboxOptions(combo, json) {
     return false;
 }
 
-function getComboboxData(element) {
+function loadComboboxData(element) {
     var url = null;
     var model = null;
     var colname = null;
@@ -722,19 +618,13 @@ function getComboboxData(element) {
             method: "POST",
             url: url,
             data: vals,
+            dataType: 'json',
             success: function (result) {
                 console.log(result);
                 if (result !== null && result !== '') {
-                    try {
-                        object = JSON.parse(result);
-                    } catch (e) {
-                        object = null;
-                        console.error('Error: ' + result);
-                    }
-                    if (object !== null) {
-                        setComboboxOptions(element, object);
-                        console.log('Conversion Exitosa a JSON - Get Combobox!');
-                    }
+                    object = result;
+                    setComboboxOptions(element, object);
+                    console.log('Conversion Exitosa a JSON - Get Combobox!');
                 } else {
                     console.error('Servicio Web Falló!.');
                 }
@@ -746,6 +636,115 @@ function getComboboxData(element) {
         );
     }
 }
+
+function clearTableData(element) {
+    var TRs = null;
+    if (element !== null && element.tagName === "TABLE") {
+        TRs = element.getElementsByTagName('TR');
+        for (var i = 0; i < TRs.length; i++) {
+            if (TRs[i].getAttribute('rowSample') !== null) {
+                hideElement(TRs[i]);
+                disableElement(TRs[i]);
+            }
+            if (TRs[i].getAttribute('rowHead') === null && TRs[i].getAttribute('rowSample') === null) {
+                deleteElement(TRs[i]);
+            }
+
+        }
+        return true;
+    }
+    return false;
+}
+
+function setTableData(element, json) {
+    var TRs = null;
+    var rowSample = null;
+    var newrow = null;
+    var tbody = null;
+    var values = null;
+    var columns = null;
+    var col = null;
+    if (element !== null && element.tagName === "TABLE" && json !== null) {
+        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelTable(element)) {
+            for (var child in json) {
+                json = json[child];
+                break;
+            }
+        }
+        TRs = element.getElementsByTagName('TR');
+        for (var i = 0; i < TRs.length; i++) {
+            if (TRs[i].getAttribute('rowSample') !== null) {
+                rowSample = TRs[i].innerHTML;
+                break;
+            }
+        }
+        if (element.getElementsByTagName('TBODY') !== null) {
+            tbody = element.getElementsByTagName('TBODY')[0];
+        }
+
+        if (json.length > 0) {
+            values = json[0];
+            columns = Array();
+            for (var aux in values) {
+                if (isNaN(aux)) {
+                    columns.push("" + aux);
+                }
+            }
+
+            for (var i = 0; i < json.length; i++) {
+                newrow = null;
+                newrow = document.createElement('TR');
+                newrow.setAttribute('rowID', i);
+                newrow.innerHTML = rowSample;
+                for (var j = 0; j < columns.length; j++) {
+                    col = columns[j];
+                    console.log(col);
+                    newrow.innerHTML = newrow.innerHTML.replace('{{' + col + '}}', json[i][col]);
+                }
+                tbody.appendChild(newrow);
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+function loadTableData(element) {
+    clearTableData(element);
+    var url = null;
+    var model = null;
+    var vals = null;
+    var object = null;
+    url = getUrlTable(element);
+    model = getModelTable(element);
+    vals = {
+        "model": model,
+        "action": 0
+    };
+
+    if (element !== null && element.tagName === "TABLE" && (element.getAttribute('loadDataTable') !== null)) {
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: vals,
+            dataType: 'json',
+            success: function (result, status) {
+                if (result !== null && result !== '') {
+                    object = result;
+                    setTableData(element, object);
+                    console.log('Conversion Exitosa a JSON - Get DataTable!');
+                } else {
+                    console.log('Servicio Web Falló!.');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+            }
+        }
+        );
+    }
+}
+
 
 function submitForm(element) {
     var next = false;
@@ -802,7 +801,7 @@ function getIdGET() {
     var result = false;
     var item = null;
     for (var i = 0; i < frms.length; i++) {
-        if (frms[i].getAttribute('findBy') !== null && frms[i].getAttribute('findBy') !== '') {
+        if (frms[i].getAttribute('findBy') !== null && frms[i].getAttribute('findBy') !== '' && frms[i].getAttribute('mainform') !== null && frms[i].getAttribute('mainform') === 'true') {
             form = frms[i];
             findby = form.getAttribute('findBy');
             for (var j = 0; j < form.elements.length; j++) {
@@ -816,7 +815,6 @@ function getIdGET() {
                         id.value = $.GET(findby);
                         result = true;
                     }
-
                 }
                 if ($.GET('action') === 'view') {
                     form.elements[j].setAttribute("readonly", "readonly");
@@ -824,7 +822,6 @@ function getIdGET() {
                         form.elements[j].setAttribute("disabled", "disabled");
                     }
                 }
-
             }
         }
     }
@@ -833,7 +830,9 @@ function getIdGET() {
             item.setAttribute('action', $.GET('action'));
             console.log("Action GET: " + $.GET('action'));
         }
-
+        if ($.GET('update') !== null && $.GET('update') !== '') {
+            item.setAttribute('action', $.GET('update'));
+        }
     }
     return result;
 }

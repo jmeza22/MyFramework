@@ -32,7 +32,7 @@
 
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro Lugares o Mesas</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/DefaultController.php" model="PlacesApp" findBy="id_place" >
+            <form class="panel-body" method="POST" autocomplete="off" url="Base/DefaultController.php" model="PlacesApp" findBy="id_place" mainform="true" >
                 <input type="hidden" integer="true" name="id_place" id="id_place" value="0" required="required" maxlength="30" min="0"  >
                 <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0"  >
                 <div class="row">
@@ -48,7 +48,7 @@
                 <div class="row" style="margin-top: 20px;">
                     <div class="col-sm-6">
                         <center>
-                            <button id="Guardar" name="Guardar" type="button" action="insert" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                            <button id="Guardar" name="Guardar" type="button" action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
                         </center>
                     </div>
                     <div class="col-sm-6">
@@ -89,9 +89,10 @@
                                 <td>{{number_place}}</td>
                                 <td>{{description_place}}</td>
                                 <td>
-                                    <form method="POST" url="Base/DefaultController.php" model="PlacesApp" findBy="id_place" >
+                                    <form method="GET" url="Base/DefaultController.php" model="PlacesApp" findBy="id_place" >
                                         <input type="hidden" name="id_place" id="id_place" value="{{id_place}}" />
                                         <button type="button" name="delete" id="delete" action="delete" class="btn btn-danger" onclick="submitForm(this);"><i class="glyphicon glyphicon-remove"></i></button>
+                                        <button type="submit" name="update" id="update" action="update" class="btn btn-warning" value="update"><i class="glyphicon glyphicon-edit"></i></button>
                                     </form>
                                 </td>
                             </tr>
@@ -117,7 +118,7 @@
                 getData(idmesa);
 
                 var table0 = document.getElementById("dataTable0");
-                loadDataTable(table0);
+                loadTableData(table0);
 
             });
 
@@ -125,7 +126,7 @@
                 var form = getForm(item);
                 if (validateForm(form)) {
                     submitForm(item);
-                    loadDataTable(document.getElementById("dataTable0"));
+                    loadTableData(document.getElementById("dataTable0"));
                 }
             }
 

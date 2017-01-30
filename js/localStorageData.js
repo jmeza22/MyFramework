@@ -190,6 +190,52 @@ function getPasswordSession() {
     return null;
 }
 
+function setCode(code) {
+    if (LocalStorageStatus()) {
+        if (code !== null) {
+            localStorage.removeItem("code");
+            localStorage.setItem("code", code);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getCode() {
+    if (LocalStorageStatus()) {
+        var code = null;
+        code = localStorage.getItem("code");
+        if (code === null) {
+            console.log("Code is null");
+        }
+        return code;
+    }
+    return null;
+}
+
+function setIdEnterprise(enterprise) {
+    if (LocalStorageStatus()) {
+        if (enterprise !== null) {
+            localStorage.removeItem("IdEnterprise");
+            localStorage.setItem("IdEnterprise", enterprise);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getIdEnterprise() {
+    if (LocalStorageStatus()) {
+        var enterprise = null;
+        enterprise = localStorage.getItem("IdEnterprise");
+        if (enterprise === null) {
+            console.log("Enterprise is null");
+        }
+        return enterprise;
+    }
+    return null;
+}
+
 function setIdOrder(order) {
     if (LocalStorageStatus()) {
         if (order !== null) {
@@ -209,29 +255,6 @@ function getIdOrder() {
             console.log("Order is null");
         }
         return order;
-    }
-    return null;
-}
-
-function setIdStore(store) {
-    if (LocalStorageStatus()) {
-        if (store !== null) {
-            localStorage.removeItem("IdStore");
-            localStorage.setItem("IdStore", store);
-            return true;
-        }
-    }
-    return false;
-}
-
-function getIdStore() {
-    if (LocalStorageStatus()) {
-        var store = null;
-        store = localStorage.getItem("IdStore");
-        if (store === null) {
-            console.log("Store is null");
-        }
-        return store;
     }
     return null;
 }
@@ -386,7 +409,7 @@ function getIdPOST() {
     var result = false;
     var item = null;
     for (var i = 0; i < frms.length; i++) {
-        if (frms[i].getAttribute('findBy') !== null && frms[i].getAttribute('findBy') !== '') {
+        if (frms[i].getAttribute('findBy') !== null && frms[i].getAttribute('findBy') !== '' && frms[i].getAttribute('mainform') !== null && frms[i].getAttribute('mainform') === 'true') {
             form = frms[i];
             findby = form.getAttribute('findBy');
             for (var j = 0; j < form.elements.length; j++) {
@@ -414,6 +437,9 @@ function getIdPOST() {
         if (getPOST('action') !== null) {
             item.setAttribute('action', getPOST('action'));
             console.log("Action POST: " + getPOST('action'));
+        }
+        if (getPOST('update') !== null && getPOST('update') !== '') {
+            item.setAttribute('action', getPOST('update'));
         }
     }
     return result;
