@@ -489,9 +489,7 @@ function setDataForm(myform, json) {
         if (json !== null) {
             values = json;
             if (json.length === 1 || json.length > 1) {
-                if (json[0].length > 1) {
-                    values = json[0];
-                }
+                values = json[0];
             }
             for (var aux in values) {
                 if (isNaN(aux)) {
