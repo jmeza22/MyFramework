@@ -21,6 +21,9 @@ class BaseController {
     private $action = "select";
     private $findBy = "id";
     private $postData = null;
+    private $state = 0;
+    private $message = '';
+    private $data = null;
 
     public function __construct() {
         $this->db = new SQLDatabase('localhost', 'myapp', 'root', '', 'mysql');
@@ -154,31 +157,63 @@ class BaseController {
         return false;
     }
 
-    public function execute($print = false, $messageSuccess = 'OK!', $messageError = 'Failled!') {
+    public function parseResults($result, $message = '', $state = 0) {
+        $array = array();
+        $array = ["data" => NULL, "message" => $message, "state" => $state, "error" => $this->db->getErrorMessage()];
+        if ($result != NULL) {
+            $array = ["data" => $result, "message" => $message, "state" => $state, "error" => null];
+        }
+        $array = json_encode($array);
+        return $array;
+    }
+
+    public function execute($print = false) {
         $result = false;
         if (isset($this->action)) {
             if (strcmp($this->action, 'find') == 0 || strcmp($this->action, '0') == 0) {
                 $result = $this->select();
+                if ($result != null && !is_bool($result)) {
+                    $result = $this->parseResults($result, "", 1);
+                } else {
+                    $result = $this->parseResults($result, "", 0);
+                }
             }
             if (strcmp($this->action, 'insert') == 0 || strcmp($this->action, '1') == 0) {
                 $result = $this->insert();
+                if ($result == true) {
+                    $result = $this->parseResults($result, "Registro Exitoso!", 1);
+                } else {
+                    $result = $this->parseResults($result, "Registro Fallido!", 0);
+                }
             }
             if (strcmp($this->action, 'update') == 0 || strcmp($this->action, '2') == 0) {
                 $result = $this->update();
+                if ($result == true) {
+                    $result = $this->parseResults($result, "Actualizacion Exitosa!", 1);
+                } else {
+                    $result = $this->parseResults($result, "Actualizacion Fallida!", 0);
+                }
             }
             if (strcmp($this->action, 'delete') == 0 || strcmp($this->action, '3') == 0) {
                 $result = $this->delete();
+                if ($result == true) {
+                    $result = $this->parseResults($result, "Eliminacion Exitosa!", 1);
+                } else {
+                    $result = $this->parseResults($result, "Eliminacion Fallida!", 0);
+                }
             }
             if (strcmp($this->action, 'findAll') == 0 || strcmp($this->action, '4') == 0) {
                 $result = $this->select();
+                if (is_array($result)) {
+                    $result = $this->parseResults($result, "Consulta Exitosa!", 1);
+                } else {
+                    $result = $this->parseResults($result, "Consulta Fallida!", 0);
+                }
             }
         }
         if ($print == true) {
-            if ($result === true) {
-                echo $messageSuccess;
-            }
-            if ($result === false) {
-                echo $messageError;
+            if ($result != NULL) {
+                echo $result;
             }
         }
         return $result;

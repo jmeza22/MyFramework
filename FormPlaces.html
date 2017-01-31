@@ -110,7 +110,7 @@
                 var idstore = document.getElementById("id_store");
                 var idmesa = document.getElementById("id_place");
 
-                var valid = getIdStore();
+                var valid = getIdEnterprise();
                 if (valid !== null) {
                     idstore.value = valid;
                 }
@@ -128,6 +128,11 @@
                     submitForm(item);
                     loadTableData(document.getElementById("dataTable0"));
                 }
+            }
+            
+            async function Delete(item){
+                await submitForm(item);
+                loadTableData(document.getElementById("dataTable0"));
             }
 
 

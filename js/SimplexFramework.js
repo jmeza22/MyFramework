@@ -463,10 +463,18 @@ function submitAjax(formData, url, reload) {
         cache: false,
         contentType: false,
         processData: false,
-        success: function (result) {
-            alert('Transaccion: ' + result);
-            if (reload === true) {
-                window.location.reload();
+        dataType: 'json',
+        success: function (result, status) {
+            if (result !== null) {
+                if (result.message !== null && result.message !== '') {
+                    alert(result.message);
+                }
+                if (result.error !== null && result.error !== '') {
+                    console.error(result.error);
+                }
+                if (reload === true) {
+                    window.location.reload();
+                }
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -542,10 +550,20 @@ function getData(element) {
             dataType: 'json',
             success: function (result) {
                 if (result !== null && result !== '') {
-                    object = result;
-                    console.log(object);
-                    setDataForm(myform, object);
-                    console.log('Conversion Exitosa a JSON - Get Values!');
+                    if (result.message !== null && result.message !== '') {
+                        alert(result.message);
+                    }
+                    if (result.data !== null && result.data !== '') {
+                        object = result.data;
+                        try {
+                            object = JSON.parse(object);
+                            console.log('Conversion Exitosa a JSON - Get Values!');
+                            setDataForm(myform, object);
+                        } catch (e) {
+                            console.error("Error de Conversion JSON - Get Values");
+                        }
+                    }
+
                 } else {
                     alert('Servicio Web Falló!.');
                 }
@@ -696,7 +714,6 @@ function setTableData(element, json) {
                 newrow.innerHTML = rowSample;
                 for (var j = 0; j < columns.length; j++) {
                     col = columns[j];
-                    console.log(col);
                     newrow.innerHTML = newrow.innerHTML.replace('{{' + col + '}}', json[i][col]);
                 }
                 tbody.appendChild(newrow);

@@ -30,6 +30,7 @@ class SQLDatabase {
     private $persistent = false;
     public $link = null;
     private $errorcode = 0;
+    private $errormessage = '';
     private $stmt;
 
     public function __construct($host, $database, $user, $password, $port = NULL, $dbms = NULL, $persistent = FALSE) {
@@ -46,9 +47,17 @@ class SQLDatabase {
             $this->dbms = $dbms;
         }
     }
-    
+
     private function printError($error, $sql) {
-        print 'Error: ' . $error . ' IN [... ' . $sql . ' ...]';
+        return 'Error: ' . $error . ' IN [... ' . $sql . ' ...]';
+    }
+
+    public function getErrorCode() {
+        return $this->errorcode;
+    }
+
+    public function getErrorMessage() {
+        return $this->errormessage;
     }
 
     public function setHost($host) {
@@ -89,6 +98,7 @@ class SQLDatabase {
             //$this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             $this->errorcode = $e->getCode();
+            $this->errormessage = $e->getMessage();
             $this->printError($e->getMessage(), "Open Conection.");
         }
     }
@@ -100,16 +110,34 @@ class SQLDatabase {
     public function disconnect() {
         return $this->link = null;
     }
+    
+    private function executeSTMT() {
+        $result = false;
+        $this->errorcode = 0;
+        $this->errormessage = '';
+        if ($this->stmt != null) {
+            try {
+                $this->stmt->execute();
+                $result = true;
+            } catch (Exception $e) {
+                $this->errorcode = $e->getCode();
+                $this->errormessage = $e->getMessage();
+            }
+        }
+        return $result;
+    }
 
     public function exec($do) {
         $result = false;
         $this->errorcode = 0;
+        $this->errormessage = '';
         if ($this->link != null) {
             try {
                 $this->link->exec($do);
                 $result = true;
-            } catch (PDOException $e) {
+            } catch (Exception $e) {
                 $this->errorcode = $e->getCode();
+                $this->errormessage = $e->getMessage();
                 $this->printError($e->getMessage(), $do);
             }
         }
@@ -119,12 +147,14 @@ class SQLDatabase {
     public function query($do) {
         $result = false;
         $this->errorcode = 0;
+        $this->errormessage = '';
         if ($this->link != null) {
             try {
                 $this->link->query($do);
                 $result = true;
-            } catch (PDOException $e) {
+            } catch (Exception $e) {
                 $this->errorcode = $e->getCode();
+                $this->errormessage = $e->getMessage();
                 $this->printError($e->getMessage(), $do);
                 $result = null;
             }
@@ -135,12 +165,14 @@ class SQLDatabase {
     public function getResultSet($sql) {
         $result = null;
         $this->errorcode = 0;
+        $this->errormessage = '';
         if ($this->link != null) {
             try {
                 $stmt = $this->link->query($sql);
                 $result = $stmt;
-            } catch (PDOException $e) {
+            } catch (Exception $e) {
                 $this->errorcode = $e->getCode();
+                $this->errormessage = $e->getMessage();
                 $this->printError($e->getMessage(), $do);
                 $result = null;
             }
@@ -369,7 +401,7 @@ class SQLDatabase {
             $sql = $this->buildInsertStmtString($table, $array);
             $this->stmt = $this->link->prepare($sql);
             $this->stmt = $this->bindParams($this->stmt, $array);
-            $this->stmt->execute();
+            $this->executeSTMT();
             if ($this->stmt->rowCount() > 0) {
                 $result = true;
             }
@@ -385,7 +417,7 @@ class SQLDatabase {
             $this->stmt = $this->link->prepare($sql);
             $this->stmt = $this->bindParams($this->stmt, $array);
             $this->stmt = $this->bindParams($this->stmt, $arraywhere);
-            $this->stmt->execute();
+            $this->executeSTMT();
             if ($this->stmt->rowCount() > 0) {
                 $result = true;
             }
@@ -400,7 +432,7 @@ class SQLDatabase {
             $sql = $this->buildDeleteString($table, $where);
             $this->stmt = $this->link->prepare($sql);
             $this->stmt = $this->bindParams($this->stmt, $arraywhere);
-            $this->stmt->execute();
+            $this->executeSTMT();
             if ($this->stmt->rowCount() > 0) {
                 $result = true;
             }
@@ -415,7 +447,7 @@ class SQLDatabase {
             $this->stmt = $this->link->prepare($sql);
             $this->stmt = $this->bindParams($this->stmt, $array1);
             $this->stmt = $this->bindParams($this->stmt, $array2);
-            $this->stmt->execute();
+            $this->executeSTMT();
             if ($this->stmt->rowCount() > 0) {
                 $result = true;
             }
