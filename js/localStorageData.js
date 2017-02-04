@@ -27,10 +27,11 @@ function getWebServicePath() {
     if (LocalStorageStatus()) {
         var path = null;
         path = localStorage.getItem("WebServicePath");
-        if (path == null) {
+        if (path === null) {
             console.log("WebServicePath is null");
+        } else {
+            return path;
         }
-        return path;
     }
     return null;
 }
@@ -51,8 +52,9 @@ function getWebServiceLocalPath() {
         path = localStorage.getItem("WebServiceLocalPath");
         if (path === null) {
             console.log("WebServiceLocalPath is null");
+        } else {
+            return path;
         }
-        return path;
     }
     return null;
 }
@@ -207,8 +209,9 @@ function getCode() {
         code = localStorage.getItem("code");
         if (code === null) {
             console.log("Code is null");
+        } else {
+            return code;
         }
-        return code;
     }
     return null;
 }
@@ -230,8 +233,9 @@ function getIdEnterprise() {
         enterprise = localStorage.getItem("IdEnterprise");
         if (enterprise === null) {
             console.log("Enterprise is null");
+        } else {
+            return enterprise;
         }
-        return enterprise;
     }
     return null;
 }
@@ -253,8 +257,9 @@ function getIdOrder() {
         order = localStorage.getItem("IdOrder");
         if (order === null) {
             console.log("Order is null");
+        } else {
+            return order;
         }
-        return order;
     }
     return null;
 }
@@ -276,8 +281,9 @@ function getLocalPOST() {
         post = localStorage.getItem("POST");
         if (post === null) {
             console.log("LocalPOST is null");
+        } else {
+            return post;
         }
-        return post;
     }
     return null;
 }
@@ -301,8 +307,9 @@ function getSessionPOST() {
             console.log("SessionPOST is null. Try LocalPOST");
             post = getLocalPOST();
             setSessionPOST(post);
+        } else {
+            return post;
         }
-        return post;
     }
     return null;
 }

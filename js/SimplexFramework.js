@@ -154,6 +154,19 @@ function hideAjaxLoading() {
     return false;
 }
 
+function getWSPath() {
+    var path = null;
+    if (LocalStorageStatus()) {
+        path = localStorage.getItem("WebServicePath");
+        if (path === null) {
+            console.log("WebServicePath is null");
+        } else {
+            return path;
+        }
+    }
+    return "http://localhost/MyFramework/";
+}
+
 function getTitle(Obj) {
     if (Obj !== null) {
         if (Obj.getAttribute('title') !== null) {
@@ -290,7 +303,7 @@ function deleteTemporalElements(parent) {
 function getUrlForm(form) {
     if (form !== null && form.tagName === "FORM") {
         if (form.getAttribute("url") !== null && form.getAttribute("url") !== '') {
-            return form.getAttribute("url");
+            return getWSPath() + form.getAttribute("url");
         }
     }
     return null;
@@ -354,8 +367,6 @@ function getActionFromButton(button) {
                 form.setAttribute('do', 'findAll');
             }
             console.log("action: " + button.getAttribute("action"));
-
-
             return button.getAttribute("action");
         }
     }
@@ -422,7 +433,7 @@ function getModelCombo(combo) {
 function getUrlCombo(combo) {
     if (combo !== null && combo.tagName === "SELECT") {
         if (combo.getAttribute("url") !== null && combo.getAttribute("url") !== '') {
-            return combo.getAttribute("url");
+            return getWSPath() + combo.getAttribute("url");
         }
     }
     return null;
@@ -449,7 +460,7 @@ function getModelTable(element) {
 function getUrlTable(element) {
     if (element !== null && element.tagName === "TABLE") {
         if (element.getAttribute("url") !== null && element.getAttribute("url") !== '') {
-            return element.getAttribute("url");
+            return getWSPath() + element.getAttribute("url");
         }
     }
     return null;
@@ -750,6 +761,7 @@ function loadTableData(element) {
     var object = null;
     url = getUrlTable(element);
     model = getModelTable(element);
+    console.log(getWSPath());
     vals = {
         "model": model,
         "action": 0
