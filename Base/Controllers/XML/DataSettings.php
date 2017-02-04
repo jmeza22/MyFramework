@@ -9,7 +9,10 @@ class DataSettings {
     private $empty = '<setting><code state=""/><text/><enterprise/><welcome/><local/><remote/><lastdate/><hostdb/><portdb/><userdb/><passworddb/><namedb/></setting>';
     private $message = "";
 
-    public function __construct() {
+    public function __construct($url = null) {
+        if ($url != null) {
+            $this->xmlURL=$url;
+        }
         try {
             $content = $this->loadfile();
             if (isset($content) && $content != null) {
@@ -74,6 +77,16 @@ class DataSettings {
         return $this->message;
     }
 
+    public function getLogJSON() {
+        $array = array();
+        $array['message'] = $this->getMessage();
+        $array['error'] = '';
+        $array['state'] = 0;
+        $array['data'] = null;
+        $array = json_encode($array);
+        return $array;
+    }
+
     protected function existsCode($code) {
         foreach ($this->Settings->setting as $art) {
             if ($art->code == $code) {
@@ -86,7 +99,7 @@ class DataSettings {
     public function getAllSettings() {
         return $this->Settings->setting;
     }
-    
+
     public function getAllSettingsJSON() {
         return json_decode($this->getAllSettings());
     }
@@ -99,13 +112,28 @@ class DataSettings {
         }
         return null;
     }
-    
+
+    public function getSettingIndex($code) {
+        for ($i = 0; $i < count($this->Settings->setting); $i++) {
+            $sett = $this->Settings->setting[$i];
+            if ($sett->code == $code) {
+                return $i;
+            }
+        }
+        return null;
+    }
+
     public function getSettingJSON($code) {
         foreach ($this->Settings->setting as $sett) {
             if ($sett->code == $code) {
-                $array= array();
-                $array['setting']=  $sett;
-                $array=  json_encode($array);
+                $array = array();
+                $data = array();
+                $array['message'] = '';
+                $array['error'] = '';
+                $array['state'] = 0;
+                $data['setting'] = $sett;
+                $array['data'] = json_encode($data);
+                $array = json_encode($array);
                 return $array;
             }
         }
@@ -150,6 +178,10 @@ class DataSettings {
 
     public function getUserDB($index) {
         return $this->Settings->setting[$index]->userdb;
+    }
+
+    public function getPasswordDB($index) {
+        return $this->Settings->setting[$index]->passworddb;
     }
 
     public function getNameDB($index) {

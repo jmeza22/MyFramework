@@ -11,10 +11,12 @@
  *
  * @author JOSEMEZA
  */
-include_once 'SQLDatabase.php';
+include_once 'Database/SQLDatabase.php';
+include_once 'XML/DataSettings.php';
 
 class BaseController {
 
+    public $config = null;
     public $db = null;
     private $token = "0";
     private $model = "model";
@@ -26,7 +28,15 @@ class BaseController {
     private $data = null;
 
     public function __construct() {
-        $this->db = new SQLDatabase('localhost', 'myapp', 'root', '', 'mysql');
+        $this->config = new DataSettings();
+        $code = 1;
+        $index = null;
+        $index = $this->config->getSettingIndex($code);
+        if ($index != null) {
+            $this->db = new SQLDatabase($this->config->getHostDB($index), $this->config->getNameDB($index), $this->config->getUserDB($index), $this->config->getPasswordDB($index), 'mysql');
+        } else {
+            $this->db = new SQLDatabase('localhost', 'myapp', 'root', '', 'mysql');
+        }
         $this->connect();
     }
 

@@ -17,6 +17,7 @@
         <!-- Bootstrap Core CSS -->
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css"/>
+        <link rel="stylesheet" href="datatables/css/dataTables.bootstrap.css" type="text/css"/>
 
         <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
@@ -24,6 +25,7 @@
         <script type="text/javascript" src="js/LoadImage.js"></script>
         <script type="text/javascript" src="js/localStorageData.js"></script>
         <script type="text/javascript" src="js/SimplexFramework.js"></script>
+        <script type="text/javascript" src="js-forms/FormPlaces.js"></script>
 
 
 
@@ -32,7 +34,7 @@
 
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro Lugares o Mesas</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/DefaultController.php" model="PlacesApp" findBy="id_place" mainform="true" >
+            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="PlacesApp" findBy="id_place" mainform="true" >
                 <input type="hidden" integer="true" name="id_place" id="id_place" value="0" required="required" maxlength="30" min="0"  >
                 <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0"  >
                 <div class="row">
@@ -66,8 +68,8 @@
             <div class="panel-heading">Listado</div>
             <div class="panel-body">
                 <div>
-                    <table id="dataTable0" loadDataTable="true" model="PlacesApp" url="Base/GetDataTable.php" style="width: 100%;" fillOnLoad="true" >
-                        <thead id="" tsbleHead="true">
+                    <table id="dataTable0" class="table table-striped table-bordered table-responsive nowrap" loadDataTable="true" model="PlacesApp" url="Base/Controllers/GetDataTable.php" style="width: 100%;" fillOnLoad="true" >
+                        <thead id="" tableHead="true">
                             <tr rowHead="true">
                                 <th columnName="id_store" showColumn="true" style="width: 10%;" >
                                     Tienda
@@ -89,53 +91,23 @@
                                 <td>{{number_place}}</td>
                                 <td>{{description_place}}</td>
                                 <td>
-                                    <form method="GET" url="Base/DefaultController.php" model="PlacesApp" findBy="id_place" >
+                                    <form method="GET" url="Base/Controllers/DefaultController.php" model="PlacesApp" findBy="id_place" >
                                         <input type="hidden" name="id_place" id="id_place" value="{{id_place}}" />
-                                        <button type="button" name="delete" id="delete" action="delete" class="btn btn-danger" onclick="submitForm(this);"><i class="glyphicon glyphicon-remove"></i></button>
+                                        <input type="hidden" name="action" id="action" value="0" >
+                                        <button type="button" name="delete" id="delete" action="delete" class="btn btn-danger" onclick="Delete(this);"><i class="glyphicon glyphicon-remove"></i></button>
                                         <button type="submit" name="update" id="update" action="update" class="btn btn-warning" value="update"><i class="glyphicon glyphicon-edit"></i></button>
                                     </form>
                                 </td>
                             </tr>
-                            
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-
-
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-
-                var idstore = document.getElementById("id_store");
-                var idmesa = document.getElementById("id_place");
-
-                var valid = getIdEnterprise();
-                if (valid !== null) {
-                    idstore.value = valid;
-                }
-
-                getData(idmesa);
-
-                var table0 = document.getElementById("dataTable0");
-                loadTableData(table0);
-
-            });
-
-            function Send(item) {
-                var form = getForm(item);
-                if (validateForm(form)) {
-                    submitForm(item);
-                    loadTableData(document.getElementById("dataTable0"));
-                }
-            }
-            
-            async function Delete(item){
-                await submitForm(item);
-                loadTableData(document.getElementById("dataTable0"));
-            }
-
-
-        </script>
+        
+        <script type="text/javascript" src="datatables/js/dataTables.bootstrap.js"></script>
+        <script type="text/javascript" src="datatables/js/jquery.dataTables.min.js"></script>
+        
     </body>
 </html>

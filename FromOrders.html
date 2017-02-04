@@ -33,7 +33,7 @@ and open the template in the editor.
     <body>
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro de Orden</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/OrderController.php" model="OrdersApp" findBy="id_order" >
+            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="OrdersApp" findBy="id_order" >
                 <input type="hidden" integer="true" name="id_order" id="id_order" value="0" required="required" maxlength="30" min="0" class="form-control"  >
                 <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0" class="form-control"  >
                 <input type="hidden" integer="true" name="id_user" id="id_user" value="0" required="required" maxlength="30" min="0" class="form-control"  >

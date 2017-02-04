@@ -1,5 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<settings>
-<setting><code state=""/><text/><enterprise/><welcome/><local/><remote/><lastdate/><hostdb/><portdb/><userdb/><passworddb/><namedb/></setting>
-<setting><code state="1">1</code><text>Configuracion General 1</text><enterprise>1</enterprise><welcome>Bienvenido</welcome><local>localhost</local><remote>192.168.0.22</remote><lastdate>31-01-2017 12:40:25</lastdate><hostdb>localhost</hostdb><portdb>3306</portdb><userdb>root</userdb><passworddb></passworddb><namedb>myapp</namedb></setting>
-</settings>

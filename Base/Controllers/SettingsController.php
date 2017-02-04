@@ -18,22 +18,22 @@ if (isset($_POST)) {
     $passbd = $_POST['passworddb'];
     $namebd = $_POST['namedb'];
     $lastdate = date("d") . '-' . date("m") . '-' . date("Y") . ' ' . date("G") . ':' . date("i") . ':' . date("s");
-
+    
     if (isset($_POST['action'])) {
-        if (strcmp($_POST['action'], '0') == 0) {
+        if (strcmp($_POST['action'], 'find') == 0) {
             echo $data->getSettingJSON($code);
         }
-        if (strcmp($_POST['action'], '1') == 0) {
+        if (strcmp($_POST['action'], 'insert') == 0) {
             $data->AddSetting($code, $textconf, $enterprise, $welcome, $local, $remote, $lastdate, $hostbd, $portbd, $userbd, $passbd, $namebd);
-            echo $data->getMessage();
+            echo $data->getLogJSON();
         }
-        if (strcmp($_POST['action'], '2') == 0) {
+        if (strcmp($_POST['action'], 'update') == 0) {
             $data->EditSetting($code, $textconf, $enterprise, $welcome, $local, $remote, $lastdate, $hostbd, $portbd, $userbd, $passbd, $namebd);
-            echo $data->getMessage();
+            echo $data->getLogJSON();
         }
-        if (strcmp($_POST['action'], '3') == 0) {
+        if (strcmp($_POST['action'], 'delete') == 0) {
             $data->DeleteSetting($code);
-            echo $data->getMessage();
+            echo $data->getLogJSON();
         }
     }
 }

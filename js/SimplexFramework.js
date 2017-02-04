@@ -339,19 +339,19 @@ function getActionFromButton(button) {
             form = getForm(button);
 
             if (button.getAttribute("action") === 'find') {
-                form.setAttribute('do', '0');
+                form.setAttribute('do', 'find');
             }
             if (button.getAttribute("action") === 'insert') {
-                form.setAttribute('do', '1');
+                form.setAttribute('do', 'insert');
             }
             if (button.getAttribute("action") === 'update') {
-                form.setAttribute('do', '2');
+                form.setAttribute('do', 'update');
             }
             if (button.getAttribute("action") === 'delete') {
-                form.setAttribute('do', '3');
+                form.setAttribute('do', 'delete');
             }
             if (button.getAttribute("action") === 'findAll') {
-                form.setAttribute('do', '4');
+                form.setAttribute('do', 'findAll');
             }
             console.log("action: " + button.getAttribute("action"));
 
@@ -455,8 +455,9 @@ function getUrlTable(element) {
     return null;
 }
 
-function submitAjax(formData, url, reload) {
-    $.ajax({
+function submitAjax(formData, url, header, reload) {
+    var promise = null;
+    promise = $.ajax({
         method: "POST",
         url: url,
         data: formData,
@@ -466,6 +467,7 @@ function submitAjax(formData, url, reload) {
         dataType: 'json',
         success: function (result, status) {
             if (result !== null) {
+
                 if (result.message !== null && result.message !== '') {
                     alert(result.message);
                 }
@@ -475,6 +477,7 @@ function submitAjax(formData, url, reload) {
                 if (reload === true) {
                     window.location.reload();
                 }
+
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -482,6 +485,7 @@ function submitAjax(formData, url, reload) {
         }
 
     });
+    return promise;
 }
 
 function setDataForm(myform, json) {
@@ -533,15 +537,16 @@ function setDataForm(myform, json) {
 }
 
 function getData(element) {
+    var promise = null;
     var myform = null, object = null, url = null, formData = null;
     myform = getForm(element);
-    myform.setAttribute("do", "0");
+    myform.setAttribute("do", "find");
     url = getUrlForm(myform);
     createTempInputs(myform);
     formData = new FormData(myform);
     deleteTemporalElements(myform);
     if (formData !== null && url !== null && url !== '') {
-        $.ajax({
+        promise = $.ajax({
             method: "POST",
             url: url,
             data: formData,
@@ -574,14 +579,13 @@ function getData(element) {
         }
         );
     }
-
+    return promise;
 }
 
 function setComboboxOptions(combo, json) {
     var option = null;
     var selected = null;
     if (combo !== null && json !== null) {
-        console.log(Object.keys(json));
         if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelCombo(combo)) {
             for (var child in json) {
                 json = json[child];
@@ -607,6 +611,7 @@ function setComboboxOptions(combo, json) {
 }
 
 function loadComboboxData(element) {
+    var promise = null;
     var url = null;
     var model = null;
     var colname = null;
@@ -630,7 +635,7 @@ function loadComboboxData(element) {
             model !== null && model !== '' &&
             colname !== null && colname !== '' &&
             colvalue !== null && colvalue !== '') {
-        $.ajax({
+        promise = $.ajax({
             method: "POST",
             url: url,
             data: vals,
@@ -651,26 +656,34 @@ function loadComboboxData(element) {
         }
         );
     }
+    return promise;
 }
 
 function clearTableData(element) {
     var TRs = null;
     if (element !== null && element.tagName === "TABLE") {
-        TRs = element.getElementsByTagName('TR');
-        for (var i = 0; i < TRs.length; i++) {
-            if (TRs[i].getAttribute('rowSample') !== null) {
-                hideElement(TRs[i]);
-                disableElement(TRs[i]);
+        if (element.getElementsByTagName('TR') !== null) {
+            TRs = element.getElementsByTagName('TR');
+            for (var i = 0; i < TRs.length; i++) {
+                if (TRs[i] !== null && TRs[i] !== undefined) {
+                    if (TRs[i].getAttribute('rowSample') !== null) {
+                        hideElement(TRs[i]);
+                        disableElement(TRs[i]);
+                    }
+                    if (TRs[i].getAttribute('rowHead') === null && TRs[i].getAttribute('rowSample') === null) {
+                        deleteElement(TRs[i]);
+                        if (i > 0) {
+                            i = i - 1;
+                        }
+                    }
+                }
             }
-            if (TRs[i].getAttribute('rowHead') === null && TRs[i].getAttribute('rowSample') === null) {
-                deleteElement(TRs[i]);
-            }
-
         }
         return true;
     }
     return false;
 }
+
 
 function setTableData(element, json) {
     var TRs = null;
@@ -680,6 +693,8 @@ function setTableData(element, json) {
     var values = null;
     var columns = null;
     var col = null;
+    var xtable = null;
+    clearTableData(element);
     if (element !== null && element.tagName === "TABLE" && json !== null) {
         if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelTable(element)) {
             for (var child in json) {
@@ -687,7 +702,9 @@ function setTableData(element, json) {
                 break;
             }
         }
-        TRs = element.getElementsByTagName('TR');
+        if (element.getElementsByTagName('TR') !== null) {
+            TRs = element.getElementsByTagName('TR');
+        }
         for (var i = 0; i < TRs.length; i++) {
             if (TRs[i].getAttribute('rowSample') !== null) {
                 rowSample = TRs[i].innerHTML;
@@ -726,6 +743,7 @@ function setTableData(element, json) {
 
 function loadTableData(element) {
     clearTableData(element);
+    var promise = null;
     var url = null;
     var model = null;
     var vals = null;
@@ -738,7 +756,7 @@ function loadTableData(element) {
     };
 
     if (element !== null && element.tagName === "TABLE" && (element.getAttribute('loadDataTable') !== null)) {
-        $.ajax({
+        promise = $.ajax({
             method: "POST",
             url: url,
             data: vals,
@@ -753,19 +771,22 @@ function loadTableData(element) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
+                console.log(textStatus);
                 console.error("Hubo un Error de Conexion. Intente Nuevamente.");
             }
         }
         );
     }
+    return promise;
 }
 
 
-function submitForm(element) {
+function submitForm(element, reload) {
     var next = false;
     var form = null;
     var url = null;
     var formdata = null;
+    var promise = null;
     getActionFromButton(element);
 
     if (element !== null && element.tagName !== "FORM") {
@@ -781,19 +802,19 @@ function submitForm(element) {
             formdata = null;
             formdata = new FormData(form);
             if (formdata !== null) {
-                submitAjax(formdata, url, false);
+                promise = submitAjax(formdata, url, null, false);
             }
             deleteTemporalElements(form);
 
         } else {
             next = false;
-            alert("Ruta de Destino Nula.");
+            console.error("Ruta de Destino Nula.");
         }
     } else {
         next = false;
-        alert("No se encontró el Formulario.");
+        console.error("No se encontró el Formulario.");
     }
-    return next;
+    return promise;
 }
 
 function submitFormConfirm(button) {
