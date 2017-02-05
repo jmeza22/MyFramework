@@ -29,38 +29,31 @@ and open the template in the editor.
         <script type="text/javascript" src="js/LoadImage.js"></script>
         <script type="text/javascript" src="js/localStorageData.js"></script>
         <script type="text/javascript" src="js/SimplexFramework.js"></script>
+        <script type="text/javascript" src="js-forms/FormOrders.js"></script>
     </head>
     <body>
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro de Orden</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="OrdersApp" findBy="id_order" >
+            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/OrderController.php" model="OrdersApp" findBy="id_order" >
                 <input type="hidden" integer="true" name="id_order" id="id_order" value="0" required="required" maxlength="30" min="0" class="form-control"  >
                 <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0" class="form-control"  >
                 <input type="hidden" integer="true" name="id_user" id="id_user" value="0" required="required" maxlength="30" min="0" class="form-control"  >
 
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-8">
                         <label>Nombre del Cliente</label>
                         <input type="text" name="name_user" id="name_user" value="" maxlength="100" class="form-control" title="Nombre Completo" disabled="disabled" getname="true" idname="id_user" model="UsersApp" >
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label>Fecha</label>
-                        <input type="date" date="true" name="date_order" id="date_order" value="" required="required" readonly="readonly" class="form-control" >
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label>Hora</label>
-                        <input type="time" name="hour_order" id="hour_order" value="" required="required"  readonly="readonly" disabled="disabled" class="form-control" >
+                        <input type="datetime-local" name="date_order" id="date_order" value="" required="required" class="form-control" >
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Nota - Observaciones</label>
-                        <textarea name="note_order" id="note_order" required="required" maxlength="200" class="form-control" title="Descripcion Larga del Producto" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
+                        <textarea name="note_order" id="note_order" required="required" maxlength="200" class="form-control" title="Descripcion Larga del Producto" style="min-height: 120px; width: 100%; min-width: 260px;" >Nueva Orden.</textarea>
                     </div>
                 </div>
 
@@ -79,31 +72,7 @@ and open the template in the editor.
 
             </form>
         </div>
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                getData(document.getElementById("id_order"));
-                var hh = document.getElementById("hour_order");
-                var dd = document.getElementById("date_order");
-                var store = document.getElementById("id_store");
-                var user = document.getElementById("id_user");
-                if (getIdStore() !== null) {
-                    store.value = getIdStore();
-                }
-                if (getUserIdLogin() !== null) {
-                    user.value = getUserIdLogin();
-                }
-                hh.value=getCurrentTime();
-                dd.value=getCurrentDate();
-
-            });
-
-            function Send(item) {
-                var form = getForm(item);
-                if (validateForm(form)) {
-                    submitForm(item);
-                }
-            }
-        </script> 
+         
     </body>
 
 </html>

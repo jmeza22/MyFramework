@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 include_once 'BaseController.php';
 $bc = new BaseController();
 $bc->connect();
@@ -9,4 +9,5 @@ if (isset($_POST)) {
         echo $bc->getValue($_POST['column'], $_POST['idname'], $_POST['idvalue']);
     }
 }
+ob_end_flush();
 ?>

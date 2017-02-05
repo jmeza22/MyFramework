@@ -22,6 +22,7 @@ class BaseController {
     private $model = "model";
     private $action = "select";
     private $findBy = "id";
+    private $where = "";
     private $postData = null;
     private $state = 0;
     private $message = '';
@@ -47,6 +48,10 @@ class BaseController {
     public function disconnect() {
         $this->db->disconnect();
     }
+    
+    public function getLastInsertId ($name=null) {
+        return $this->db->getLastInsertID($name);
+    }
 
     public function setToken($token) {
         $this->token = $token;
@@ -64,6 +69,10 @@ class BaseController {
         $this->findBy = $findBy;
     }
 
+    public function setWhere($where) {
+        $this->where = $where;
+    }
+
     public function getToken() {
         return $this->token;
     }
@@ -78,6 +87,10 @@ class BaseController {
 
     public function getFindBy() {
         return $this->findBy;
+    }
+
+    public function getWhere() {
+        return $this->where;
     }
 
     private function parseWhereParam($param) {
@@ -126,6 +139,10 @@ class BaseController {
                 $this->findBy = $this->postData['findBy'];
                 unset($this->postData['findBy']);
             }
+            if (isset($this->postData['where'])) {
+                $this->where = $this->postData['where'];
+                unset($this->postData['where']);
+            }
             return true;
         }
         return false;
@@ -158,20 +175,32 @@ class BaseController {
         return false;
     }
 
-    public function select() {
+    public function find($columns = '*') {
         $result = null;
         if (isset($this->db) && isset($this->postData) && isset($this->findBy)) {
-            $result = $this->db->selectJSON("*", $this->model, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]));
+            $result = $this->db->selectJSON($columns, $this->model, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]));
             return $result;
         }
         return false;
     }
 
+    public function select($columns = '*', $where = null) {
+        $result = null;
+        if ($where == null) {
+            $where = $this->where;
+        }
+        if (isset($this->db) && isset($this->model)) {
+            $result = $this->db->selectJSON($columns, $this->model, $where);
+            return $result;
+        }
+        return null;
+    }
+
     public function parseResults($result, $message = '', $state = 0) {
         $array = array();
-        $array = ["data" => NULL, "message" => $message, "state" => $state, "error" => $this->db->getErrorMessage()];
+        $array = ["data" => NULL, "message" => $message, "state" => $state, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId()];
         if ($result != NULL) {
-            $array = ["data" => $result, "message" => $message, "state" => $state, "error" => null];
+            $array = ["data" => $result, "message" => $message, "state" => $state, "error" => null, "lastInsertId" => $this->getLastInsertId()];
         }
         $array = json_encode($array);
         return $array;
@@ -181,7 +210,7 @@ class BaseController {
         $result = false;
         if (isset($this->action)) {
             if (strcmp($this->action, 'find') == 0 || strcmp($this->action, '0') == 0) {
-                $result = $this->select();
+                $result = $this->find();
                 if ($result != null && !is_bool($result)) {
                     $result = $this->parseResults($result, "", 1);
                 } else {
@@ -243,15 +272,6 @@ class BaseController {
         $where = null;
         if (isset($this->db) && isset($this->model) && isset($idname) && isset($idvalue)) {
             $where = '' . $idname . '=' . $this->parseWhereParam($idvalue);
-            $result = $this->db->selectJSON($column, $this->model, $where);
-            return $result;
-        }
-        return null;
-    }
-
-    public function getDataTable($column = '*', $where = null) {
-        $result = null;
-        if (isset($this->db) && isset($this->model) && isset($column)) {
             $result = $this->db->selectJSON($column, $this->model, $where);
             return $result;
         }

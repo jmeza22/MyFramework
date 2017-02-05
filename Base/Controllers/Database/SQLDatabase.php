@@ -34,7 +34,7 @@ class SQLDatabase {
     private $stmt;
 
     public function __construct($host, $database, $user, $password, $port = NULL, $dbms = NULL, $persistent = FALSE) {
-        header('Content-Type: text/html; charset=UTF-8');
+
         $this->hostdb = $host;
         $this->namedb = $database;
         $this->userdb = $user;
@@ -94,13 +94,14 @@ class SQLDatabase {
             if ($this->link == null) {
                 echo 'Error de Conexion';
             }
-
+            return true;
             //$this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             $this->errorcode = $e->getCode();
             $this->errormessage = $e->getMessage();
             $this->printError($e->getMessage(), "Open Conection.");
         }
+        return false;
     }
 
     public function getLink() {
@@ -110,7 +111,7 @@ class SQLDatabase {
     public function disconnect() {
         return $this->link = null;
     }
-    
+
     private function executeSTMT() {
         $result = false;
         $this->errorcode = 0;
@@ -178,6 +179,18 @@ class SQLDatabase {
             }
         }
         return $result;
+    }
+
+    public function getLastInsertID($name = null) {
+        if ($this->link != null) {
+            try {
+                $lastid = $this->link->lastInsertId($name);
+                return $lastid;
+            } catch (Exception $ex) {
+                
+            }
+        }
+        return null;
     }
 
     public function bindParams($stmt, $array) {

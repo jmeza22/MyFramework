@@ -83,12 +83,10 @@ and open the template in the editor.
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 document.getElementById("variable").value = 'name';
-                document.getElementById("valor").value = getPOST('post');
+                document.getElementById("valor").value = 'value';
                 getSessionPOST();
                 getMyJSON();
-
-            }
-            );
+            });
 
             function getMyJSON() {
                 document.getElementById("contenido").innerHTML = sessionStorage.getItem("POSTData");

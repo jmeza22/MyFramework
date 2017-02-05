@@ -7,6 +7,7 @@ jQuery(document).ready(function () {
     createAjaxLoading();
     AjaxLoading();
     getIdGET();
+    setTokenForms();
 });
 
 function noContextMenu() {
@@ -68,21 +69,19 @@ function clearForm(form) {
     }
 }
 
-(function ($) {
-    $.GET = function (key) {
-        key = key.replace(/[\[]/, '\\[');
-        key = key.replace(/[\]]/, '\\]');
-        var pattern = "[\\?&]" + key + "=([^&#]*)";
-        var regex = new RegExp(pattern);
-        var url = unescape(window.location.href);
-        var results = regex.exec(url);
-        if (results === null) {
-            return null;
-        } else {
-            return results[1];
-        }
-    };
-})(jQuery);
+function GET(key) {
+    key = key.replace(/[\[]/, '\\[');
+    key = key.replace(/[\]]/, '\\]');
+    var pattern = "[\\?&]" + key + "=([^&#]*)";
+    var regex = new RegExp(pattern);
+    var url = unescape(window.location.href);
+    var results = regex.exec(url);
+    if (results === null) {
+        return null;
+    } else {
+        return results[1];
+    }
+}
 
 function getErrorMessage() {
     var message = 'Connection Error!.';
@@ -165,6 +164,24 @@ function getWSPath() {
         }
     }
     return "http://localhost/MyFramework/";
+}
+
+function setTokenForms() {
+    var myforms = null;
+    var token = null;
+    try {
+        myforms = document.forms;
+        token = localStorage.getItem('TokenLogin');
+        for (var i = 0; i < myforms.length; i++) {
+            if (myforms[i] !== null && token !== null) {
+                myforms[i].setAttribute('token', token);
+            }
+        }
+        return true;
+    } catch (e) {
+
+    }
+    return false;
 }
 
 function getTitle(Obj) {
@@ -485,6 +502,14 @@ function submitAjax(formData, url, header, reload) {
                 if (result.error !== null && result.error !== '') {
                     console.error(result.error);
                 }
+                if (result.lastInsertId !== null && result.lastInsertId !== '') {
+                    try{
+                        console.log('LastId: '+result.lastInsertId);
+                        sessionStorage.setItem('LastInsertId',result.lastInsertId);
+                    }catch(e){
+                        console.log('Hubo error con el lastInsertId.');
+                    }
+                }
                 if (reload === true) {
                     window.location.reload();
                 }
@@ -792,6 +817,100 @@ function loadTableData(element) {
     return promise;
 }
 
+function setLogin(data) {
+    if (data !== null) {
+        try {
+            if (data['user'] !== null) {
+                localStorage.setItem("UsernameLogin", "" + data['user']);
+                console.log('UsernameLogin Almacenado');
+            }
+            if (data['userrole'] !== null) {
+                localStorage.setItem("UserRoleLogin", "" + data['userrole']);
+                console.log('UserRoleLogin Almacenado');
+            }
+            if (data['userid'] !== null) {
+                localStorage.setItem("UserIdLogin", "" + data['userid']);
+                console.log('UserIdLogin Almacenado');
+            }
+            return true;
+        } catch (e) {
+            console.log('No se pudo Iniciar Variables de Sesion!.');
+        }
+    }
+    return false;
+}
+
+function setToken(token) {
+    if (token !== null) {
+        try {
+            localStorage.setItem("TokenLogin", "" + token);
+            console.log('TokenLogin Almacenado ' + token);
+            return true;
+        } catch (e) {
+            console.log('No se pudo Iniciar Token!. ' + token);
+        }
+    }
+    return false;
+}
+
+function login(element, page) {
+    var next = false;
+    var form = null;
+    var url = null;
+    var formData = null;
+    var promise = null;
+    var object = null;
+    if (element !== null && page !== null && page !== '') {
+        form = getForm(element);
+        url = getUrlForm(form);
+    }
+    formData = new FormData(form);
+    if (form !== null) {
+        promise = $.ajax({
+            method: "POST",
+            url: url,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            success: function (result, status) {
+                if (result !== null) {
+                    if (result.message !== null && result.message !== '') {
+                        alert(result.message);
+                    }
+                    if (result.error !== null && result.error !== '') {
+                        console.error(result.error);
+                    }
+                    if (result.state === 1) {
+                        try {
+                            object = JSON.parse(result.data);
+                            console.log('Conversion Exitosa a JSON - Get Values!');
+                        } catch (e) {
+                            console.error("Error de Conversion JSON - Get Values");
+                        }
+                        setLogin(object[getModelForm(form)][0]);
+                        if (result.token !== null && result.token !== '') {
+                            setToken(result.token);
+                        }
+                        if (page !== null) {
+                            window.location.href = page;
+                        }
+                    }
+
+
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert("Hubo un Error de Conexion. Intente Nuevamente.");
+            }
+
+        });
+    } else {
+        console.error("No se encontró el Formulario.");
+    }
+    return promise;
+}
 
 function submitForm(element, reload) {
     var next = false;
@@ -858,13 +977,13 @@ function getIdGET() {
                 }
                 if (form.elements[j].id === findby || form.elements[j].name === findby) {
                     id = form.elements[j];
-                    if ($.GET(findby) !== null) {
+                    if (GET(findby) !== null) {
                         console.log("FindBy Form GET: " + findby);
-                        id.value = $.GET(findby);
+                        id.value = GET(findby);
                         result = true;
                     }
                 }
-                if ($.GET('action') === 'view') {
+                if (GET('action') === 'view') {
                     form.elements[j].setAttribute("readonly", "readonly");
                     if (form.elements[j].type === 'select-one' || form.elements[j].type === 'button' || form.elements[j].type === 'submit' || form.elements[j].type === 'reset' || form.elements[j].type === 'radio' || form.elements[j].type === 'range') {
                         form.elements[j].setAttribute("disabled", "disabled");
@@ -874,12 +993,12 @@ function getIdGET() {
         }
     }
     if (item !== null) {
-        if ($.GET('action') !== null) {
-            item.setAttribute('action', $.GET('action'));
-            console.log("Action GET: " + $.GET('action'));
+        if (GET('action') !== null) {
+            item.setAttribute('action', GET('action'));
+            console.log("Action GET: " + GET('action'));
         }
-        if ($.GET('update') !== null && $.GET('update') !== '') {
-            item.setAttribute('action', $.GET('update'));
+        if (GET('update') !== null && GET('update') !== '') {
+            item.setAttribute('action', GET('update'));
         }
     }
     return result;

@@ -89,6 +89,26 @@ function setUserIdLogin(userid) {
     return false;
 }
 
+function setUserRoleLogin(userrole) {
+    if (LocalStorageStatus()) {
+        if (userrole !== null && userrole !== '') {
+            localStorage.setItem("UserRoleLogin", userrole);
+            return true;
+        }
+    }
+    return false;
+}
+
+function setTokenLogin(token) {
+    if (LocalStorageStatus()) {
+        if (token !== null && token !== '') {
+            localStorage.setItem("TokenLogin", token);
+            return true;
+        }
+    }
+    return false;
+}
+
 function getUsernameLogin() {
     if (LocalStorageStatus()) {
         var username = null;
@@ -116,20 +136,28 @@ function getUserIdLogin() {
     return null;
 }
 
+function getUserRoleLogin() {
+    if (LocalStorageStatus()) {
+        var userrole = null;
+        userrole = localStorage.getItem("UserRoleLogin");
+        return userrole;
+    }
+    return null;
+}
+
+function getTokenLogin() {
+    if (LocalStorageStatus()) {
+        var token = null;
+        token = localStorage.getItem("TokenLogin");
+        return token;
+    }
+    return null;
+}
+
 function setUserIdSession(userid) {
     if (LocalStorageStatus()) {
         if (userid !== null && userid !== '') {
             sessionStorage.setItem("UserIdSession", userid);
-            return true;
-        }
-    }
-    return false;
-}
-
-function setUserRoleSession(userrole) {
-    if (LocalStorageStatus()) {
-        if (userrole !== null && userrole !== '') {
-            sessionStorage.setItem("UserRoleSession", userrole);
             return true;
         }
     }
@@ -165,14 +193,7 @@ function getUserIdSession() {
     return null;
 }
 
-function getUserRoleSession() {
-    if (LocalStorageStatus()) {
-        var userrole = null;
-        userrole = sessionStorage.getItem("UserRoleSession");
-        return userrole;
-    }
-    return null;
-}
+
 
 function getUsernameSession() {
     if (LocalStorageStatus()) {
@@ -406,6 +427,15 @@ function nullPOST() {
 
 function savePOST() {
     setLocalPOST(getSessionPOST());
+}
+
+function getLastInsertId() {
+    if (LocalStorageStatus()) {
+        var id = null;
+        id = sessionStorage.getItem("LastInsertId");
+        return id;
+    }
+    return null;
 }
 
 function getIdPOST() {

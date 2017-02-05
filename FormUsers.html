@@ -32,107 +32,110 @@
 
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro Usuario</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="UsersApp" findBy="id_user" mainform="true" >
-                <input type="hidden" integer="true" name="id_user" id="id_user" value="0" required="required" maxlength="30" min="0" class="form-control">
+            <div class="panel-body">
 
-                <div class="row">
+                <form  method="POST" autocomplete="off" url="Base/Controllers/UserController.php" model="UsersApp" findBy="id_user" mainform="true" >
+                    <input type="hidden" integer="true" name="id_user" id="id_user" value="0" required="required" maxlength="30" min="0" class="form-control">
 
-                    <div class="col-sm-4">
-                        <center>
-                            <div class="photoPanel">
-                                <center>
-                                    <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/Users.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
-                                    <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImage(this)" title="Click to Change Photo" disabled="disabled" />
-                                </center>
+                    <div class="row">
+
+                        <div class="col-sm-4">
+                            <center>
+                                <div class="photoPanel">
+                                    <center>
+                                        <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/Users.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
+                                        <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImage(this)" title="Click to Change Photo" disabled="disabled" />
+                                    </center>
+                                </div>
+                            </center>
+                        </div>
+
+
+                        <div class="col-sm-8">
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Nombres</label>
+                                    <input type="text" name="name_user" id="name_user" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label>Apellidos</label>
+                                    <input type="text" name="lastname_user" id="lastname_user" value="" required="required" maxlength="100" class="form-control" title="Apellidos" >
+                                </div>
                             </div>
-                        </center>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Telefono</label>
+                                    <input type="tel" name="phone_user" id="phone_user" value="" maxlength="20" class="form-control" title="Fijo o Celular" >
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Email</label>
+                                    <input type="email" name="email_user" id="email_user" value="" maxlength="100"  class="form-control" title="Correo Electronico">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label>Direccion</label>
+                                    <input type="text" name="address_user" id="address_user" value="" maxlength="100" class="form-control" title="Direccion">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Doc. Identidad</label>
+                                    <input type="text" name="doc_user" id="doc_user" value="" maxlength="25" class="form-control" title="Cedula de Ciudadania">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Fecha Nacimiento</label>
+                                    <input type="date" date="true" name="birthday_user" id="birthday_user" value="" placeholder="1992-04-22" maxlength="10" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Foto</label>
+                                    <input type="text" readonly="readonly" name="photo_user" id="photo_user" value="Users.png" maxlength="1000" class="form-control">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Password</label>
+                                    <input type="password" name="password_user" id="password_user" maxlength="32" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label>Tipo de Usuario</label>
+                                    <select name="role_user" id="role_user" required="required" selected="NN" class="form-control" style="width: 100%; min-width: 100%;" readonly="readonly"  >
+                                        <option value="NN" disabled="disabled">Desconocido</option>
+                                        <option value="CL" >Cliente</option>
+                                        <option value="ME" >Mesero</option>
+                                        <option value="VE" >Vendedor</option>
+                                        <option value="AA" disabled="disabled">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <center>
+                                        <button id="Guardar" name="Guardar" type="button" action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                                    </center>
+                                </div>
+                                <div class="col-sm-6">
+                                    <center>
+                                        <button type="reset" id="reset" class="btn btn-danger">Cancelar</button> 
+                                    </center>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+                </form>
 
-
-                    <div class="col-sm-8">
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>Nombres</label>
-                                <input type="text" name="name_user" id="name_user" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
-                            </div>
-
-                            <div class="col-sm-6">
-                                <label>Apellidos</label>
-                                <input type="text" name="lastname_user" id="lastname_user" value="" required="required" maxlength="100" class="form-control" title="Apellidos" >
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>Telefono</label>
-                                <input type="tel" name="phone_user" id="phone_user" value="" maxlength="20" class="form-control" title="Fijo o Celular" >
-                            </div>
-                            <div class="col-sm-6">
-                                <label>Email</label>
-                                <input type="email" name="email_user" id="email_user" value="" maxlength="100"  class="form-control" title="Correo Electronico">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label>Direccion</label>
-                                <input type="text" name="address_user" id="address_user" value="" maxlength="100" class="form-control" title="Direccion">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>Doc. Identidad</label>
-                                <input type="text" name="doc_user" id="doc_user" value="" maxlength="25" class="form-control" title="Cedula de Ciudadania">
-                            </div>
-                            <div class="col-sm-6">
-                                <label>Fecha Nacimiento</label>
-                                <input type="date" date="true" name="birthday_user" id="birthday_user" value="" placeholder="1992-04-22" maxlength="10" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>Foto</label>
-                                <input type="text" readonly="readonly" name="photo_user" id="photo_user" value="Users.png" maxlength="1000" class="form-control">
-                            </div>
-                            <div class="col-sm-6">
-                                <label>Password</label>
-                                <input type="password" name="password_user" id="password_user" maxlength="32" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label>Tipo de Usuario</label>
-                                <select name="role_user" id="role_user" required="required" selected="NN" class="form-control" style="width: 100%; min-width: 100%;" readonly="readonly"  >
-                                    <option value="NN" disabled="disabled">Desconocido</option>
-                                    <option value="CL" >Cliente</option>
-                                    <option value="ME" >Mesero</option>
-                                    <option value="VE" >Vendedor</option>
-                                    <option value="AA" disabled="disabled">Administrador</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <center>
-                                    <button id="Guardar" name="Guardar" type="button" action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
-                                </center>
-                            </div>
-                            <div class="col-sm-6">
-                                <center>
-                                    <button type="reset" id="reset" class="btn btn-danger">Cancelar</button> 
-                                </center>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </form>
+            </div>
         </div>
 
 

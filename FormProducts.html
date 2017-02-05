@@ -24,6 +24,7 @@
         <script type="text/javascript" src="js/LoadImage.js"></script>
         <script type="text/javascript" src="js/localStorageData.js"></script>
         <script type="text/javascript" src="js/SimplexFramework.js"></script>
+        <script type="text/javascript" src="js-forms/FormProducts.js"></script>
 
     </head>
     <body>
@@ -47,7 +48,6 @@
                         </center>
                     </div>
 
-
                     <div class="col-sm-8">
 
                         <div class="row">
@@ -56,6 +56,7 @@
                                 <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="col-sm-12">
                                 <label>Descripcion</label>
@@ -89,35 +90,16 @@
                             </div>
                             <div class="col-sm-6">
                                 <center>
-                                    <button type="reset" id="reset" class="btn btn-danger">Cancelar</button> 
+                                    <button type="reset" id="reset" class="btn btn-danger">Limpiar</button> 
                                 </center>
                             </div>
                         </div>
 
-
                     </div>
-
                 </div>
-
 
             </form>
         </div>
 
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                resetPOST();
-                var idproduct = document.getElementById("id_product");
-                getData(idproduct);
-            });
-
-            function Send(item) {
-                var form = getForm(item);
-                if (validateForm(form)) {
-                    submitForm(item);
-                }
-            }
-
-
-        </script>
     </body>
 </html>

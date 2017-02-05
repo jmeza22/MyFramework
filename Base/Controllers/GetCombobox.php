@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 include_once 'BaseController.php';
 $bc = new BaseController();
 $bc->connect();
@@ -9,4 +9,5 @@ if (isset($_POST)) {
         echo $bc->getComboboxData($_POST['colname'], $_POST['colvalue'], '');
     }
 }
+ob_end_flush();
 ?>

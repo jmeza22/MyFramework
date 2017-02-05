@@ -1,8 +1,19 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+ob_start();
+include_once 'BaseController.php';
+$model = 'OrderDetailsApp';
+$findBy = 'id_detail';
+if (isset($_POST)) {
+    $result = null;
+    $bc = new BaseController();
+    $bc->connect();
+    $bc->preparePostData();
+    $bc->setModel($model);
+    $bc->setFindBy($findBy);
+    $result = $bc->execute(false);
+    echo $result;
+    $result = null;
+    $bc->disconnect();
+}
+ob_end_flush();
+?>

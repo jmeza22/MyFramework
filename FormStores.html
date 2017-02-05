@@ -24,119 +24,90 @@
         <script type="text/javascript" src="js/LoadImage.js"></script>
         <script type="text/javascript" src="js/localStorageData.js"></script>
         <script type="text/javascript" src="js/SimplexFramework.js"></script>
-
-
+        <script type="text/javascript" src="js-forms/FormStores.js"></script>
 
     </head>
     <body>
 
         <div class="panel panel-primary" style="width: 80% !important;">
-            <div class="panel-heading">Registro Tienda</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="StoreApp" findBy="id_store" mainform="true" >
-                <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0" class="form-control" >
+            <div class="panel-heading">Tienda</div>
+            <div  class="panel-body">
+                <form method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="StoreApp" findBy="id_store" mainform="true" >
+                    <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0" class="form-control" >
 
-
-                <div class="row">
-
-                    <div class="col-sm-4">
-                        <center>
-                            <div class="photoPanel">
-                                <center>
-                                    <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/IconPage.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
-                                    <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImage(this)" title="Click to Change Photo" disabled="disabled" />
-                                </center>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <center>
+                                <div class="photoPanel">
+                                    <center>
+                                        <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/IconPage.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
+                                        <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImage(this)" title="Click to Change Photo" disabled="disabled" />
+                                    </center>
+                                </div>
+                            </center>
+                        </div>
+                        
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Nombre de Tienda</label>
+                                    <input type="text" name="name_store" id="name_store" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Identificacion</label>
+                                    <input type="text" name="doc_store" id="doc_store" maxlength="20" class="form-control" title="NIT o RUT">
+                                </div>
                             </div>
-                        </center>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Telefono</label>
+                                    <input type="tel" name="phone_store" id="phone_store" value="" maxlength="20" class="form-control" title="Telefono" >
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Direccion</label>
+                                    <input type="text" name="address_store" id="address_store" maxlength="200" class="form-control" title="Direccion">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Email</label>
+                                    <input type="email" name="email_store" id="email_store" value="" maxlength="200" class="form-control" title="Correo Electronico" >
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Administrador</label>
+                                    <input type="text" name="admin_store" id="admin_store" maxlength="200" class="form-control" title="Nombre del Administrador">
+                                </div>
+                            </div>
+
+                            <div class="row" style="display: none;">
+                                <div class="col-sm-12">
+                                    <label>Foto</label>
+                                    <input type="text" name="logo_store" id="logo_store" value="LogoStore.png" maxlength="1000" class="form-control" title="Nombre de Foto" disabled="disabled" >
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 20px;">
+                                <div class="col-sm-6">
+                                    <center>
+                                        <button id="Guardar" name="Guardar" type="button" action="update" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                                    </center>
+                                </div>
+                                <div class="col-sm-6">
+                                    <center>
+                                        <button type="reset" id="reset" class="btn btn-danger">Limpiar</button> 
+                                    </center>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
+                    
+                </form>
 
-
-                    <div class="col-sm-8">
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>Nombre de Tienda</label>
-                                <input type="text" name="name_store" id="name_store" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
-                            </div>
-                            <div class="col-sm-6">
-                                <label>Identificacion</label>
-                                <input type="text" name="doc_store" id="doc_store" maxlength="20" class="form-control" title="NIT o RUT">
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>Telefono</label>
-                                <input type="tel" name="phone_store" id="phone_store" value="" maxlength="20" class="form-control" title="Telefono" >
-                            </div>
-                            <div class="col-sm-6">
-                                <label>Direccion</label>
-                                <input type="text" name="address_store" id="address_store" maxlength="200" class="form-control" title="Direccion">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>Email</label>
-                                <input type="email" name="email_store" id="email_store" value="" maxlength="200" class="form-control" title="Correo Electronico" >
-                            </div>
-                            <div class="col-sm-6">
-                                <label>Administrador</label>
-                                <input type="text" name="admin_store" id="admin_store" maxlength="200" class="form-control" title="Nombre del Administrador">
-                            </div>
-                        </div>
-
-                        <div class="row" style="display: none;">
-                            <div class="col-sm-12">
-                                <label>Foto</label>
-                                <input type="text" name="logo_store" id="logo_store" value="LogoStore.png" maxlength="1000" class="form-control" title="Nombre de Foto" disabled="disabled" >
-                            </div>
-                        </div>
-
-                        <div class="row" style="margin-top: 20px;">
-                            <div class="col-sm-6">
-                                <center>
-                                    <button id="Guardar" name="Guardar" type="button" action="update" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
-                                </center>
-                            </div>
-                            <div class="col-sm-6">
-                                <center>
-                                    <button type="reset" id="reset" class="btn btn-danger">Cancelar</button> 
-                                </center>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-            </form>
+            </div>
         </div>
-
-
-
-
-
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-
-                var idstore = document.getElementById("id_store");
-                var valid = getIdStore();
-                if (valid !== null) {
-                    idstore.value = valid;
-                }
-                getData(idstore);
-            });
-
-            function Send(item) {
-                var form = getForm(item);
-                if (validateForm(form)) {
-                    submitForm(item);
-                }
-            }
-
-
-        </script>
+        
     </body>
 </html>
