@@ -114,6 +114,10 @@ class BaseController {
         }
         return false;
     }
+    
+    public function getPostData() {
+        return $this->postData;
+    }
 
     public function preparePostData() {
         if ($this->postData == null || !isset($this->postData)) {

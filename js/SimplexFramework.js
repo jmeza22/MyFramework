@@ -495,7 +495,6 @@ function submitAjax(formData, url, header, reload) {
         dataType: 'json',
         success: function (result, status) {
             if (result !== null) {
-
                 if (result.message !== null && result.message !== '') {
                     alert(result.message);
                 }
@@ -513,7 +512,6 @@ function submitAjax(formData, url, header, reload) {
                 if (reload === true) {
                     window.location.reload();
                 }
-
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -559,10 +557,14 @@ function setDataForm(myform, json) {
                     if (item.value === '[object Object]') {
                         item.value = '';
                     }
+                    if(item.getAttribute('type')!==null && item.getAttribute('type')==='password'){
+                        item.value = '';
+                    }
                     if (item.tagName === "SELECT") {
                         item.setAttribute('selected', values[col]);
                         item.selected = values[col];
                     }
+                    
                 }
             }
             return true;
@@ -589,7 +591,7 @@ function getData(element) {
             processData: false,
             contentType: false,
             dataType: 'json',
-            success: function (result) {
+            success: function (result, status) {
                 if (result !== null && result !== '') {
                     if (result.message !== null && result.message !== '') {
                         alert(result.message);

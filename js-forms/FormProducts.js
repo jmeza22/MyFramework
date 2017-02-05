@@ -1,5 +1,8 @@
 jQuery(document).ready(function () {
-    resetPOST();
+    var store = document.getElementById("id_store");
+    if (getIdEnterprise() !== null) {
+        store.value = getIdEnterprise();
+    }
     var idproduct = document.getElementById("id_product");
     getData(idproduct);
 });

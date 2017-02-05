@@ -2,26 +2,14 @@
 
 ob_start();
 include_once 'BaseController.php';
-include_once 'Security/MyCrypt.php';
 include_once 'Security/SessionManager.php';
 include_once 'UploadImage.php';
 $session = new SessionManager();
-$model = 'UsersApp';
-$findBy = 'id_user';
 if ($session->hasLogin()) {
     if (isset($_POST) && $_POST != null) {
-        $result = null;
-        if (strcmp($_POST['password_user'], '') != 0) {
-            $crypt = new MyCrypt();
-            $_POST['password_user'] = $crypt->crypt($_POST['password_user']);
-        } else {
-            unset($_POST['password_user']);
-        }
         $bc = new BaseController();
         $bc->connect();
         $bc->preparePostData();
-        $bc->setModel($model);
-        $bc->setFindBy($findBy);
         $result = null;
         $result = $bc->execute(false);
         $pd = null;
@@ -32,11 +20,11 @@ if ($session->hasLogin()) {
             $upload = new UploadImage();
             $upload->setURL('../../ImageFiles/');
             $upload->setFileName('imageFile');
-            $upload->setPrefix('User');
+            $upload->setPrefix('Product');
             $upload->setNewName(date("dmYGis"));
             if ($upload->Upload()) {
-                $pd['id_user'] = $bc->getLastInsertId();
-                $pd['photo_user'] = $upload->getOutputName();
+                $pd['id_product'] = $bc->getLastInsertId();
+                $pd['photo_product'] = $upload->getOutputName();
                 $bc->setPostData($pd);
                 $bc->setAction('update');
                 $bc->execute();

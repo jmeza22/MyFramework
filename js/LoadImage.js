@@ -28,5 +28,26 @@ function showMyImage(fileInput) {
             };
         })(img);
         reader.readAsDataURL(file);
+        return file.name;
     }
+    return null;
 }
+
+function showMyImageAndGetName(fileInput, elementid) {
+    var filename = null;
+    if (showMyImage(fileInput) !== null) {
+        var filename = showMyImage(fileInput);
+    }
+    var element = null;
+    if (elementid !== null && elementid !== '') {
+        element = document.getElementById(elementid);
+    }
+    if (element !== null && filename !== null) {
+        element.value = filename;
+        return true;
+    }
+    return false;
+}
+
+
+

@@ -31,9 +31,9 @@
 
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro Producto</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="ProductsApp" findBy="id_product" mainform="true" >
-                <input type="hidden" integer="true" name="id_product" id="id_product" value="0" required="required" maxlength="30" min="0" class="form-control">
-                <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0" class="form-control" disabled="disabled" >
+            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/ProductController.php" model="ProductsApp" findBy="id_product" mainform="true" >
+                <input type="hidden" integer="true" name="id_product" id="id_product" value="0" required="required"  class="form-control">
+                <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" class="form-control" >
 
                 <div class="row">
 
@@ -42,7 +42,7 @@
                             <div class="photoPanel">
                                 <center>
                                     <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/Products.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
-                                    <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImage(this)" title="Click to Change Photo" disabled="disabled" />
+                                    <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImageAndGetName(this,'photo_product')" title="Click to Change Photo" />
                                 </center>
                             </div>
                         </center>
@@ -56,7 +56,7 @@
                                 <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <label>Descripcion</label>
@@ -78,7 +78,7 @@
                         <div class="row" style="display: none;">
                             <div class="col-sm-6">
                                 <label>Foto</label>
-                                <input type="text" name="photo_product" id="photo_product" value="Products.png" maxlength="1000" class="form-control" title="Nombre de Foto" disabled="disabled" >
+                                <input type="text" name="photo_product" id="photo_product" value="Products.png" maxlength="1000" class="form-control" title="Nombre de Foto" >
                             </div>
                         </div>
 

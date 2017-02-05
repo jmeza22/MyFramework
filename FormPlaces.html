@@ -34,33 +34,35 @@
 
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro Lugares o Mesas</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="PlacesApp" findBy="id_place" mainform="true" >
-                <input type="hidden" integer="true" name="id_place" id="id_place" value="0" required="required" maxlength="30" min="0"  >
-                <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0"  >
-                <div class="row">
-                    <div class="col-sm-12">
-                        <label>Número</label>
-                        <input type="number" name="number_place" id="number_place" value="" required="required"  class="form-control" title="Numero">
+            <div class="panel-body" >
+                <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="PlacesApp" findBy="id_place" mainform="true" >
+                    <input type="hidden" integer="true" name="id_place" id="id_place" value="0" required="required" maxlength="30" min="0"  >
+                    <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0"  >
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label>Número</label>
+                            <input type="number" name="number_place" id="number_place" value="" required="required"  class="form-control" title="Numero">
+                        </div>
+                        <div class="col-sm-12">
+                            <label>Descripcion</label>
+                            <textarea name="description_place" id="description_place" required="required" maxlength="200" class="form-control" title="Descripcion Larga" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
+                        </div>
                     </div>
-                    <div class="col-sm-12">
-                        <label>Descripcion</label>
-                        <textarea name="description_place" id="description_place" required="required" maxlength="200" class="form-control" title="Descripcion Larga" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-sm-6">
+                            <center>
+                                <button id="Guardar" name="Guardar" type="button" action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                            </center>
+                        </div>
+                        <div class="col-sm-6">
+                            <center>
+                                <button type="reset" id="reset" class="btn btn-danger">Limpiar</button> 
+                            </center>
+                        </div>
                     </div>
-                </div>
-                <div class="row" style="margin-top: 20px;">
-                    <div class="col-sm-6">
-                        <center>
-                            <button id="Guardar" name="Guardar" type="button" action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
-                        </center>
-                    </div>
-                    <div class="col-sm-6">
-                        <center>
-                            <button type="reset" id="reset" class="btn btn-danger">Limpiar</button> 
-                        </center>
-                    </div>
-                </div>
 
-            </form>
+                </form>
+            </div>
         </div>
 
 
@@ -105,9 +107,9 @@
                 </div>
             </div>
         </div>
-        
+
         <script type="text/javascript" src="datatables/js/dataTables.bootstrap.js"></script>
         <script type="text/javascript" src="datatables/js/jquery.dataTables.min.js"></script>
-        
+
     </body>
 </html>
