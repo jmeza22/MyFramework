@@ -502,10 +502,10 @@ function submitAjax(formData, url, header, reload) {
                     console.error(result.error);
                 }
                 if (result.lastInsertId !== null && result.lastInsertId !== '') {
-                    try{
-                        console.log('LastId: '+result.lastInsertId);
-                        sessionStorage.setItem('LastInsertId',result.lastInsertId);
-                    }catch(e){
+                    try {
+                        console.log('LastId: ' + result.lastInsertId);
+                        sessionStorage.setItem('LastInsertId', result.lastInsertId);
+                    } catch (e) {
                         console.log('Hubo error con el lastInsertId.');
                     }
                 }
@@ -557,14 +557,14 @@ function setDataForm(myform, json) {
                     if (item.value === '[object Object]') {
                         item.value = '';
                     }
-                    if(item.getAttribute('type')!==null && item.getAttribute('type')==='password'){
+                    if (item.getAttribute('type') !== null && item.getAttribute('type') === 'password') {
                         item.value = '';
                     }
                     if (item.tagName === "SELECT") {
                         item.setAttribute('selected', values[col]);
                         item.selected = values[col];
                     }
-                    
+
                 }
             }
             return true;
@@ -723,7 +723,7 @@ function clearTableData(element) {
 }
 
 
-function setTableData(element, json) {
+function setTableData(element, json, dinamic) {
     var TRs = null;
     var rowSample = null;
     var newrow = null;
@@ -732,13 +732,12 @@ function setTableData(element, json) {
     var columns = null;
     var col = null;
     var xtable = null;
-    clearTableData(element);
+    var tableId = null;
+
     if (element !== null && element.tagName === "TABLE" && json !== null) {
-        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelTable(element)) {
-            for (var child in json) {
-                json = json[child];
-                break;
-            }
+        tableId = '#' + element.getAttribute('id');
+        if (element.getElementsByTagName('TBODY') !== null) {
+            tbody = element.getElementsByTagName('TBODY')[0];
         }
         if (element.getElementsByTagName('TR') !== null) {
             TRs = element.getElementsByTagName('TR');
@@ -749,8 +748,15 @@ function setTableData(element, json) {
                 break;
             }
         }
-        if (element.getElementsByTagName('TBODY') !== null) {
-            tbody = element.getElementsByTagName('TBODY')[0];
+        if ($.fn.DataTable.isDataTable(tableId)) {
+            $(tableId).DataTable().destroy();
+        }
+        clearTableData(element);
+        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelTable(element)) {
+            for (var child in json) {
+                json = json[child];
+                break;
+            }
         }
 
         if (json.length > 0) {
@@ -763,6 +769,7 @@ function setTableData(element, json) {
             }
 
             for (var i = 0; i < json.length; i++) {
+
                 newrow = null;
                 newrow = document.createElement('TR');
                 newrow.setAttribute('rowID', i);
@@ -771,7 +778,21 @@ function setTableData(element, json) {
                     col = columns[j];
                     newrow.innerHTML = newrow.innerHTML.replace('{{' + col + '}}', json[i][col]);
                 }
+
                 tbody.appendChild(newrow);
+            }
+            
+            if (dinamic === true) {
+                
+                try {
+                    if (!$.fn.DataTable.isDataTable(tableId)) {
+                        xtable = $(tableId).DataTable();
+                        console.log(tableId + ' is DataTable');
+                    }
+                } catch (e) {
+                    console.error(e);
+                    null;
+                }
             }
             return true;
         }
@@ -779,7 +800,7 @@ function setTableData(element, json) {
     return false;
 }
 
-function loadTableData(element) {
+function loadTableData(element, dinamic) {
     clearTableData(element);
     var promise = null;
     var url = null;
@@ -791,7 +812,7 @@ function loadTableData(element) {
     console.log(getWSPath());
     vals = {
         "model": model,
-        "action": 0
+        "action": 'findAll'
     };
 
     if (element !== null && element.tagName === "TABLE" && (element.getAttribute('loadDataTable') !== null)) {
@@ -803,7 +824,7 @@ function loadTableData(element) {
             success: function (result, status) {
                 if (result !== null && result !== '') {
                     object = result;
-                    setTableData(element, object);
+                    setTableData(element, object, dinamic);
                     console.log('Conversion Exitosa a JSON - Get DataTable!');
                 } else {
                     console.log('Servicio Web Falló!.');
@@ -930,7 +951,6 @@ function submitForm(element, reload) {
         deleteTemporalElements(form);
         url = getUrlForm(form);
         if (url !== null && url !== "") {
-
             createTempInputs(form);
             formdata = null;
             formdata = new FormData(form);

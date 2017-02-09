@@ -7,7 +7,8 @@ jQuery(document).ready(function () {
         idstore.value = valid;
     }
     getData(idplace);
-    loadTableData(document.getElementById("dataTable0"));
+    
+    loadTableData(document.getElementById("dataTable0"), true);
 });
 
 function Send(item) {
@@ -15,7 +16,7 @@ function Send(item) {
     if (validateForm(form)) {
         submitForm(item, false).done(function () {
             setTimeout(function () {
-                loadTableData(document.getElementById("dataTable0"));
+                loadTableData(document.getElementById("dataTable0"),true);
             }, 200);
         });
     }
@@ -24,8 +25,7 @@ function Send(item) {
 function Delete(item) {
     submitForm(item, false).done(function () {
         setTimeout(function () {
-            loadTableData(document.getElementById("dataTable0"));
+            loadTableData(document.getElementById("dataTable0"),true);
         }, 200);
     });
 }
-

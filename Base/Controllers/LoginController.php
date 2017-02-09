@@ -27,7 +27,7 @@ if (isset($_POST) && $_POST != null) {
     $password = $crypt->crypt($pw);
     $columns = 'id_user as userid, doc_user as user, role_user as userrole';
     $where = "doc_user='$user' and password_user='$password'";
-    $result = $bc->select($columns, $where);
+    $result = $bc->select(null, $columns, $where);
     $array = array();
     $array['message'] = '';
     $array['error'] = '';

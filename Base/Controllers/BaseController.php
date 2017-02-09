@@ -48,8 +48,8 @@ class BaseController {
     public function disconnect() {
         $this->db->disconnect();
     }
-    
-    public function getLastInsertId ($name=null) {
+
+    public function getLastInsertId($name = null) {
         return $this->db->getLastInsertID($name);
     }
 
@@ -114,7 +114,7 @@ class BaseController {
         }
         return false;
     }
-    
+
     public function getPostData() {
         return $this->postData;
     }
@@ -188,8 +188,11 @@ class BaseController {
         return false;
     }
 
-    public function select($columns = '*', $where = null) {
+    public function select($table = null, $columns = '*', $where = null) {
         $result = null;
+        if ($table != null) {
+            $this->model = $table;
+        }
         if ($where == null) {
             $where = $this->where;
         }
@@ -198,6 +201,14 @@ class BaseController {
             return $result;
         }
         return null;
+    }
+
+    public function selectWithoutModel($table = null, $columns = '*', $where = null) {
+        $json = $this->select($table, $columns, $where);
+        $array = json_decode($json, true);
+        $array = $array[$this->model];
+        $array = json_encode($array);
+        return $array;
     }
 
     public function parseResults($result, $message = '', $state = 0) {
