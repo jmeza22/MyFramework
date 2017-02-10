@@ -12,6 +12,7 @@ $where = '';
 $columns = null;
 $user = null;
 $password = null;
+$enterprise = null;
 $login = null;
 $crypt = new MyCrypt();
 
@@ -28,9 +29,12 @@ if (isset($_POST) && $_POST != null) {
     $columns = 'id_user as userid, doc_user as user, role_user as userrole';
     $where = "doc_user='$user' and password_user='$password'";
     $result = $bc->select(null, $columns, $where);
+    if ($_POST['id_enterprise'] != null) {
+        $enterprise = $_POST['id_enterprise'];
+    }
     $array = array();
     $array['message'] = '';
-    $array['error'] = '';
+    $array['error'] = null;
     $array['state'] = 0;
     $array['data'] = null;
     if ($result == null || strcmp($result, '') == 0 || strcmp($result, '[]') == 0) {
@@ -42,10 +46,10 @@ if (isset($_POST) && $_POST != null) {
         $login = $login[$model];
         $login = $login[0];
         if (!$session->hasLogin()) {
-            $session->setLogin($login['userid'], $login['user'], $login['userrole']);
+            $session->setLogin($login['userid'], $login['user'], $login['userrole'], $enterprise);
             $array['token'] = $session->getToken();
-            $array['data'] = $result;
-        }else{
+            $array['data'] = json_encode($login);
+        } else {
             $array['state'] = 0;
             $array['message'] = 'You have a Active Session!.';
         }

@@ -9,9 +9,67 @@ class SessionManager {
     private $lock = true;
     private $timezone = "America/Bogota";
     private $website = null;
+    private $tokenForm = null;
+    private $time = 900;
+    private $index_token = 'token';
+    private $index_othertoken = 'othertoken';
+    private $index_userid = 'userid';
+    private $index_usertype = 'usertype';
+    private $index_nickname = 'nickname';
+    private $index_enterpriseid = 'enterpriseid';
+    private $index_time = 'starttime';
 
     function __construct() {
-        $this->website = "" . $_SERVER["SERVER_NAME"];
+        $this->setHost();
+        $this->setTokenForm();
+    }
+
+    function setHost($host = null) {
+        if ($host != null) {
+            $this->website = $host;
+        } else {
+            $this->website = $_SERVER["SERVER_NAME"];
+        }
+    }
+
+    function setTokenForm($token = null) {
+        if ($token != null) {
+            $this->tokenForm = $token;
+        } else {
+            if ($_REQUEST != null && isset($_REQUEST['token']) && $_REQUEST['token'] != null) {
+                $this->tokenForm = $_REQUEST['token'];
+            }
+        }
+    }
+
+    function setUserIdForm($userid) {
+        if ($userid != null) {
+            $_SESSION[$this->index_userid] = $userid;
+        }
+    }
+
+    function setUserTypeForm($usertype) {
+        if ($usertype != null) {
+            $_SESSION[$this->index_usertype] = $usertype;
+        }
+    }
+
+    function setNicknameForm($nickname) {
+        if ($nickname != null) {
+            $_SESSION[$this->index_nickname] = $nickname;
+        }
+    }
+
+    function setEnterpriseIdForm($id) {
+        if ($id != null) {
+            $_SESSION[$this->index_enterpriseid] = $id;
+        }
+    }
+
+    function setTime($time) {
+        if ($time != null && is_numeric($time)) {
+            $this->time = $time;
+        }
     }
 
     function getTimeZone() {
@@ -27,7 +85,7 @@ class SessionManager {
     }
 
     function hasLogin() {
-        if (isset($_SESSION['iduser'])) {
+        if (isset($_SESSION[$this->index_userid])) {
             return true;
         } else {
             return false;
@@ -35,38 +93,36 @@ class SessionManager {
     }
 
     function GenerateToken() {
-        $_SESSION['tokenme'] = md5(uniqid(rand() * 9204, true));
+        $_SESSION[$this->index_token] = md5(uniqid(rand() * 9204, true));
     }
 
     function GenerateTokenSingUp() {
-        $_SESSION['tokensingup'] = md5(uniqid(rand() * 2204, true));
+        $_SESSION[$this->index_othertoken] = md5(uniqid(rand() * 2204, true));
     }
 
     function getToken() {
-        if (isset($_SESSION['tokenme'])) {
-            return $_SESSION['tokenme'];
+        if (isset($_SESSION[$this->index_token])) {
+            return $_SESSION[$this->index_token];
         }
-        return 0;
+        return null;
     }
 
     function getTokenSingUp() {
-        if (isset($_SESSION['tokensingup'])) {
-            return $_SESSION['tokensingup'];
+        if (isset($_SESSION[$this->index_othertoken])) {
+            return $_SESSION[$this->index_othertoken];
         }
-        return '';
+        return null;
     }
 
     function CheckToken() {
-        if (isset($_REQUEST['token']) && $_REQUEST['token'] != NULL && $_REQUEST['token'] != '' && isset($_SESSION['tokenme']) && $_REQUEST['token'] == $_SESSION['tokenme']) {
+        if (isset($this->tokenForm) && $this->tokenForm != NULL && $this->tokenForm != '' && isset($_SESSION[$this->index_token]) && $this->tokenForm == $_SESSION[$this->index_token]) {
             return true;
         }
         return false;
     }
 
     function CheckTokenSingUp() {
-        echo $_REQUEST['token'] . '<br>';
-        echo $_SESSION['tokensingup'];
-        if (isset($_REQUEST['token']) && $_REQUEST['token'] != NULL && $_REQUEST['token'] != '' && $this->getTokenSingUp() != '' && $_REQUEST['token'] == $_SESSION['tokensingup']) {
+        if (isset($this->tokenForm) && $this->tokenForm != NULL && $this->tokenForm != '' && $this->getTokenSingUp() != '' && $this->tokenForm == $_SESSION['tokensingup']) {
             return true;
         }
         return false;
@@ -76,12 +132,13 @@ class SessionManager {
         $_SESSION['tokensingup'] = null;
     }
 
-    function setLogin($iduser, $user, $type) {
+    function setLogin($iduser, $user, $type = null, $identerprise = null) {
         if ($iduser != null && $user != null) {
-            $_SESSION['mytime'] = time();
-            $_SESSION['iduser'] = $iduser;
-            $_SESSION['nickname'] = $user;
-            $_SESSION['typeuser'] = $type;
+            $_SESSION[$this->index_time] = time();
+            $_SESSION[$this->index_userid] = $iduser;
+            $_SESSION[$this->index_nickname] = $user;
+            $_SESSION[$this->index_usertype] = $type;
+            $_SESSION[$this->index_enterpriseid] = $identerprise;
             $this->GenerateToken();
             return true;
         } else {
@@ -90,17 +147,19 @@ class SessionManager {
     }
 
     function logout() {
-        $_SESSION['mytime'] = null;
-        $_SESSION['iduser'] = null;
-        $_SESSION['typeuser'] = null;
-        $_SESSION['tokenme'] = null;
+        $_SESSION[$this->index_time] = null;
+        $_SESSION[$this->index_userid] = null;
+        $_SESSION[$this->index_nickname] = null;
+        $_SESSION[$this->index_usertype] = null;
+        $_SESSION[$this->index_enterpriseid] = null;
+        $_SESSION[$this->index_token] = null;
         session_unset();
         session_destroy();
     }
 
     function TimeOff() {
-        if (isset($_SESSION['mytime'])) {
-            $timeoff = $_SESSION['mytime'] + 900;
+        if (isset($_SESSION[$this->index_time])) {
+            $timeoff = $_SESSION[$this->index_time] + $this->time;
             if (time() > $timeoff) {
                 $this->logout();
                 return true;
@@ -111,40 +170,56 @@ class SessionManager {
     }
 
     function setLastActionTime() {
-        $_SESSION['mytime'] = time();
+        $_SESSION[$this->index_time] = time();
     }
 
     function getUserType() {
-        if (isset($_SESSION['typeuser'])) {
-            return $_SESSION['typeuser'];
+        if (isset($_SESSION[$this->index_usertype])) {
+            return $_SESSION[$this->index_usertype];
         }
-        return 0;
+        return null;
     }
 
     function getUserID() {
-        if (isset($_SESSION['iduser'])) {
-            return $_SESSION['iduser'];
+        if (isset($_SESSION[$this->index_userid])) {
+            return $_SESSION[$this->index_userid];
         }
-        return 0;
+        return null;
     }
 
     function getNickname() {
-        if (isset($_SESSION['nickname'])) {
-            return $_SESSION['nickname'];
+        if (isset($_SESSION[$this->index_nickname])) {
+            return $_SESSION[$this->index_nickname];
         }
-        return '';
+        return null;
+    }
+
+    function getEnterpriseID() {
+        if (isset($_SESSION[$this->index_enterpriseid])) {
+            return $_SESSION[$this->index_enterpriseid];
+        }
+        return null;
     }
 
     function getSessionStateJSON() {
         $array = array();
+        $data = array();
         $array['message'] = 'You must be login.';
         $array['error'] = null;
         $array['data'] = null;
         $array['state'] = 0;
+        $data['userid'] = null;
+        $data['user'] = null;
+        $data['userrole'] = null;
         if ($this->hasLogin()) {
+            $data['userid'] = $this->getUserID();
+            $data['user'] = $this->getNickname();
+            $data['userrole'] = $this->getUserType();
             $array['message'] = 'You have a Active Session.';
             $array['state'] = 1;
         }
+        $data = json_encode($data);
+        $array['data'] = $data;
         $array = json_encode($array);
         return $array;
     }

@@ -309,38 +309,12 @@ function getLocalPOST() {
     return null;
 }
 
-function setSessionPOST(post) {
-    if (LocalStorageStatus()) {
-        if (post !== null) {
-            sessionStorage.removeItem("POSTData");
-            sessionStorage.setItem("POSTData", post);
-            return true;
-        }
-    }
-    return false;
-}
-
-function getSessionPOST() {
-    if (LocalStorageStatus()) {
-        var post = null;
-        post = sessionStorage.getItem("POSTData");
-        if (post === null) {
-            console.log("SessionPOST is null. Try LocalPOST");
-            post = getLocalPOST();
-            setSessionPOST(post);
-        } else {
-            return post;
-        }
-    }
-    return null;
-}
-
 function setPOST(pname, pvalue) {
     if (LocalStorageStatus()) {
         if (pname !== null && pvalue !== null) {
             var post = null;
             var element = null;
-            post = getSessionPOST();
+            post = getLocalPOST();
             if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
                 post = JSON.parse(post);
             } else {
@@ -353,7 +327,7 @@ function setPOST(pname, pvalue) {
                 post.push(element);
                 post = JSON.stringify(post);
                 console.log('Datos: ' + post);
-                setSessionPOST(post);
+                setLocalPOST(post);
                 return true;
             }
         }
@@ -366,7 +340,7 @@ function getPOST(pname) {
         if (pname !== null) {
             var post = null;
             var pvalue = null;
-            post = getSessionPOST();
+            post = getLocalPOST();
             if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
                 post = JSON.parse(post);
                 if (post !== null) {
@@ -388,7 +362,7 @@ function unsetPOST(pname) {
     if (LocalStorageStatus()) {
         if (pname !== null) {
             var post = null;
-            post = getSessionPOST();
+            post = getLocalPOST();
             if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
                 post = JSON.parse(post);
                 if (post !== null) {
@@ -401,7 +375,7 @@ function unsetPOST(pname) {
                 }
             }
             post = JSON.stringify(post);
-            setSessionPOST(post);
+            setLocalPOST(post);
             return true;
         }
     }
@@ -410,23 +384,10 @@ function unsetPOST(pname) {
 
 function resetPOST() {
     if (LocalStorageStatus()) {
-        sessionStorage.removeItem("POSTData");
-        return true;
-    }
-    return false;
-}
-
-function nullPOST() {
-    if (LocalStorageStatus()) {
-        sessionStorage.removeItem("POSTData");
         localStorage.removeItem("POST");
         return true;
     }
     return false;
-}
-
-function savePOST() {
-    setLocalPOST(getSessionPOST());
 }
 
 function getLastInsertId() {
@@ -438,7 +399,7 @@ function getLastInsertId() {
     return null;
 }
 
-function getIdPOST() {
+function getIdFromPOST() {
     var frms = document.forms;
     var form = null;
     var findby = null;
@@ -483,5 +444,5 @@ function getIdPOST() {
 }
 
 jQuery(document).ready(function () {
-    getIdPOST();
+    getIdFromPOST();
 });

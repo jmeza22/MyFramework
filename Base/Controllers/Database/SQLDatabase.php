@@ -94,12 +94,12 @@ class SQLDatabase {
             if ($this->link == null) {
                 echo 'Error de Conexion';
             }
+            $this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return true;
-            //$this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             $this->errorcode = $e->getCode();
             $this->errormessage = $e->getMessage();
-            $this->printError($e->getMessage(), "Open Conection.");
+            $this->printError($e->getCode(), "Open Conection.");
         }
         return false;
     }
@@ -174,7 +174,7 @@ class SQLDatabase {
             } catch (Exception $e) {
                 $this->errorcode = $e->getCode();
                 $this->errormessage = $e->getMessage();
-                $this->printError($e->getMessage(), $do);
+                $this->printError($e->getMessage(), $sql);
                 $result = null;
             }
         }

@@ -56,7 +56,7 @@ and open the template in the editor.
                 <div class="row">
                     <div class="col-sm-3">
                         <center>
-                            <button id="btConsultar" name="btConsultar" type="button" onclick="Consultar(this);" class="btn btn-success" >Consultar</button>        
+                            <button id="btConsultar" name="btConsultar" type="button" onclick="Consultar(this);" class="btn btn-success" >Buscar</button>        
                         </center>
                     </div>
                     <div class="col-sm-3">
@@ -66,12 +66,12 @@ and open the template in the editor.
                     </div>
                     <div class="col-sm-3">
                         <center>
-                            <button id="btBorrar" name="btBorrar" type="button" onclick="Borrar(this);" class="btn btn-danger" >Borrar</button>        
+                            <button id="btBorrar" name="btBorrar" type="button" onclick="Borrar(this);" class="btn btn-danger" >Eliminar</button>        
                         </center>
                     </div>
                     <div class="col-sm-3">
                         <center>
-                            <input type="reset" class="btn btn-default" value="Cancelar" onclick="BorrarTodo(this);" > 
+                            <button type="reset" class="btn btn-default" value="Cancelar" onclick="BorrarTodo(this);" >Borrar</button> 
                         </center>
                     </div>
                 </div>
@@ -84,12 +84,12 @@ and open the template in the editor.
             jQuery(document).ready(function () {
                 document.getElementById("variable").value = 'name';
                 document.getElementById("valor").value = 'value';
-                getSessionPOST();
+                getLocalPOST();
                 getMyJSON();
             });
 
             function getMyJSON() {
-                document.getElementById("contenido").innerHTML = sessionStorage.getItem("POSTData");
+                document.getElementById("contenido").innerHTML = getLocalPOST();
             }
 
             function Consultar(item) {
@@ -100,7 +100,6 @@ and open the template in the editor.
             function Grabar(item) {
                 setPOST(document.getElementById("variable").value, document.getElementById("valor").value);
                 getMyJSON();
-                setLocalPOST(getSessionPOST());
             }
 
             function Borrar(item) {
@@ -110,10 +109,9 @@ and open the template in the editor.
             }
 
             function BorrarTodo(item) {
-                nullPOST();
+                resetPOST();
                 document.forms[0].reset();
                 getMyJSON();
-
             }
 
 

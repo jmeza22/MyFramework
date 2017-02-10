@@ -35,7 +35,7 @@
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro Lugares o Mesas</div>
             <div class="panel-body" >
-                <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="PlacesApp" findBy="id_place" mainform="true" >
+                <form id="form0" method="POST" autocomplete="off" url="Base/Controllers/DefaultController.php" model="PlacesApp" findBy="id_place" mainform="true" >
                     <input type="hidden" integer="true" name="id_place" id="id_place" value="0" required="required" maxlength="30" min="0"  >
                     <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" maxlength="30" min="0"  >
                     <div class="row">
@@ -51,12 +51,12 @@
                     <div class="row" style="margin-top: 20px;">
                         <div class="col-sm-6">
                             <center>
-                                <button id="Guardar" name="Guardar" type="button" action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                                <button type="button" id="save" name="save"  action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
                             </center>
                         </div>
                         <div class="col-sm-6">
                             <center>
-                                <button type="reset" id="reset" class="btn btn-danger">Limpiar</button> 
+                                <button type="reset" id="reset" name="reset" class="btn btn-danger">Limpiar</button> 
                             </center>
                         </div>
                     </div>
@@ -73,16 +73,16 @@
                     <table id="dataTable0" class="table table-striped table-bordered table-responsive nowrap" loadDataTable="true" model="PlacesApp" url="Base/Controllers/GetDataTable.php" style="width: 100%;" fillOnLoad="true" >
                         <thead id="" tableHead="true">
                             <tr rowHead="true">
-                                <th columnName="id_store" showColumn="true" style="width: 10%;" >
+                                <th  showColumn="true" style="width: 10%;" >
                                     Tienda
                                 </th>
-                                <th columnName="number_place" showColumn="true" style="width: 10%;" >
+                                <th  showColumn="true" style="width: 10%;" >
                                     Numero
                                 </th>
-                                <th columnName="description_place" showColumn="true" style="width: 60%;" >
+                                <th  showColumn="true" style="width: 60%;" >
                                     Descripcion
                                 </th>
-                                <th columnName="state_place" showColumn="true" style="width: 20%;" >
+                                <th  showColumn="true" style="width: 20%;" >
                                     Opciones
                                 </th>
                             </tr>
@@ -97,7 +97,7 @@
                                         <input type="hidden" name="id_place" id="id_place" value="{{id_place}}" />
                                         <input type="hidden" name="action" id="action" value="0" >
                                         <button type="button" name="delete" id="delete" action="delete" class="btn btn-danger" onclick="Delete(this);"><i class="glyphicon glyphicon-remove"></i></button>
-                                        <button type="submit" name="update" id="update" action="update" class="btn btn-warning" value="update"><i class="glyphicon glyphicon-edit"></i></button>
+                                        <button type="button" name="update" id="update" action="update" class="btn btn-warning" onclick="Edit(this);"><i class="glyphicon glyphicon-edit"></i></button>
                                     </form>
                                 </td>
                             </tr>

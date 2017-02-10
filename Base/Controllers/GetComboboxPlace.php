@@ -9,14 +9,17 @@ if ($session->hasLogin()) {
         $bc = new BaseController();
         $bc->connect();
         $bc->preparePostData();
+        $bc->setModel('PlacesApp');
         $bc->setAction('findAll');
         $colname = null;
         $colvalue = null;
         $colname = $_POST['colname'];
         $colvalue = $_POST['colvalue'];
-        echo $bc->getComboboxData($colname, $colvalue, '');
+        echo $bc->getComboboxData($colname, $colvalue, 'state_place=1');
         $bc->disconnect();
     }
+}else{
+    echo $session->getSessionStateJSON();
 }
 ob_end_flush();
 ?>

@@ -57,7 +57,7 @@ input[type="button"], input[type="submit"]{
     font-family: 'Orbitron', sans-serif !important;
 }
 
-button[disabled], .btn[disabled]{
+button[disabled]{
     display: none !important;
     visibility: hidden !important;
 }
@@ -80,13 +80,20 @@ button{
     font-family: 'Orbitron', sans-serif !important;
 }
 
+textarea{
+    width: 100% !important;
+    min-width: 265px !important;
+    min-height: 80px !important;
+    max-height: 480px !important;
+}
+
 .panel-body .btn{
-    min-width: 120px !important;
+    min-width: 100px !important;
     font-weight: bolder !important;
     font-family: 'Orbitron', sans-serif !important;
 }
 
-.panel-body td .btn {
+.panel-body table tr td .btn {
     min-width: 0px !important;
     max-width: 34px !important;
 }
@@ -105,8 +112,9 @@ label{
     background-color: #fff !important;
 }
 
-center > .btn{
-    margin-top: 15px !important;
+center > button{
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
 }
 
 header{
@@ -124,7 +132,6 @@ header{
     opacity: 0.8 !important;
     -moz-opacity:0.8;
     -khtml-opacity:0.8;
-
 }
 
 footer {
@@ -159,6 +166,7 @@ iframe{
     border-color: white !important;
 
 }
+
 table form{
     margin-bottom: 0px !important;
 }

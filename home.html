@@ -11,16 +11,18 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="js/localStorageData.js"></script>
+        <script type="text/javascript" src="js/SimplexFramework.js"></script>
     </head>
     <body>
         <div> Token
             <script type="text/javascript">
                 document.writeln(getTokenLogin());
             </script>
-            Orden
+            Empresa
             <script type="text/javascript">
-                document.writeln(getIdOrder());
+                document.writeln(getIdEnterprise());
             </script>
+            <a href="#" onclick="logout('Base/Controllers/LogoutController.php','login.html', null)">Cerrar Sesion</a>
         </div>
 
     </body>

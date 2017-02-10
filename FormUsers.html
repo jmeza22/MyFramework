@@ -44,7 +44,7 @@
                                 <div class="photoPanel">
                                     <center>
                                         <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/Users.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
-                                        <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImageAndGetName(this,'photo_user')" title="Click to Change Photo" />
+                                        <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImageAndGetName(this, 'photo_user')" title="Click to Change Photo" />
                                     </center>
                                 </div>
                             </center>
@@ -118,15 +118,15 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row" style="margin-top: 20px;">
                                 <div class="col-sm-6">
                                     <center>
-                                        <button id="Guardar" name="Guardar" type="button" action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                                        <button type="button" id="save" name="save"  action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
                                     </center>
                                 </div>
                                 <div class="col-sm-6">
                                     <center>
-                                        <button type="reset" id="reset" class="btn btn-danger">Limpiar</button> 
+                                        <button type="reset" id="reset" name="reset" class="btn btn-danger">Limpiar</button> 
                                     </center>
                                 </div>
                             </div>
@@ -137,6 +137,6 @@
 
             </div>
         </div>
-        
+
     </body>
 </html>

@@ -6,7 +6,7 @@
 jQuery(document).ready(function () {
     createAjaxLoading();
     AjaxLoading();
-    getIdGET();
+    getIdFromGET();
     setTokenForms();
 });
 
@@ -121,6 +121,7 @@ function createAjaxLoading() {
     maindiv.setAttribute("style", "display:none;");
     subdiv.setAttribute("id", "SubLoading");
     subdiv.setAttribute("class", "SubLoading");
+    subdiv.setAttribute("style", "display: inline-block;");
     imgload.setAttribute("id", "ImageLoading");
     imgload.setAttribute("class", "ImageLoading");
     imgload.setAttribute("src", "css/loadingAnimation.gif");
@@ -137,7 +138,7 @@ function showAjaxLoading() {
     var loading = null;
     loading = document.getElementById("AjaxLoading");
     if (loading !== null) {
-        loading.style = "display: block;";
+        loading.style = "display: block; text-align: center;";
         return true;
     }
     return false;
@@ -230,6 +231,72 @@ function getForm(item) {
         }
     }
     return null;
+}
+
+function disabledForm(item) {
+    var form = null;
+    if (item !== null) {
+        form = getForm(item);
+        for (var i = 0; i < document.forms.length; i++) {
+            if (form === document.forms[i]) {
+                form = document.forms[i];
+                for (var j = 0; j < form.elements.length; j++) {
+                    form.elements[j].setAttribute('disabled', 'disabled');
+                }
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+function resetForm(item) {
+    var form = null;
+    if (item !== null) {
+        form = getForm(item);
+        for (var i = 0; i < document.forms.length; i++) {
+            if (form === document.forms[i]) {
+                form = document.forms[i];
+                for (var j = 0; j < form.elements.length; j++) {
+                    form.elements[j].value = "";
+                }
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+function readOnlyForm(item) {
+    var form = null;
+    if (item !== null) {
+        form = getForm(item);
+        for (var i = 0; i < document.forms.length; i++) {
+            if (form === document.forms[i]) {
+                form = document.forms[i];
+                for (var j = 0; j < form.elements.length; j++) {
+                    form.elements[j].setAttribute('readonly', 'readonly');
+                    console.log(form.elements[j].tagName);
+                    if (form.elements[j].tagName === "SELECT") {
+                        var newitem = document.createElement('INPUT');
+                        newitem.setAttribute('type', 'hidden');
+                        newitem.setAttribute('id', form.elements[j].getAttribute('id'));
+                        newitem.setAttribute('name', form.elements[j].getAttribute('name'));
+                        newitem.setAttribute('value', form.elements[j].getAttribute('value'));
+                        newitem.value = form.elements[j].value;
+                        form.appendChild(newitem);
+                        form.elements[j].setAttribute('disabled', 'disabled');
+                    }
+                    if (form.elements[j].tagName === "BUTTON" || (form.elements[j].tagName === "INPUT" && (form.elements[j].getAttribute('type') === 'button' || form.elements[j].getAttribute('type') === 'submit'))) {
+                        form.elements[j].setAttribute('disabled', 'disabled');
+                    }
+                }
+                break;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 function getElementDocument(id) {
@@ -494,12 +561,12 @@ function submitAjax(formData, url, header, reload) {
         processData: false,
         dataType: 'json',
         success: function (result, status) {
-            if (result !== null) {
-                if (result.message !== null && result.message !== '') {
-                    alert(result.message);
-                }
+            if (result !== null && result !== '') {
                 if (result.error !== null && result.error !== '') {
                     console.error(result.error);
+                }
+                if (result.message !== null && result.message !== '') {
+                    alert(result.message);
                 }
                 if (result.lastInsertId !== null && result.lastInsertId !== '') {
                     try {
@@ -509,9 +576,14 @@ function submitAjax(formData, url, header, reload) {
                         console.log('Hubo error con el lastInsertId.');
                     }
                 }
-                if (reload === true) {
-                    window.location.reload();
+                if (result.state !== null && result.state === 1) {
+                    console.log('Submit OK!.');
+                    if (reload === true) {
+                        window.location.reload();
+                    }
                 }
+            } else {
+                console.error('Hubo error - Submit!.');
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -567,6 +639,7 @@ function setDataForm(myform, json) {
 
                 }
             }
+            console.log('Set Form OK!.');
             return true;
         }
 
@@ -600,10 +673,10 @@ function getData(element) {
                         object = result.data;
                         try {
                             object = JSON.parse(object);
-                            console.log('Conversion Exitosa a JSON - Get Values!');
+                            console.log('Conversion Exitosa a JSON - Get Data Form!.');
                             setDataForm(myform, object);
                         } catch (e) {
-                            console.error("Error de Conversion JSON - Get Values");
+                            console.error("Error de Conversion JSON - Get Data Form!.");
                         }
                     }
 
@@ -637,12 +710,13 @@ function setComboboxOptions(combo, json) {
             option.setAttribute('value', json[i]['ivalue']);
             option.innerHTML = json[i]['iname'];
             if (option.id === selected) {
-                option.setAttribute('selected', 'true');
+                option.setAttribute('selected', 'selected');
             }
             combo.appendChild(option);
             option = null;
             console.log(json[i]['ivalue'] + ' => ' + json[i]['iname']);
         }
+        console.log('Set ComboBox OK!.');
         return true;
     }
     return false;
@@ -679,11 +753,10 @@ function loadComboboxData(element) {
             data: vals,
             dataType: 'json',
             success: function (result) {
-                console.log(result);
                 if (result !== null && result !== '') {
+                    console.log('Conversion Exitosa a JSON - Load Combobox!');
                     object = result;
                     setComboboxOptions(element, object);
-                    console.log('Conversion Exitosa a JSON - Get Combobox!');
                 } else {
                     console.error('Servicio Web Falló!.');
                 }
@@ -706,7 +779,6 @@ function clearTableData(element) {
                 if (TRs[i] !== null && TRs[i] !== undefined) {
                     if (TRs[i].getAttribute('rowSample') !== null) {
                         hideElement(TRs[i]);
-                        disableElement(TRs[i]);
                     }
                     if (TRs[i].getAttribute('rowHead') === null && TRs[i].getAttribute('rowSample') === null) {
                         deleteElement(TRs[i]);
@@ -722,8 +794,41 @@ function clearTableData(element) {
     return false;
 }
 
+function createDataTable(element) {
+    var xtable = null;
+    var tableId = null;
+    if (element !== null && element.tagName === "TABLE") {
+        tableId = '#' + element.getAttribute('id');
+        try {
+            xtable = $(tableId).DataTable();
+            console.log('DataTable Created: ' + tableId + '');
+        } catch (e) {
+            console.error(e);
+            null;
+        }
+    }
+    return xtable;
+}
 
-function setTableData(element, json, dinamic) {
+function destroyDataTable(element) {
+    var result = false;
+    var tableId = null;
+    if (element !== null && element.tagName === "TABLE") {
+        tableId = '#' + element.getAttribute('id');
+        try {
+            if ($.fn.DataTable.isDataTable(tableId)) {
+                $(tableId).DataTable().destroy();
+                console.log('DataTable Destroyed: ' + tableId + '');
+                result = true;
+            }
+        } catch (e) {
+            null;
+        }
+    }
+    return result;
+}
+
+function setTableData(element, json, dynamic) {
     var TRs = null;
     var rowSample = null;
     var newrow = null;
@@ -732,10 +837,9 @@ function setTableData(element, json, dinamic) {
     var columns = null;
     var col = null;
     var xtable = null;
-    var tableId = null;
 
     if (element !== null && element.tagName === "TABLE" && json !== null) {
-        tableId = '#' + element.getAttribute('id');
+        destroyDataTable(element);
         if (element.getElementsByTagName('TBODY') !== null) {
             tbody = element.getElementsByTagName('TBODY')[0];
         }
@@ -743,13 +847,12 @@ function setTableData(element, json, dinamic) {
             TRs = element.getElementsByTagName('TR');
         }
         for (var i = 0; i < TRs.length; i++) {
+            console.log(TRs[i]);
             if (TRs[i].getAttribute('rowSample') !== null) {
                 rowSample = TRs[i].innerHTML;
+                console.log('RowSample Found!');
                 break;
             }
-        }
-        if ($.fn.DataTable.isDataTable(tableId)) {
-            $(tableId).DataTable().destroy();
         }
         clearTableData(element);
         if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelTable(element)) {
@@ -769,39 +872,32 @@ function setTableData(element, json, dinamic) {
             }
 
             for (var i = 0; i < json.length; i++) {
-
                 newrow = null;
                 newrow = document.createElement('TR');
                 newrow.setAttribute('rowID', i);
                 newrow.innerHTML = rowSample;
+                console.log('row: '+i);
                 for (var j = 0; j < columns.length; j++) {
                     col = columns[j];
+                    console.log(col);
                     newrow.innerHTML = newrow.innerHTML.replace('{{' + col + '}}', json[i][col]);
                 }
-
+                
                 tbody.appendChild(newrow);
             }
-            
-            if (dinamic === true) {
-                
-                try {
-                    if (!$.fn.DataTable.isDataTable(tableId)) {
-                        xtable = $(tableId).DataTable();
-                        console.log(tableId + ' is DataTable');
-                    }
-                } catch (e) {
-                    console.error(e);
-                    null;
-                }
+
+            if (dynamic === true) {
+                console.log('DataTable Dinamico!.');
+                xtable = createDataTable(element);
             }
+            console.log('Set TableData OK!.');
             return true;
         }
     }
     return false;
 }
 
-function loadTableData(element, dinamic) {
-    clearTableData(element);
+function loadTableData(element, dynamic) {
     var promise = null;
     var url = null;
     var model = null;
@@ -823,9 +919,9 @@ function loadTableData(element, dinamic) {
             dataType: 'json',
             success: function (result, status) {
                 if (result !== null && result !== '') {
+                    console.log('Conversion Exitosa a JSON - Load TableData!');
                     object = result;
-                    setTableData(element, object, dinamic);
-                    console.log('Conversion Exitosa a JSON - Get DataTable!');
+                    setTableData(element, object, dynamic);
                 } else {
                     console.log('Servicio Web Falló!.');
                 }
@@ -846,14 +942,20 @@ function setLogin(data) {
             if (data['user'] !== null) {
                 localStorage.setItem("UsernameLogin", "" + data['user']);
                 console.log('UsernameLogin Almacenado');
+            } else {
+                localStorage.removeItem("UsernameLogin");
             }
             if (data['userrole'] !== null) {
                 localStorage.setItem("UserRoleLogin", "" + data['userrole']);
                 console.log('UserRoleLogin Almacenado');
+            } else {
+                localStorage.removeItem("UserRoleLogin");
             }
             if (data['userid'] !== null) {
                 localStorage.setItem("UserIdLogin", "" + data['userid']);
                 console.log('UserIdLogin Almacenado');
+            } else {
+                localStorage.removeItem("UserIdLogin");
             }
             return true;
         } catch (e) {
@@ -864,26 +966,27 @@ function setLogin(data) {
 }
 
 function setToken(token) {
-    if (token !== null) {
-        try {
+    try {
+        if (token !== null) {
             localStorage.setItem("TokenLogin", "" + token);
             console.log('TokenLogin Almacenado ' + token);
             return true;
-        } catch (e) {
-            console.log('No se pudo Iniciar Token!. ' + token);
+        } else {
+            localStorage.removeItem("TokenLogin");
         }
+    } catch (e) {
+        console.log('No se pudo Iniciar Token!. ' + token);
     }
     return false;
 }
 
-function login(element, page) {
-    var next = false;
+function login(element, destinationPage) {
     var form = null;
     var url = null;
     var formData = null;
     var promise = null;
     var object = null;
-    if (element !== null && page !== null && page !== '') {
+    if (element !== null) {
         form = getForm(element);
         url = getUrlForm(form);
     }
@@ -908,19 +1011,18 @@ function login(element, page) {
                     if (result.state === 1) {
                         try {
                             object = JSON.parse(result.data);
-                            console.log('Conversion Exitosa a JSON - Get Values!');
+                            console.log('Conversion Exitosa a JSON - Login!');
                         } catch (e) {
-                            console.error("Error de Conversion JSON - Get Values");
+                            console.error("Error de Conversion JSON - Login");
                         }
-                        setLogin(object[getModelForm(form)][0]);
+                        setLogin(object);
                         if (result.token !== null && result.token !== '') {
                             setToken(result.token);
                         }
-                        if (page !== null) {
-                            window.location.href = page;
+                        if (destinationPage !== null) {
+                            window.location.href = destinationPage;
                         }
                     }
-
 
                 }
             },
@@ -933,6 +1035,56 @@ function login(element, page) {
         console.error("No se encontró el Formulario.");
     }
     return promise;
+}
+
+function logout(url, destinationPage, token) {
+    var promise = null;
+    var object = null;
+    var vals = null;
+    vals = {
+        "model": 'logout',
+        "action": 'logout',
+        "token": token
+    };
+    if (url !== null) {
+        promise = $.ajax({
+            method: "POST",
+            url: url,
+            data: vals,
+            dataType: 'json',
+            success: function (result, status) {
+                if (result !== null && result !== '') {
+                    if (result.message !== null && result.message !== '') {
+                        console.log(result.message);
+                    }
+                    if (result.error !== null && result.error !== '') {
+                        console.error(result.error);
+                    }
+                    if (result.data !== null) {
+                        try {
+                            object = JSON.parse(result.data);
+                            console.log('Conversion Exitosa a JSON - Logout!');
+                        } catch (e) {
+                            console.error("Error de Conversion JSON - Logout");
+                        }
+                        setLogin(object);
+                        setToken(null);
+                        if (destinationPage !== null) {
+                            window.location.href = destinationPage;
+                        }
+                    }
+
+                } else {
+                    console.log('Servicio Web Falló!.');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log(textStatus);
+                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+            }
+        }
+        );
+    }
 }
 
 function submitForm(element, reload) {
@@ -955,7 +1107,7 @@ function submitForm(element, reload) {
             formdata = null;
             formdata = new FormData(form);
             if (formdata !== null) {
-                promise = submitAjax(formdata, url, null, false);
+                promise = submitAjax(formdata, url, null, reload);
             }
             deleteTemporalElements(form);
 
@@ -970,19 +1122,37 @@ function submitForm(element, reload) {
     return promise;
 }
 
-function submitFormConfirm(button) {
+function submitFormConfirm(button, reload) {
     var r = false;
-    r = confirm("Está Seguro?");
+    r = confirm("Está Seguro(a)?");
     if (r === true) {
-        return submitForm(button);
+        return submitForm(button, reload);
     } else {
-        alert("Accion Cancelada.");
+        console.log("Accion Cancelada.");
         return false;
     }
     return false;
 }
 
-function getIdGET() {
+function sendIdValue(form1, form2) {
+    var findby1 = null;
+    var findby2 = null;
+    var valid1 = null;
+    var valid2 = null;
+    if (form1 !== null && form2 !== null) {
+        form1 = getForm(form1);
+        form2 = getForm(form2);
+        if (form1.tagName==="FORM" && form2.tagName==="FORM") {
+            findby1 = getFindByForm(form1);
+            findby2 = getFindByForm(form2);
+            valid1 = getElementForm(form1, findby1);
+            valid2 = getElementForm(form2, findby2);
+            valid2.value = valid1.value;
+        }
+    }
+}
+
+function getIdFromGET() {
     var frms = document.forms;
     var form = null;
     var findby = null;

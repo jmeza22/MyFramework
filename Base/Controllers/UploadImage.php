@@ -63,8 +63,8 @@ class UploadImage {
             if ((
                     ($_FILES[$this->filename]["type"] == "image/jpeg") ||
                     ($_FILES[$this->filename]["type"] == "image/pjpeg") ||
-                    ($_FILES[$this->filename]["type"] == "image/png")) ||
-                    ($_FILES[$this->filename]["type"] == "image/gif") &&
+                    ($_FILES[$this->filename]["type"] == "image/png") ||
+                    ($_FILES[$this->filename]["type"] == "image/gif")) &&
                     ($_FILES[$this->filename]["size"] <= $this->length)) {
 
                 $this->ext = "";

@@ -23,8 +23,6 @@
         <script type="text/javascript" src="js/SimplexFramework.js"></script>
         <script type="text/javascript" src="js-forms/FormLogin.js"></script>
 
-
-
     </head>
     <body>
 
@@ -34,14 +32,20 @@
                 <form id="FormLogin" method="POST" autocomplete="false" url="Base/Controllers/LoginController.php" model="UsersApp" >
 
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <label>Nombre de Usuario</label>
                             <input type="text" name="doc_user" id="doc_user" value="" required="required" maxlength="50" class="form-control" title="Nombre Completo">
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <label>Contraseña</label>
                             <input type="password" name="password_user" id="password_user" value="" required="required" maxlength="100" class="form-control" >
+                        </div>
+                        <div class="col-sm-12">
+                            <label>Empresa</label>
+                            <select id="id_enterprise" name="id_enterprise" selected="1" model="StoreApp" colname="name_store" colvalue="id_store" url="Base/Controllers/GetComboboxEnterprise.php" class="form-control" style="width: 100%;">
+                                <option disabled="disabled" selected="selected" value="NN">Ninguna</option>
+                            </select>
                         </div>
                     </div>
 
@@ -54,10 +58,11 @@
                         </div>
                         <div class="col-sm-6">
                             <center>
-                                <input type="reset" class="btn btn-danger" value="Cancelar" > 
+                                <button type="reset" class="btn btn-danger" value="Cancelar">Limpiar</button>
                             </center>
                         </div>
                     </div>
+                    
 
                 </form>
             </div>
