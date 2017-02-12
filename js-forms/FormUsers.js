@@ -1,9 +1,8 @@
 jQuery(document).ready(function () {
     getData(document.getElementById("id_user")).done(function () {
-    });
-    document.getElementById("imageFile").onchange(function(){
-        alert('ok');
-        document.getElementById("photo_user").value=showMyImage(this);
+        var img=document.getElementById("imagePhoto");
+        var nmimg=document.getElementById("photo_user");
+        img.src=getWSPath()+'ImageFiles/'+nmimg.value;
     });
 });
 

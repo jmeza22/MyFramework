@@ -13,7 +13,7 @@ if ($session->hasLogin()) {
         $bc->setAction('findAll');
         $colname = null;
         $colvalue = null;
-        $colname = $_POST['colname'];
+        $colname = "concat(name_user,' ',lastname_user)";
         $colvalue = $_POST['colvalue'];
         echo $bc->getComboboxData($colname, $colvalue, 'state_user=1');
         $bc->disconnect();

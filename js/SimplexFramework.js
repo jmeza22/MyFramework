@@ -48,7 +48,7 @@ function getCurrentTime() {
 function getCurrentDate() {
     var Y = new Date().getFullYear();
     var M = new Date().getMonth();
-    var D = new Date().getDay();
+    var D = new Date().getDate();
     var text = '';
     M = M + 1;
     D = D + 1;
@@ -221,15 +221,18 @@ function disableElement(element) {
 
 function getForm(item) {
     if (item !== null) {
+
         if (item.tagName === "FORM") {
             return item;
         }
         if (item.parentNode.tagName === "FORM") {
+            console.log('Formulario Encontrado: ' + item.parentNode);
             return item.parentNode;
         } else {
             return getForm(item.parentNode);
         }
     }
+    console.log('No Se Encontró Formulario!.');
     return null;
 }
 
@@ -258,7 +261,9 @@ function resetForm(item) {
             if (form === document.forms[i]) {
                 form = document.forms[i];
                 for (var j = 0; j < form.elements.length; j++) {
-                    form.elements[j].value = "";
+                    if (form.elements[j].tagName !== "BUTTON") {
+                        form.elements[j].value = "";
+                    }
                 }
             }
         }
@@ -287,7 +292,14 @@ function readOnlyForm(item) {
                         form.appendChild(newitem);
                         form.elements[j].setAttribute('disabled', 'disabled');
                     }
-                    if (form.elements[j].tagName === "BUTTON" || (form.elements[j].tagName === "INPUT" && (form.elements[j].getAttribute('type') === 'button' || form.elements[j].getAttribute('type') === 'submit'))) {
+                    if (form.elements[j].tagName === "BUTTON" ||
+                            (form.elements[j].tagName === "INPUT" &&
+                                    (
+                                            form.elements[j].getAttribute('type') === 'button' ||
+                                            form.elements[j].getAttribute('type') === 'submit' ||
+                                            form.elements[j].getAttribute('type') === 'reset')
+                                    )
+                            ) {
                         form.elements[j].setAttribute('disabled', 'disabled');
                     }
                 }
@@ -308,17 +320,17 @@ function getElementDocument(id) {
     return null;
 }
 
-function getElementForm(form, id) {
+function getElement(parent, id) {
     var j = 0;
     var elements = null;
 
-    if (form !== null && id !== null && id !== '') {
-        if (form.tagName === "FORM") {
-            elements = form.elements;
+    if (parent !== null && id !== null && id !== '') {
+        if (parent.tagName === "FORM") {
+            elements = parent.elements;
             if (elements.length > 0) {
                 for (j = 0; j < elements.length; j++) {
                     if (elements[j].getAttribute("id") === id) {
-                        console.log("Found: " + elements[j].getAttribute("id"))
+                        console.log("Found: " + elements[j].getAttribute("id"));
                         return elements[j];
                     }
                 }
@@ -326,6 +338,26 @@ function getElementForm(form, id) {
         }
     }
     return getElementDocument(id);
+}
+
+function getOptionByValue(parent, value) {
+    var j = 0;
+    var elements = null;
+
+    if (parent !== null && value !== null && value !== '') {
+        if (parent.tagName === "SELECT" || parent.tagName === "DATALIST") {
+            elements = parent.childNodes;
+            if (elements.length > 0) {
+                for (j = 0; j < elements.length; j++) {
+                    if (elements[j].value === value) {
+                        console.log("Found: " + elements[j].getAttribute("id"));
+                        return elements[j];
+                    }
+                }
+            }
+        }
+    }
+    return null;
 }
 
 function createInputHidden(form, name, value) {
@@ -346,7 +378,7 @@ function createInputHidden(form, name, value) {
 function createInputHiddenTemp(form, name, value) {
     var element = null;
     if (createInputHidden(form, name, value)) {
-        element = getElementForm(form, name);
+        element = getElement(form, name);
         if (element !== null) {
             element.setAttribute('temp', 'true');
             console.log('Input Oculto ' + name);
@@ -383,54 +415,28 @@ function deleteTemporalElements(parent) {
     return false;
 }
 
-
-function getUrlForm(form) {
-    if (form !== null && form.tagName === "FORM") {
-        if (form.getAttribute("url") !== null && form.getAttribute("url") !== '') {
-            return getWSPath() + form.getAttribute("url");
+function getActionButton(item) {
+    var form = null;
+    if (item !== null) {
+        form = getForm(item);
+        if (form !== null && form.tagName === "FORM") {
+            for (var j = 0; j < form.elements.length; j++) {
+                if (form.elements[j] !== null && (form.elements[j].tagName === "BUTTON" || form.elements[j].tagName === "INPUT")) {
+                    if (form.elements[j].getAttribute('action') !== null) {
+                        return form.elements[j];
+                    }
+                }
+            }
         }
+
     }
     return null;
 }
 
-function getTokenForm(form) {
-    if (form !== null && form.tagName === "FORM") {
-        if (form.getAttribute("token") !== null && form.getAttribute("token") !== '') {
-            return form.getAttribute("token");
-        }
-    }
-    return null;
-}
-
-function getModelForm(form) {
-    if (form !== null && form.tagName === "FORM") {
-        if (form.getAttribute("model") !== null && form.getAttribute("model") !== '') {
-            return form.getAttribute("model");
-        }
-    }
-    return null;
-}
-
-function getActionForm(form) {
-    if (form !== null && form.tagName === "FORM") {
-        if (form.getAttribute("do") !== null && form.getAttribute("do") !== '') {
-            return form.getAttribute("do");
-        }
-    }
-    return null;
-}
-
-function getFindByForm(form) {
-    if (form !== null && form.tagName === "FORM") {
-        if (form.getAttribute("findBy") !== null && form.getAttribute("findBy") !== '') {
-            return form.getAttribute("findBy");
-        }
-    }
-    return null;
-}
 
 function getActionFromButton(button) {
     var form = null;
+    button = getActionButton(button);
     if (button !== null && (button.tagName === "BUTTON" || button.tagName === "INPUT")) {
         if (button.getAttribute("action") !== null && button.getAttribute("action") !== '') {
             form = getForm(button);
@@ -458,21 +464,21 @@ function getActionFromButton(button) {
 }
 
 function createTempInputs(form) {
-    deleteElement(getElementForm(form, 'token'));
-    if (getElementForm(form, 'token') === null && getTokenForm(form) !== null && getTokenForm(form) !== '') {
-        createInputHiddenTemp(form, 'token', getTokenForm(form));
+    deleteElement(getElement(form, 'token'));
+    if (getElement(form, 'token') === null && getToken(form) !== null && getToken(form) !== '') {
+        createInputHiddenTemp(form, 'token', getToken(form));
     }
-    deleteElement(getElementForm(form, 'model'));
-    if (getElementForm(form, 'model') === null && getModelForm(form) !== null && getModelForm(form) !== '') {
-        createInputHiddenTemp(form, 'model', getModelForm(form));
+    deleteElement(getElement(form, 'model'));
+    if (getElement(form, 'model') === null && getModel(form) !== null && getModel(form) !== '') {
+        createInputHiddenTemp(form, 'model', getModel(form));
     }
-    deleteElement(getElementForm(form, 'action'));
-    if (getElementForm(form, 'action') === null && getActionForm(form) !== null && getActionForm(form) !== '') {
+    deleteElement(getElement(form, 'action'));
+    if (getElement(form, 'action') === null && getActionForm(form) !== null && getActionForm(form) !== '') {
         createInputHiddenTemp(form, 'action', getActionForm(form));
     }
-    deleteElement(getElementForm(form, 'findBy'));
-    if (getElementForm(form, 'findBy') === null && getFindByForm(form) !== null && getFindByForm(form) !== '') {
-        createInputHiddenTemp(form, 'findBy', getFindByForm(form));
+    deleteElement(getElement(form, 'findBy'));
+    if (getElement(form, 'findBy') === null && getFindBy(form) !== null && getFindBy(form) !== '') {
+        createInputHiddenTemp(form, 'findBy', getFindBy(form));
     }
 }
 
@@ -488,7 +494,7 @@ function getTD(item) {
 }
 
 function getColName(combo) {
-    if (combo !== null && combo.tagName === "SELECT") {
+    if (combo !== null && (combo.tagName === "SELECT" || combo.tagName === "DATALIST")) {
         if (combo.getAttribute("colname") !== null && combo.getAttribute("colname") !== '') {
             return combo.getAttribute("colname");
         }
@@ -497,7 +503,7 @@ function getColName(combo) {
 }
 
 function getColValue(combo) {
-    if (combo !== null && combo.tagName === "SELECT") {
+    if (combo !== null && (combo.tagName === "SELECT" || combo.tagName === "DATALIST")) {
         if (combo.getAttribute("colvalue") !== null && combo.getAttribute("colvalue") !== '') {
             return combo.getAttribute("colvalue");
         }
@@ -505,35 +511,17 @@ function getColValue(combo) {
     return null;
 }
 
-function getModelCombo(combo) {
-    if (combo !== null && combo.tagName === "SELECT") {
-        if (combo.getAttribute("model") !== null && combo.getAttribute("model") !== '') {
-            return combo.getAttribute("model");
+function getActionForm(form) {
+    if (form !== null && form.tagName === "FORM") {
+        if (form.getAttribute("do") !== null && form.getAttribute("do") !== '') {
+            return form.getAttribute("do");
         }
     }
     return null;
 }
 
-function getUrlCombo(combo) {
-    if (combo !== null && combo.tagName === "SELECT") {
-        if (combo.getAttribute("url") !== null && combo.getAttribute("url") !== '') {
-            return getWSPath() + combo.getAttribute("url");
-        }
-    }
-    return null;
-}
-
-function getSelectedCombo(combo) {
-    if (combo !== null && combo.tagName === "SELECT") {
-        if (combo.getAttribute("selected") !== null && combo.getAttribute("selected") !== '') {
-            return combo.getAttribute("selected");
-        }
-    }
-    return null;
-}
-
-function getModelTable(element) {
-    if (element !== null && element.tagName === "TABLE") {
+function getModel(element) {
+    if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
         if (element.getAttribute("model") !== null && element.getAttribute("model") !== '') {
             return element.getAttribute("model");
         }
@@ -541,10 +529,37 @@ function getModelTable(element) {
     return null;
 }
 
-function getUrlTable(element) {
-    if (element !== null && element.tagName === "TABLE") {
+function getURL(element) {
+    if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
         if (element.getAttribute("url") !== null && element.getAttribute("url") !== '') {
             return getWSPath() + element.getAttribute("url");
+        }
+    }
+    return null;
+}
+
+function getToken(element) {
+    if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
+        if (element.getAttribute("token") !== null && element.getAttribute("token") !== '') {
+            return element.getAttribute("token");
+        }
+    }
+    return null;
+}
+
+function getFindBy(element) {
+    if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
+        if (element.getAttribute("findby") !== null && element.getAttribute("findby") !== '') {
+            return element.getAttribute("findby");
+        }
+    }
+    return null;
+
+}
+function getSelectedOption(element) {
+    if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE")) {
+        if (element.getAttribute("selected") !== null && element.getAttribute("selected") !== '') {
+            return element.getAttribute("selected");
         }
     }
     return null;
@@ -568,6 +583,9 @@ function submitAjax(formData, url, header, reload) {
                 if (result.message !== null && result.message !== '') {
                     alert(result.message);
                 }
+                if (result.data !== null && result.data !== '') {
+                    console.log('Data: ' + result.data);
+                }
                 if (result.lastInsertId !== null && result.lastInsertId !== '') {
                     try {
                         console.log('LastId: ' + result.lastInsertId);
@@ -581,9 +599,9 @@ function submitAjax(formData, url, header, reload) {
                     if (reload === true) {
                         window.location.reload();
                     }
+                } else {
+                    console.error('Hubo error - Submit!.');
                 }
-            } else {
-                console.error('Hubo error - Submit!.');
             }
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -598,7 +616,7 @@ function setDataForm(myform, json) {
     var columns = null, values = null, col = null, item = null;
     if (json !== null && myform !== null && myform.tagName === "FORM") {
         columns = Array();
-        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelForm(myform)) {
+        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModel(myform)) {
             for (var child in json) {
                 json = json[child];
                 break;
@@ -619,7 +637,7 @@ function setDataForm(myform, json) {
                 col = null;
                 item = null;
                 col = columns[j];
-                item = getElementForm(myform, "" + col);
+                item = getElement(myform, "" + col);
                 if (item !== null) {
                     item.value = "";
                     item.value = values[col];
@@ -652,7 +670,7 @@ function getData(element) {
     var myform = null, object = null, url = null, formData = null;
     myform = getForm(element);
     myform.setAttribute("do", "find");
-    url = getUrlForm(myform);
+    url = getURL(myform);
     createTempInputs(myform);
     formData = new FormData(myform);
     deleteTemporalElements(myform);
@@ -697,7 +715,7 @@ function setComboboxOptions(combo, json) {
     var option = null;
     var selected = null;
     if (combo !== null && json !== null) {
-        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelCombo(combo)) {
+        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModel(combo)) {
             for (var child in json) {
                 json = json[child];
                 break;
@@ -708,8 +726,9 @@ function setComboboxOptions(combo, json) {
             option = document.createElement('option');
             option.setAttribute('id', json[i]['ivalue']);
             option.setAttribute('value', json[i]['ivalue']);
+            option.setAttribute('data-' + combo.id, json[i]['iname']);
             option.innerHTML = json[i]['iname'];
-            if (option.id === selected) {
+            if (selected !== null && option.id === selected) {
                 option.setAttribute('selected', 'selected');
             }
             combo.appendChild(option);
@@ -731,22 +750,22 @@ function loadComboboxData(element) {
     var object = null;
     var vals = null;
 
-    url = getUrlCombo(element);
-    model = getModelCombo(element);
+    url = getURL(element);
+    model = getModel(element);
     colname = getColName(element);
     colvalue = getColValue(element);
     vals = {
         "model": model,
-        "action": 0,
+        "action": 'findAll',
         "colname": colname,
         "colvalue": colvalue
     };
-
     if (element !== null &&
             url !== null && url !== '' &&
             model !== null && model !== '' &&
             colname !== null && colname !== '' &&
             colvalue !== null && colvalue !== '') {
+        console.log('Cargando Opciones para ' + element.id);
         promise = $.ajax({
             method: "POST",
             url: url,
@@ -847,7 +866,6 @@ function setTableData(element, json, dynamic) {
             TRs = element.getElementsByTagName('TR');
         }
         for (var i = 0; i < TRs.length; i++) {
-            console.log(TRs[i]);
             if (TRs[i].getAttribute('rowSample') !== null) {
                 rowSample = TRs[i].innerHTML;
                 console.log('RowSample Found!');
@@ -855,7 +873,7 @@ function setTableData(element, json, dynamic) {
             }
         }
         clearTableData(element);
-        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModelTable(element)) {
+        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModel(element)) {
             for (var child in json) {
                 json = json[child];
                 break;
@@ -876,13 +894,11 @@ function setTableData(element, json, dynamic) {
                 newrow = document.createElement('TR');
                 newrow.setAttribute('rowID', i);
                 newrow.innerHTML = rowSample;
-                console.log('row: '+i);
                 for (var j = 0; j < columns.length; j++) {
                     col = columns[j];
-                    console.log(col);
                     newrow.innerHTML = newrow.innerHTML.replace('{{' + col + '}}', json[i][col]);
                 }
-                
+
                 tbody.appendChild(newrow);
             }
 
@@ -903,8 +919,8 @@ function loadTableData(element, dynamic) {
     var model = null;
     var vals = null;
     var object = null;
-    url = getUrlTable(element);
-    model = getModelTable(element);
+    url = getURL(element);
+    model = getModel(element);
     console.log(getWSPath());
     vals = {
         "model": model,
@@ -988,7 +1004,7 @@ function login(element, destinationPage) {
     var object = null;
     if (element !== null) {
         form = getForm(element);
-        url = getUrlForm(form);
+        url = getURL(form);
     }
     formData = new FormData(form);
     if (form !== null) {
@@ -1095,13 +1111,13 @@ function submitForm(element, reload) {
     var promise = null;
     getActionFromButton(element);
 
-    if (element !== null && element.tagName !== "FORM") {
+    if (element !== null) {
         form = getForm(element);
     }
 
     if (form !== null) {
         deleteTemporalElements(form);
-        url = getUrlForm(form);
+        url = getURL(form);
         if (url !== null && url !== "") {
             createTempInputs(form);
             formdata = null;
@@ -1142,13 +1158,56 @@ function sendIdValue(form1, form2) {
     if (form1 !== null && form2 !== null) {
         form1 = getForm(form1);
         form2 = getForm(form2);
-        if (form1.tagName==="FORM" && form2.tagName==="FORM") {
-            findby1 = getFindByForm(form1);
-            findby2 = getFindByForm(form2);
-            valid1 = getElementForm(form1, findby1);
-            valid2 = getElementForm(form2, findby2);
+        if (form1.tagName === "FORM" && form2.tagName === "FORM") {
+            findby1 = getFindBy(form1);
+            findby2 = getFindBy(form2);
+            valid1 = getElement(form1, findby1);
+            valid2 = getElement(form2, findby2);
             valid2.value = valid1.value;
         }
+    }
+}
+
+function setNameFromDataList(idfield, idfieldname) {
+
+    if (idfield !== null && idfieldname !== null) {
+        $("#" + idfield).on('input', function () {
+            var field = null;
+            var fieldTarget = null;
+            var datalist = null;
+            var valuefield = null;
+            var selected = null;
+
+            if (document.getElementById(idfield) !== null) {
+                field = document.getElementById(idfield);
+            }
+            if (field.getAttribute('list') !== null && field.getAttribute('list') !== '') {
+                datalist = field.getAttribute('list');
+            }
+            if (document.getElementById(datalist) !== null) {
+                datalist = document.getElementById(datalist);
+            }
+            if (document.getElementById(idfieldname) !== null) {
+                fieldTarget = document.getElementById(idfieldname);
+            }
+
+            valuefield = field.value;
+            if (datalist !== null && valuefield !== null) {
+                selected = getOptionByValue(datalist, valuefield);
+            }
+
+            if (selected !== null) {
+                if (selected.innerHTML !== null && selected.innerHTML !== '') {
+                    fieldTarget.value = selected.innerHTML;
+                    console.log('OK set name');
+                }
+            }
+
+            if (valuefield === null || valuefield === '') {
+                fieldTarget.value = '';
+            }
+
+        });
     }
 }
 

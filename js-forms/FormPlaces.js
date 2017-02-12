@@ -1,23 +1,27 @@
 jQuery(document).ready(function () {
     var idstore = document.getElementById("id_store");
     var idplace = document.getElementById("id_place");
+    var mytable = document.getElementById("dataTable0");
     var valid = getIdEnterprise();
     if (valid !== null) {
         idstore.value = valid;
     }
     getData(idplace);
-    loadTableData(document.getElementById("dataTable0"), true);
+    loadTableData(mytable, true);
 });
 
 function Send(item) {
-    var form = getForm(item);
-    if (validateForm(form)) {
-        submitForm(item, false).done(function () {
+    var myform = null;
+    var mytable = null;
+    myform = getForm(item);
+    mytable = document.getElementById("dataTable0");
+    if (validateForm(myform)) {
+        submitForm(myform, false).done(function () {
             setTimeout(function () {
-                loadTableData(document.getElementById("dataTable0"), true);
-                resetForm(document.getElementById('form0'));
+                loadTableData(mytable, true);
+                New(item);
                 var savebutton = null;
-                savebutton = getElementForm(document.getElementById('form0'), 'save');
+                savebutton = getElementForm(myform, 'save');
                 savebutton.setAttribute('action', 'insert');
             }, 100);
         });
@@ -25,14 +29,14 @@ function Send(item) {
 }
 
 function Edit(item) {
-    var destform = null;
-    resetForm(document.getElementById('form0'));
-    destform = document.getElementById('form0');
-    sendIdValue(item, destform);
-    getData(destform).done(function () {
+    var myform = null;
+    myform = document.getElementById('form0');
+    resetForm(myform);
+    sendIdValue(item, myform);
+    getData(myform).done(function () {
         setTimeout(function () {
             var savebutton = null;
-            savebutton = getElementForm(document.getElementById('form0'), 'save');
+            savebutton = getElementForm(myform, 'save');
             savebutton.setAttribute('action', 'update');
             document.getElementById("number_place").focus();
         }, 100);
@@ -40,11 +44,32 @@ function Edit(item) {
 }
 
 function Delete(item) {
+    var mytable = null;
+    mytable = document.getElementById("dataTable0");
     if (confirm('Desea Eliminar este Registro?')) {
         submitForm(item, false).done(function () {
             setTimeout(function () {
-                loadTableData(document.getElementById("dataTable0"), true);
+                loadTableData(mytable, true);
             }, 100);
         });
+    }
+}
+
+function New(item) {
+    var myform=getForm(item);
+    var id=null;
+    var identerprise=null;
+    resetForm(myform);
+    id=getElementForm(myform, getFindByForm(myform));
+    identerprise=getElementForm(myform, 'id_store');
+    if(id!==null){
+        id.value=0;
+    }
+    if(identerprise!==null){
+        identerprise.value=0;
+    }
+    if(identerprise!==null && getIdEnterprise()!==null){
+        identerprise.value=getIdEnterprise();
+        console.log('Empresa:'+identerprise.value);
     }
 }

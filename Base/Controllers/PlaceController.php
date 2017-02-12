@@ -4,8 +4,8 @@ ob_start();
 include_once 'BaseController.php';
 include_once 'Security/SessionManager.php';
 $session = new SessionManager();
-$model = 'OrdersApp';
-$findBy = 'id_order';
+$model = 'PlacesApp';
+$findBy = 'id_place';
 if ($session->hasLogin() && $session->CheckToken()) {
     if (isset($_POST) && $_POST != null) {
         $result = null;

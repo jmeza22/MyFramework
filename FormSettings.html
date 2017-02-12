@@ -104,19 +104,13 @@
                         </div>
                         <div class="col-sm-4">
                             <label>Usuario Por Defecto</label>
-                            <input type="text" name="username" id="username" required="required" class="form-control" title="Usuario Acceso">
+                            <input type="text" name="username" id="username" class="form-control" title="Usuario Acceso">
                         </div>
                         <div class="col-sm-4">
                             <label>Password Por Defecto</label>
                             <input type="password" name="password" id="password"  class="form-control" title="Password Acceso">
                         </div>
                     </div>
-
-
-
-
-
-
 
 
                     <div class="row" style="margin-top: 20px;">
@@ -188,8 +182,12 @@
                 setUsernameLogin(username.value);
                 setPasswordLogin(password.value);
                 var form = getForm(item);
-                if (validateForm(form)) {
-                    submitForm(item);
+                if (confirm("Desea Guardar Datos en el Servidor?")) {
+                    if (validateForm(form)) {
+                        submitForm(item);
+                    }
+                }else{
+                    console.log('Datos Almacenados en LocalStorage');
                 }
             }
 
@@ -201,7 +199,7 @@
 
             function findConfig(item) {
                 getData(item);
-                
+
             }
 
 

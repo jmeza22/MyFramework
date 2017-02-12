@@ -35,7 +35,9 @@ if ($session->hasLogin()) {
             $upload->setPrefix('User');
             $upload->setNewName(date("dmYGis"));
             if ($upload->Upload()) {
-                $pd['id_user'] = $bc->getLastInsertId();
+                if (['id_user'] == null || ['id_user'] == 0) {
+                    $pd['id_user'] = $bc->getLastInsertId();
+                }
                 $pd['photo_user'] = $upload->getOutputName();
                 $bc->setPostData($pd);
                 $bc->setAction('update');
