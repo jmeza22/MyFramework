@@ -90,7 +90,7 @@
         <Cm>Estado de la Orden</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_Orders_Store" prLkCl="id_store" upAc="3">
-        <PrTb mn="0" nm="StoreApp" oe="1" sch="schemaA" zr="0"/>
+        <PrTb mn="0" nm="StoresApp" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="OrdersApp" oe="0" sch="schemaA" zr="1"/>
         <ClPr cdCl="id_store" prCl="id_store"/>
       </Fk>
@@ -167,12 +167,12 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Descripcion</Cm>
       </Cl>
-      <Cl au="0" df="" nm="state_place" nu="0">
+      <Cl au="0" df="1" nm="state_place" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_PlacesApp_StoreApp" prLkCl="id_store" upAc="3">
-        <PrTb mn="0" nm="StoreApp" oe="1" sch="schemaA" zr="0"/>
+        <PrTb mn="0" nm="StoresApp" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="PlacesApp" oe="0" sch="schemaA" zr="1"/>
         <ClPr cdCl="id_store" prCl="id_store"/>
       </Fk>
@@ -215,7 +215,7 @@
         <Cm>Estado del Producto</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_Products_Store" prLkCl="id_store" upAc="3">
-        <PrTb mn="0" nm="StoreApp" oe="1" sch="schemaA" zr="0"/>
+        <PrTb mn="0" nm="StoresApp" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="ProductsApp" oe="0" sch="schemaA" zr="1"/>
         <ClPr cdCl="id_store" prCl="id_store"/>
       </Fk>
@@ -226,9 +226,9 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="StoreApp">
+    <Tbl UsSo="1" nm="StoresApp">
       <TblOpts/>
-      <Pk ClNs="id_store" nm="pkStoreApp"/>
+      <Pk ClNs="id_store" nm="pkStoresApp"/>
       <Cl au="1" df="" nm="id_store" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Llave Primaria</Cm>
@@ -308,7 +308,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Contraseña de Acceso al Sistema</Cm>
       </Cl>
-      <Cl au="0" df="CL" nm="role_user" nu="1">
+      <Cl au="0" df="NN" nm="role_user" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="2" sc="null" sg="1" un="0"/>
         <Cm>Tipo de Usuario</Cm>
       </Cl>
@@ -355,7 +355,7 @@
       <DbTableRectangleFill>HeaderFooterFill</DbTableRectangleFill>
       <svg path=""/>
     </DiaProps>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="StoreApp" x="7" y="100"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="StoresApp" x="7" y="100"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="UsersApp" x="0" y="293"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ProductsApp" x="1275" y="300"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrdersApp" x="420" y="295"/>
@@ -407,8 +407,8 @@
     <Notes/>
     <Zones/>
   </Dgm>
-  <RnmMgr NxRnmId="15">
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="StoreApp" SupCls="Schema" SupNme="schemaA">
+  <RnmMgr NxRnmId="16">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="StoresApp" SupCls="Schema" SupNme="schemaA">
       <Rnm id="7" nNm="id_store" oNm="Id_store"/>
       <Rnm id="1" nNm="Id_store" oNm="Id"/>
     </RnmCh>
@@ -443,6 +443,9 @@
     </RnmCh>
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
       <Rnm id="14" nNm="PlacesApp" oNm="PlaceApp"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+      <Rnm id="15" nNm="StoresApp" oNm="StoreApp"/>
     </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>

@@ -52,9 +52,22 @@ class UploadImage {
             $this->newname = $name;
         }
     }
-    
-    public function getOutputName(){
+
+    public function getOutputName() {
         return $this->name;
+    }
+
+    public function Delete($image = null) {
+        $result = false;
+        if ($image == null) {
+            $output_path = $this->url . $this->name;
+        } else {
+            $output_path = $this->url . $image;
+        }
+        if (file_exists($output_path)) {
+            $result = unlink($output_path);
+        }
+        return $result;
     }
 
     public function Upload() {
@@ -89,9 +102,7 @@ class UploadImage {
                     if (!file_exists($this->url)) {
                         mkdir($this->url);
                     }
-                    if (file_exists($output_path)) {
-                        unlink($output_path);
-                    }
+                    $this->Delete();
                     $result = move_uploaded_file($input_path, $output_path);
                 }
             } else {
@@ -102,5 +113,6 @@ class UploadImage {
     }
 
 }
+
 ob_end_flush();
 ?>

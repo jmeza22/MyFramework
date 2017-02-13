@@ -423,12 +423,12 @@ function getActionButton(item) {
             for (var j = 0; j < form.elements.length; j++) {
                 if (form.elements[j] !== null && (form.elements[j].tagName === "BUTTON" || form.elements[j].tagName === "INPUT")) {
                     if (form.elements[j].getAttribute('action') !== null) {
+                        console.log('Action Button: ' + form.elements[j].id);
                         return form.elements[j];
                     }
                 }
             }
         }
-
     }
     return null;
 }
@@ -554,8 +554,8 @@ function getFindBy(element) {
         }
     }
     return null;
-
 }
+
 function getSelectedOption(element) {
     if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE")) {
         if (element.getAttribute("selected") !== null && element.getAttribute("selected") !== '') {
@@ -603,6 +603,7 @@ function submitAjax(formData, url, header, reload) {
                     console.error('Hubo error - Submit!.');
                 }
             }
+
         },
         error: function (xhr, textStatus, errorThrown) {
             alert("Hubo un Error de Conexion. Intente Nuevamente.");
@@ -733,7 +734,7 @@ function setComboboxOptions(combo, json) {
             }
             combo.appendChild(option);
             option = null;
-            console.log(json[i]['ivalue'] + ' => ' + json[i]['iname']);
+            //console.log(json[i]['ivalue'] + ' => ' + json[i]['iname']);
         }
         console.log('Set ComboBox OK!.');
         return true;
@@ -896,7 +897,7 @@ function setTableData(element, json, dynamic) {
                 newrow.innerHTML = rowSample;
                 for (var j = 0; j < columns.length; j++) {
                     col = columns[j];
-                    newrow.innerHTML = newrow.innerHTML.replace('{{' + col + '}}', json[i][col]);
+                    newrow.innerHTML = newrow.innerHTML.split('{{' + col + '}}').join(json[i][col]);
                 }
 
                 tbody.appendChild(newrow);

@@ -31,7 +31,7 @@
 
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro Producto</div>
-            <form class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/ProductController.php" model="ProductsApp" findBy="id_product" mainform="true" >
+            <form id="form0" class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/ProductController.php" model="ProductsApp" findBy="id_product" mainform="true" >
                 <input type="hidden" integer="true" name="id_product" id="id_product" value="0" required="required"  class="form-control">
                 <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" class="form-control" >
 
@@ -53,14 +53,14 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <label>Nombre de Producto</label>
-                                <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="100" class="form-control" title="Nombre Completo">
+                                <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="80" class="form-control" title="Nombre Completo">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12">
                                 <label>Descripcion</label>
-                                <textarea name="description_product" id="description_product" required="required" maxlength="500" class="form-control" title="Descripcion Larga del Producto" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
+                                <textarea name="description_product" id="description_product" required="required" maxlength="200" class="form-control" title="Descripcion Larga del Producto" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
                             </div>
                         </div>
 
@@ -75,22 +75,22 @@
                             </div>
                         </div>
 
-                        <div class="row" style="display: none;">
-                            <div class="col-sm-6">
-                                <label>Foto</label>
-                                <input type="text" name="photo_product" id="photo_product" value="Products.png" maxlength="1000" class="form-control" title="Nombre de Foto" >
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Foto de Producto</label>
+                                <input type="text" name="photo_product" id="photo_product" value="Products.png" maxlength="1000" class="form-control" title="Nombre de Foto" readonly="readonly" >
                             </div>
                         </div>
 
                         <div class="row" style="margin-top: 20px;">
                             <div class="col-sm-6">
                                 <center>
-                                    <button id="Guardar" name="Guardar" type="button" action="insert" onclick="Send(this);" class="btn btn-primary" >Guardar</button>
+                                    <button type="button" id="save" name="save" action="insert" onclick="Send(this);" class="btn btn-primary" >Guardar</button>
                                 </center>
                             </div>
                             <div class="col-sm-6">
                                 <center>
-                                    <button type="reset" id="reset" class="btn btn-danger">Limpiar</button> 
+                                    <button type="reset" id="reset" class="btn btn-success">Nuevo</button> 
                                 </center>
                             </div>
                         </div>

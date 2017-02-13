@@ -97,6 +97,7 @@ textarea{
     min-width: 265px !important;
     min-height: 80px !important;
     max-height: 480px !important;
+    font-weight: normal !important;
 }
 
 .panel-body .btn{

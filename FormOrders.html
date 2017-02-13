@@ -35,7 +35,7 @@ and open the template in the editor.
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro de Orden</div>
             <div class="panel-body">
-                <form  method="POST" autocomplete="off" url="Base/Controllers/OrderController.php" model="OrdersApp" findBy="id_order" >
+                <form id="form0" method="POST" autocomplete="off" url="Base/Controllers/OrderController.php" model="OrdersApp" findBy="id_order" >
                     <input type="hidden" integer="true" name="id_order" id="id_order" value="0" required="required" >
                     <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" >
 
@@ -57,18 +57,18 @@ and open the template in the editor.
                     <div class="row">
                         <div class="col-sm-2">
                             <label>Mesa</label>
-                            <input type="text" integer="true" name="id_place" id="id_place" value="0" min="0" class="form-control" title="Mesa" list="list_id_place" >
+                            <input type="text" integer="true" name="id_place" id="id_place" value="0" class="form-control" title="Mesa" list="list_id_place" >
                         </div>
                         <div class="col-sm-10">
                             <label>Nota - Observaciones</label>
-                            <input type="text" name="note_order" id="note_order" required="required" maxlength="200" class="form-control" title="Descripcion Larga del Producto">
+                            <input type="text" name="note_order" id="note_order" required="required" maxlength="80" class="form-control" title="Descripcion Larga del Producto">
                         </div>
                     </div>
 
                     <div class="row" style="margin-top: 20px;">
                         <div class="col-sm-6">
                             <center>
-                                <button id="Guardar" name="Guardar" type="button" action="insert" onclick="Send(this);" class="btn btn-primary" >Guardar</button>
+                                <button type="button" id="save" name="save" action="insert" onclick="Send(this);" class="btn btn-primary" >Grabar</button>
                             </center>
                         </div>
                         <div class="col-sm-6">

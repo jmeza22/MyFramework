@@ -13,8 +13,8 @@ if ($session->hasLogin()) {
         $bc->setAction('findAll');
         $colname = null;
         $colvalue = null;
-        $colname = $_POST['colname'];
-        $colvalue = $_POST['colvalue'];
+        $colname = 'description_place';
+        $colvalue = 'id_place';
         echo $bc->getComboboxData($colname, $colvalue, 'state_place=1');
         $bc->disconnect();
     }

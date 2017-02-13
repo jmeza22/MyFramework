@@ -2,21 +2,13 @@
 
 ob_start();
 include_once 'BaseController.php';
-include_once 'Security/MyCrypt.php';
 include_once 'Security/SessionManager.php';
 include_once 'UploadImage.php';
 $session = new SessionManager();
-$model = 'UsersApp';
-$findBy = 'id_user';
+$model='StoresApp';
+$findBy='id_store';
 if ($session->hasLogin()) {
     if (isset($_POST) && $_POST != null) {
-        $result = null;
-        if (strcmp($_POST['password_user'], '') != 0) {
-            $crypt = new MyCrypt();
-            $_POST['password_user'] = $crypt->crypt($_POST['password_user']);
-        } else {
-            unset($_POST['password_user']);
-        }
         $bc = new BaseController();
         $bc->connect();
         $bc->preparePostData();
@@ -32,13 +24,13 @@ if ($session->hasLogin()) {
             $upload = new UploadImage();
             $upload->setURL('ImageFiles/');
             $upload->setFileName('imageFile');
-            $upload->setPrefix('User');
+            $upload->setPrefix('Store');
             $upload->setNewName(date("dmYGis"));
             if ($upload->Upload()) {
-                if (['id_user'] == null || ['id_user'] == 0) {
-                    $pd['id_user'] = $bc->getLastInsertId();
+                if (['id_store'] == null || ['id_store'] == 0) {
+                    $pd['id_store'] = $bc->getLastInsertId();
                 }
-                $pd['photo_user'] = $upload->getOutputName();
+                $pd['logo_store'] = $upload->getOutputName();
                 $bc->setPostData($pd);
                 $bc->setAction('update');
                 $bc->execute();
