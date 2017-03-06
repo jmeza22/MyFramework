@@ -25,7 +25,6 @@ function Send(item) {
     if (validateForm(form)) {
         submitForm(item, false).done(function () {
             setTimeout(function () {
-                document.getElementById("password_user").value = '';
                 if (getLastInsertId() !== null && getLastInsertId() !== 0) {
                     setPOST('id_user', getLastInsertId());
                     window.location.reload();

@@ -32,69 +32,57 @@
         <div class="panel panel-primary" style="width: 80% !important;">
             <div class="panel-heading">Registro Producto</div>
             <form id="form0" class="panel-body" method="POST" autocomplete="off" url="Base/Controllers/ProductController.php" model="ProductsApp" findBy="id_product" mainform="true" >
-                <input type="hidden" integer="true" name="id_product" id="id_product" value="0" required="required"  class="form-control">
                 <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" class="form-control" >
 
                 <div class="row">
+                    <div class="col-sm-3">
+                        <label>Codigo</label>
+                        <input type="number" integer="true" name="id_product" id="id_product" value="0" min="0" required="required" maxlength="80" class="form-control" title="Nombre Completo">
+                    </div>
+                    <div class="col-sm-9">
+                        <label>Nombre de Producto</label>
+                        <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="80" class="form-control" title="Nombre Completo">
+                    </div>
+                </div>
 
-                    <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>Descripcion</label>
+                        <textarea name="description_product" id="description_product" required="required" maxlength="200" class="form-control" title="Descripcion Larga del Producto" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>Padre</label>
+                        <input type="number" name="parent_id_product" id="parent_id_product" value="" min="0" maxlength="30" class="form-control" title="Codigo Interno" >
+                    </div>
+                    <div class="col-sm-3">
+                        <label>SKU</label>
+                        <input type="text" name="sku_product" id="sku_product" value="" maxlength="30" class="form-control" title="Codigo Interno" >
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Categoria</label>
+                        <input type="text" name="id_category" id="id_category" value="" maxlength="30" class="form-control" title="Codigo Interno" >
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Precio</label>
+                        <input type="text" name="price_product" id="price_product" value="0" min="0" class="form-control" title="Precio Base">
+                    </div>
+                </div>
+
+                
+
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-6">
                         <center>
-                            <div class="photoPanel">
-                                <center>
-                                    <img name="imagePhoto" id="imagePhoto" class="imagePhoto" src="css/Products.png" onclick="clickButton();" alt="Foto" title="Click to Change Photo" />
-                                    <input type="file" name="imageFile" id="imageFile" class="imageFile" accept="image/*" onchange="showMyImageAndGetName(this,'photo_product')" title="Click to Change Photo" />
-                                </center>
-                            </div>
+                            <button type="button" id="save" name="save" action="insert" onclick="Send(this);" class="btn btn-primary" >Grabar</button>
                         </center>
                     </div>
-
-                    <div class="col-sm-8">
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label>Nombre de Producto</label>
-                                <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="80" class="form-control" title="Nombre Completo">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label>Descripcion</label>
-                                <textarea name="description_product" id="description_product" required="required" maxlength="200" class="form-control" title="Descripcion Larga del Producto" style="min-height: 120px; width: 100%; min-width: 260px;" ></textarea>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>SKU</label>
-                                <input type="text" name="sku_product" id="sku_product" value="" maxlength="30" class="form-control" title="Codigo Interno" >
-                            </div>
-                            <div class="col-sm-6">
-                                <label>Precio</label>
-                                <input type="number" name="price_product" id="price_product" value="0" min="0" class="form-control" title="Precio Estandar">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label>Foto de Producto</label>
-                                <input type="text" name="photo_product" id="photo_product" value="Products.png" maxlength="1000" class="form-control" title="Nombre de Foto" readonly="readonly" >
-                            </div>
-                        </div>
-
-                        <div class="row" style="margin-top: 20px;">
-                            <div class="col-sm-6">
-                                <center>
-                                    <button type="button" id="save" name="save" action="insert" onclick="Send(this);" class="btn btn-primary" >Guardar</button>
-                                </center>
-                            </div>
-                            <div class="col-sm-6">
-                                <center>
-                                    <button type="reset" id="reset" class="btn btn-success">Nuevo</button> 
-                                </center>
-                            </div>
-                        </div>
-
+                    <div class="col-sm-6">
+                        <center>
+                            <button type="reset" id="reset" class="btn btn-success">Nuevo</button> 
+                        </center>
                     </div>
                 </div>
 

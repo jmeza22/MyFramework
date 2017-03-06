@@ -36,8 +36,7 @@
 
                 <form id="form0" method="POST" autocomplete="off" url="Base/Controllers/UserController.php" model="UsersApp" findBy="id_user" mainform="true" >
                     <input type="hidden" integer="true" name="id_user" id="id_user" value="0" required="required" class="form-control">
-
-
+                    
                     <div class="row">
                         <div class="col-sm-6">
                             <label>Nombres</label>
@@ -49,7 +48,49 @@
                             <input type="text" name="lastname_user" id="lastname_user" value="" required="required" maxlength="100" class="form-control" title="Apellidos" >
                         </div>
                     </div>
-
+                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Tipo de Documento</label>
+                            <select name="doctype_user" id="doctype_user" selected="NN" alphabetic="true" required="required" class="form-control" style="width: 100%; min-width: 100%;"  >
+                                <option value="NN" disabled="disabled">Desconocido</option>
+                                <option value="CC" >Cédula de Ciudadanía</option>
+                                <option value="NIT" >NIT</option>
+                                <option value="CE" >Cédula de Extranjeria</option>
+                                <option value="PP" >Pasaporte</option>
+                                <option value="TI" >Tarjeta de Identidad</option>
+                                <option value="OO" >Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Doc. Identidad</label>
+                            <input type="text" name="doc_user" id="doc_user" value="" maxlength="25" required="required" class="form-control" title="Cedula de Ciudadania">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Sexo</label>
+                            <select name="sex_user" id="sex_user" selected="NN" alphabetic="true" class="form-control" style="width: 100%; min-width: 100%;"  >
+                                <option value="NN" disabled="disabled">Desconocido</option>
+                                <option value="M" >Masculino</option>
+                                <option value="F" >Femenino</option>
+                                <option value="I" >Indiferente</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Fecha Nacimiento</label>
+                            <input type="date" date="true" name="birthday_user" id="birthday_user" value="" placeholder="1992-04-22" maxlength="10" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label>Direccion</label>
+                            <input type="text" name="address_user" id="address_user" value="" maxlength="100" class="form-control" title="Direccion">
+                        </div>
+                    </div>
+                    
                     <div class="row">
                         <div class="col-sm-6">
                             <label>Telefono</label>
@@ -61,45 +102,10 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" style="visibility: hidden !important;">
                         <div class="col-sm-12">
-                            <label>Direccion</label>
-                            <input type="text" name="address_user" id="address_user" value="" maxlength="100" class="form-control" title="Direccion">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label>Doc. Identidad</label>
-                            <input type="text" name="doc_user" id="doc_user" value="" maxlength="25" class="form-control" title="Cedula de Ciudadania">
-                        </div>
-                        <div class="col-sm-6">
-                            <label>Fecha Nacimiento</label>
-                            <input type="date" date="true" name="birthday_user" id="birthday_user" value="" placeholder="1992-04-22" maxlength="10" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
                             <label>Foto</label>
                             <input type="text" readonly="readonly" name="photo_user" id="photo_user" value="Users.png" maxlength="1000" class="form-control">
-                        </div>
-                        <div class="col-sm-6">
-                            <label>Password</label>
-                            <input type="password" name="password_user" id="password_user" maxlength="32" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label>Tipo de Usuario</label>
-                            <select name="role_user" id="role_user" required="required" selected="NN" class="form-control" style="width: 100%; min-width: 100%;" readonly="readonly"  >
-                                <option value="NN" disabled="disabled">Desconocido</option>
-                                <option value="CL" >Cliente</option>
-                                <option value="ME" >Mesero</option>
-                                <option value="VE" >Vendedor</option>
-                                <option value="AA" disabled="disabled">Administrador</option>
-                            </select>
                         </div>
                     </div>
 
@@ -116,12 +122,12 @@
                     <div class="row" style="margin-top: 20px;">
                         <div class="col-sm-6">
                             <center>
-                                <button type="button" id="save" name="save"  action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
+                                <button type="button" id="save" name="save"  action="insert" save="true" onclick="Send(this);" class="btn btn-primary" >Grabar</button>        
                             </center>
                         </div>
                         <div class="col-sm-6">
                             <center>
-                                <button type="reset" id="reset" name="reset" class="btn btn-danger">Limpiar</button> 
+                                <button type="reset" id="reset" name="reset" class="btn btn-danger">Nuevo</button> 
                             </center>
                         </div>
                     </div>

@@ -30,3 +30,18 @@ function Edit(item) {
         window.location.href = 'FormOrders.html';
     }
 }
+
+function Find(item) {
+    var myform = null;
+    var id = null;
+    var model = null;
+    myform = getForm(item);
+    if (myform !== null) {
+        id = getElement(myform, 'id_order');
+        model = getModel(myform);
+    }
+    if (id !== null) {
+        setPOST('id_order', id.value);
+        window.location.href = 'FormOrderDetails.html';
+    }
+}

@@ -38,7 +38,7 @@ function validateNumber(text) {
     }
 }
 
-function validateOnlyText(text) {
+function validateAlphabetic(text) {
     var pattern = /^[a-zA-Z\s\á\é\í\ó\ñ\Ñ]*$/;
     // En caso de querer validar cadenas sin espacios usar: /^[a-zA-Z*]$/
     if (/^\s+$/.test(text)) {
@@ -173,66 +173,90 @@ function validateForm(form) {
                 item = elements[j];
                 if ((item.getAttribute('required') === 'true' || item.getAttribute('required') === 'required') && item.getAttribute('disabled') === null) {
                     if (item.value === null || item.value === '') {
-                        alert('Campo Vacio: Obligatorio');
                         item.focus();
                         requireElement(item);
                         next = false;
+                        alert('Campo Vacio: Obligatorio');
                         break;
                     }
 
                     if (item.getAttribute('type') === 'text') {
                         if (!validateText(item.value)) {
-                            alert('Campo Vacio: Texto');
                             item.focus();
                             next = false;
+                            alert('Campo Vacio: Texto');
+                            break;
+                        }
+                    }
+                    if (item.getAttribute("alphabetic") === 'true') {
+                        if (!validateAlphabetic(item.value)) {
+                            item.focus();
+                            next = false;
+                            alert('Formato Invalido: Texto Alfabetico');
+                            break;
+                        }
+                    }
+                    if (item.getAttribute("alphanumeric") === 'true') {
+                        if (!validateOnlyTextAlphanumeric(item.value)) {
+                            item.focus();
+                            next = false;
+                            alert('Formato Invalido: Texto Alfanumerico');
                             break;
                         }
                     }
                     if (item.getAttribute("integer") === 'true') {
                         if (!validateOnlyNumeric(item.value)) {
-                            alert('Formato Invalido: Número Entero');
                             item.focus();
                             next = false;
+                            alert('Formato Invalido: Número Entero');
                             break;
                         }
                     }
                     if (item.type === 'date' || item.getAttribute('date') === 'true') {
                         if (!isDate(item.value) || !validateDateYYYYMMDD(item.value)) {
-                            alert('Formato Invalido: Fecha');
                             item.focus();
                             next = false;
+                            alert('Formato Invalido: Fecha');
                             break;
                         }
                     }
                     if (item.type === 'email' || item.getAttribute('email') === 'true') {
                         if (!validateEmail(item.value)) {
-                            alert('Formato Invalido: Email');
                             item.focus();
                             next = false;
+                            alert('Formato Invalido: Email');
                             break;
                         }
                     }
                     if (item.getAttribute("type") === 'password') {
                         if (!validatePassword(item.value)) {
-                            alert('Formato Invalido: Password');
                             item.focus();
                             next = false;
+                            alert('Formato Invalido: Password');
+                            break;
+                        }
+                    }
+                    if (item.getAttribute("username") === 'true') {
+                        if (!validateUser(item.value)) {
+                            item.focus();
+                            next = false;
+                            alert('Formato Invalido: Username');
                             break;
                         }
                     }
                     if (item.getAttribute("type") === 'tel') {
                         if (!validateOnlyNumeric(item.value)) {
-                            alert('Formato Invalido: Telefono');
                             item.focus();
                             next = false;
+                            alert('Formato Invalido: Telefono');
                             break;
                         }
                     }
                     if (item.getAttribute("decimal") === 'true') {
                         if (!validateNumber(item.value)) {
-                            alert('Campo Vacio: Numerico');
                             item.focus();
                             next = false;
+                            alert('Campo Vacio: Numerico');
                             break;
                         }
                     }

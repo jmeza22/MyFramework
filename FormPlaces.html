@@ -2,10 +2,10 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Mesas - Lugares</title>
+        <title>Lugares</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <meta name="description" content="Registro de Lugares O Mesas"/>
+        <meta name="description" content="Registro de Lugares"/>
         <meta name="author" content="Jose Meza"/>
         <link rel="icon" type="image/png" href="css/IconPage.png" />
         <link rel="shortcut icon" type="image/png" href="css/IconPage.png" />
@@ -33,19 +33,22 @@
     <body>
 
         <div class="panel panel-primary" style="width: 80% !important;">
-            <div class="panel-heading">Registro Lugares o Mesas</div>
+            <div class="panel-heading">Registro Lugares</div>
             <div class="panel-body" >
                 <form id="form0" method="POST" autocomplete="off" url="Base/Controllers/PlaceController.php" model="PlacesApp" findBy="id_place" mainform="true" >
-                    <input type="hidden" integer="true" name="id_place" id="id_place" value="0" required="required" >
                     <input type="hidden" integer="true" name="id_store" id="id_store" value="0" required="required" >
                     <div class="row">
                         <div class="col-sm-2">
                             <label>Número</label>
                             <input type="number" name="number_place" id="number_place" value="" required="required"  class="form-control" title="Numero">
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <label>Descripcion</label>
                             <input type="text" name="description_place" id="description_place" required="required" maxlength="80" class="form-control" title="Descripcion Larga">
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Codigo</label>
+                            <input type="text" name="id_place" id="id_place" required="required" value="0" readonly="readonly" class="form-control" title="Id">
                         </div>
                     </div>
                     <div class="row" style="margin-top: 20px;">
@@ -56,7 +59,7 @@
                         </div>
                         <div class="col-sm-6">
                             <center>
-                                <button type="reset" id="reset" name="reset" onclick="New(this);" class="btn btn-danger">Nuevo</button> 
+                                <button type="reset" id="reset" name="reset" onclick="New(this);" class="btn btn-success">Nuevo</button> 
                             </center>
                         </div>
                     </div>
@@ -70,11 +73,11 @@
             <div class="panel-heading">Listado</div>
             <div class="panel-body table-responsive">
                 <div>
-                    <table id="dataTable0" class="table table-striped table-bordered table-hover nowrap" loadDataTable="true" model="PlacesApp" url="Base/Controllers/GetDataTable.php" style="width: 100%;" fillOnLoad="true" >
+                    <table id="dataTable0" class="table table-striped table-bordered table-hover nowrap" model="PlacesApp" url="Base/Controllers/GetDataTable.php" style="width: 100%;" >
                         <thead id="" tableHead="true">
                             <tr rowHead="true">
                                 <th style="width: 10%;">
-                                    Tienda
+                                    Codigo
                                 </th>
                                 <th style="width: 10%;">
                                     Numero
@@ -89,7 +92,7 @@
                         </thead>
                         <tbody>
                             <tr rowSample="true" style="display: none;">
-                                <td>{{id_store}}</td>
+                                <td>{{id_place}}</td>
                                 <td>{{number_place}}</td>
                                 <td>{{description_place}}</td>
                                 <td>
@@ -108,6 +111,8 @@
 
         <script type="text/javascript" src="datatables/js/dataTables.bootstrap.js"></script>
         <script type="text/javascript" src="datatables/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="datatables/js/type-detection.js"></script>
+        <script type="text/javascript" src="datatables/js/numeric-comma.js"></script>
 
     </body>
 </html>

@@ -16,7 +16,7 @@ if (isset($_POST) && $_POST != null) {
     $userbd = $_POST['userdb'];
     $passbd = $_POST['passworddb'];
     $namebd = $_POST['namedb'];
-    $lastdate = date("d") . '-' . date("m") . '-' . date("Y") . ' ' . date("G") . ':' . date("i") . ':' . date("s");
+    $lastdate = date("Y-m-d G:i:s");
 
     if (isset($_POST['action'])) {
         if (strcmp($_POST['action'], 'find') == 0) {

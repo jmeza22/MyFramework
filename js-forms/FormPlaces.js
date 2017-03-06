@@ -32,7 +32,7 @@ function Edit(item) {
     var myform = null;
     myform = document.getElementById('form0');
     resetForm(myform);
-    sendIdValue(item, myform);
+    sendValue(item, null, myform, null);
     getData(myform).done(function () {
         setTimeout(function () {
             var savebutton = null;

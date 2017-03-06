@@ -343,7 +343,7 @@ class SQLDatabase {
             }
             return $sql;
         }
-        return 'si';
+        return null;
     }
 
     private function buildInsertStmtString($table, $array) {
@@ -368,10 +368,10 @@ class SQLDatabase {
         return null;
     }
 
-    private function buildUpdateStmtString($table, $array, $where = NULL, $arraywhere = NULL) {
-        if (is_array($array)) {
+    private function buildUpdateStmtString($table, $arraycolumns, $where = NULL, $arraywhere = NULL) {
+        if (is_array($arraycolumns)) {
             $sql = "UPDATE " . $table . " SET ";
-            $columns = $this->getColumns($array);
+            $columns = $this->getColumns($arraycolumns);
             foreach ($columns as $column) {
                 $sql = $sql . " " . $column . "= :" . $column . ",";
             }
@@ -512,12 +512,16 @@ class SQLDatabase {
         return null;
     }
 
-    public function selectJSONArray($sql, $table) {
+    public function selectJSONArray($sql, $table = null) {
         $resultset = $this->getResultSet($sql);
         if ($resultset != null) {
             $json = array();
             while ($row = $resultset->fetch()) {
-                $json[$table][] = $row;
+                if ($table != null) {
+                    $json[$table][] = $row;
+                } else {
+                    $json[] = $row;
+                }
             }
             $json = json_encode($json);
             return $json;
@@ -525,26 +529,26 @@ class SQLDatabase {
         return null;
     }
 
-    public function select($columns, $table, $where = '') {
+    public function select($table, $columns, $where = '') {
         $sql = $this->buildSelectString($table, $columns, $where);
         $myarray = $this->selectArray($sql);
         return $myarray;
     }
 
-    public function selectAssoc($columns, $table, $where = '') {
+    public function selectAssoc($table, $columns, $where = '') {
         $sql = $this->buildSelectString($table, $columns, $where);
         $myarray = $this->selectAssocArray($sql);
         return $myarray;
     }
 
-    public function selectJSON($columns, $table, $where = '') {
+    public function selectJSON($table, $columns, $where = '') {
         $sql = $this->buildSelectString($table, $columns, $where);
         $myarray = $this->selectJSONArray($sql, $table);
         return $myarray;
     }
 
     public function SelectAllJSON($table) {
-        return $this->selectJSON("*", $table, null);
+        return $this->selectJSON($table, '*', null);
     }
 
     public function insert($table, $values) {
@@ -586,8 +590,8 @@ class SQLDatabase {
         echo '</table>';
     }
 
-    public function printSelect($columns, $table, $where) {
-        $myarray = $this->select($columns, $table, $where);
+    public function printSelect($table, $columns, $where) {
+        $myarray = $this->select($table, $columns, $where);
         $this->printArray($myarray);
     }
 

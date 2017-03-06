@@ -184,9 +184,9 @@
                 var form = getForm(item);
                 if (confirm("Desea Guardar Datos en el Servidor?")) {
                     if (validateForm(form)) {
-                        submitForm(item);
+                        submitForm(item, false);
                     }
-                }else{
+                } else {
                     console.log('Datos Almacenados en LocalStorage');
                 }
             }
@@ -199,7 +199,6 @@
 
             function findConfig(item) {
                 getData(item);
-
             }
 
 

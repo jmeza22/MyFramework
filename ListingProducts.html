@@ -37,7 +37,7 @@ and open the template in the editor.
             <div class="panel-heading">Listado Productos</div>
             <div class="panel-body table-responsive">
                 <div>
-                    <table id="dataTable0" class="table table-striped table-bordered table-hover nowrap" loadDataTable="true" model="ProductsApp" url="Base/Controllers/GetDataTable.php" style="width: 100%;" fillOnLoad="true" >
+                    <table id="dataTable0" class="table table-striped table-bordered table-hover nowrap" model="ProductsApp" url="Base/Controllers/GetDataTableProduct.php" ordertable="0" style="width: 100%;" >
                         <thead id="" tableHead="true">
                             <tr rowHead="true">
                                 <th style="width: 10%;">
@@ -62,7 +62,7 @@ and open the template in the editor.
                                 <td>{{id_product}}</td>
                                 <td>{{name_product}}</td>
                                 <td>{{sku_product}}</td>
-                                <td>{{price_product}}</td>
+                                <td>${{price_product}}</td>
                                 <td>
                                     <form method="GET" url="Base/Controllers/ProductController.php" model="ProductsApp" findBy="id_product" >
                                         <input type="hidden" name="id_product" id="id_product" value="{{id_product}}" />
@@ -79,6 +79,7 @@ and open the template in the editor.
 
         <script type="text/javascript" src="datatables/js/dataTables.bootstrap.js"></script>
         <script type="text/javascript" src="datatables/js/jquery.dataTables.min.js"></script>
-
+        <script type="text/javascript" src="datatables/js/num-html.js"></script>
+        
     </body>
 </html>

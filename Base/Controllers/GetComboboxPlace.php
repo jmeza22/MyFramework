@@ -11,11 +11,12 @@ if ($session->hasLogin()) {
         $bc->preparePostData();
         $bc->setModel('PlacesApp');
         $bc->setAction('findAll');
+        $enterprise=$session->getEnterpriseID();
         $colname = null;
         $colvalue = null;
         $colname = 'description_place';
         $colvalue = 'id_place';
-        echo $bc->getComboboxData($colname, $colvalue, 'state_place=1');
+        echo $bc->getComboboxData($colname, $colvalue, "state_place=1 and id_store=$enterprise ");
         $bc->disconnect();
     }
 }else{

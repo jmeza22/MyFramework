@@ -72,7 +72,7 @@ class UploadImage {
 
     public function Upload() {
         $result = false;
-        if (isset($_FILES[$this->filename])) {
+        if (isset($_FILES[$this->filename]) && $_FILES[$this->filename] != null) {
             if ((
                     ($_FILES[$this->filename]["type"] == "image/jpeg") ||
                     ($_FILES[$this->filename]["type"] == "image/pjpeg") ||

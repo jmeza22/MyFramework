@@ -32,16 +32,15 @@
             <div class="panel-heading">Iniciar Session</div>
             <div class="panel-body">
                 <form id="FormLogin" method="POST" autocomplete="false" url="Base/Controllers/LoginController.php" model="UsersApp" >
-
+                    <input type="hidden" name="token" id="token" value="92a04b22c02d12e8" temp="true" >
                     <div class="row">
                         <div class="col-sm-12">
                             <label>Nombre de Usuario</label>
-                            <input type="text" name="doc_user" id="doc_user" value="" required="required" maxlength="50" class="form-control" title="Nombre Completo">
+                            <input type="text" username="true" name="nick_user" id="nick_user" value="" required="required" maxlength="50" class="form-control" title="Nombre Completo">
                         </div>
-
-                        <div class="col-sm-12">
+                       <div class="col-sm-12">
                             <label>Contraseña</label>
-                            <input type="password" name="password_user" id="password_user" value="" required="required" maxlength="100" class="form-control" >
+                            <input type="password" name="password_user" id="password_user" value="" required="required" maxlength="32" class="form-control" >
                         </div>
                         <div class="col-sm-12">
                             <label>Empresa</label>
@@ -51,20 +50,13 @@
                         </div>
                     </div>
 
-
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <center>
-                                <button id="Guardar" name="Guardar" type="button" action="find" onclick="Send(this);" class="btn btn-primary" >Guardar</button>        
-                            </center>
-                        </div>
-                        <div class="col-sm-6">
-                            <center>
-                                <button type="reset" class="btn btn-danger" value="Cancelar">Limpiar</button>
+                                <button type="button" id="save" name="save" action="find" onclick="Send(this);" class="btn btn-primary" >Iniciar Sesion</button>        
                             </center>
                         </div>
                     </div>
-                    
 
                 </form>
             </div>

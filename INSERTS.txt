@@ -1,0 +1,68 @@
+INSERT INTO StoresApp (id_store, doc_store, name_store, admin_store) VALUES (1,'1083434734', 'INVERSIONES MEZA', 'JOSE MEZA');
+
+INSERT INTO UsersApp (id_user, name_user, lastname_user, doctype_user, doc_user, sex_user, birthday_user, phone_user) VALUES (1, 'JOSE', 'MEZA', 'CC', '1083434734', 'M', '1992-04-22', '3005797892');
+
+INSERT INTO UsersApp (id_user, name_user, lastname_user, doctype_user, doc_user, sex_user, birthday_user, phone_user) VALUES (2, 'LISANDRO', 'MEZA', 'CC', '85125745', 'M', '1966-01-03', '3005797892');
+
+INSERT INTO UserAccountsApp (id_store, id_user, nickname_account, password_account, role_account, updated_account) VALUES (1, 1, '1083434734', '92042202128fb12b1241f0dce1e6fe8c56c9fb6911c527e063aabcd', 'AA', now());
+
+INSERT INTO UserAccountsApp (id_store, id_user, nickname_account, password_account, role_account, updated_account) VALUES (1, 2, '85125745', '92042202128fb12b1241f0dce1e6fe8c56c9fb6911c527e063aabcd', 'NN', now());
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 1, 1, 'MESA 1');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 2, 2, 'MESA 2');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 3, 3, 'MESA 3');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 4, 4, 'MESA 4');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 5, 5, 'MESA 5');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 6, 6, 'MESA 6');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 7, 7, 'MESA 7');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 8, 8, 'MESA 8');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 9, 9, 'MESA 9');
+
+INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 10, 10, 'MESA 10');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 1010, 'VIVERES');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 2020, 'LICORES');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 3030, 'FRUTAS Y VERDURAS');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 4040, 'CARNES');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 4141, 'CARNES FRIAS');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 4242, 'CARNE RES');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 4343, 'CARNE POLLO');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 4444, 'CARNE CERDO');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 4545, 'CARNE PESCADO');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 5050, 'ALIMENTOS PRCESADOS Y ENLATADOS');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 6060, 'RESTAURANTE');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 7070, 'MODA FEMENINA');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 8090, 'MODA MASCULINA');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 7171, 'MODA NIÑAS');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 8181, 'MODA NIÑOS');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 9090, 'HOGAR');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 100100, 'ELECTRODOMESTICOS');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 101101, 'ELETROMENORES');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 102102, 'ELETRODOMESTICOS LINEA BLANCA');
+

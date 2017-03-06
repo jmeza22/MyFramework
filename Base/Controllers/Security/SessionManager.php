@@ -16,6 +16,7 @@ class SessionManager {
     private $index_userid = 'userid';
     private $index_usertype = 'usertype';
     private $index_nickname = 'nickname';
+    private $index_fullname = 'fullname';
     private $index_enterpriseid = 'enterpriseid';
     private $index_time = 'starttime';
 
@@ -57,6 +58,12 @@ class SessionManager {
     function setNicknameForm($nickname) {
         if ($nickname != null) {
             $_SESSION[$this->index_nickname] = $nickname;
+        }
+    }
+    
+    function setFullnameForm($fullname) {
+        if ($fullname != null) {
+            $_SESSION[$this->index_fullname] = $fullname;
         }
     }
 
@@ -132,12 +139,13 @@ class SessionManager {
         $_SESSION['tokensingup'] = null;
     }
 
-    function setLogin($iduser, $user, $type = null, $identerprise = null) {
+    function setLogin($iduser, $user, $type = null, $fullname=null, $identerprise = null) {
         if ($iduser != null && $user != null) {
             $_SESSION[$this->index_time] = time();
             $_SESSION[$this->index_userid] = $iduser;
             $_SESSION[$this->index_nickname] = $user;
             $_SESSION[$this->index_usertype] = $type;
+            $_SESSION[$this->index_fullname] = $fullname;
             $_SESSION[$this->index_enterpriseid] = $identerprise;
             $this->GenerateToken();
             return true;
@@ -193,6 +201,13 @@ class SessionManager {
         }
         return null;
     }
+    
+    function getFullname() {
+        if (isset($_SESSION[$this->index_fullname])) {
+            return $_SESSION[$this->index_fullname];
+        }
+        return null;
+    }
 
     function getEnterpriseID() {
         if (isset($_SESSION[$this->index_enterpriseid])) {
@@ -211,10 +226,12 @@ class SessionManager {
         $data['userid'] = null;
         $data['user'] = null;
         $data['userrole'] = null;
+        $data['fullname'] = null;
         if ($this->hasLogin()) {
             $data['userid'] = $this->getUserID();
             $data['user'] = $this->getNickname();
             $data['userrole'] = $this->getUserType();
+            $data['fullname'] = $this->getFullname();
             $array['message'] = 'You have a Active Session.';
             $array['state'] = 1;
         }
