@@ -11,11 +11,11 @@ jQuery(document).ready(function () {
 
 
     loadComboboxData(document.getElementById("list_id_user")).done(function () {
-        setNameFromDataList('id_user', 'name_user');
+        autoNameFromDataList('id_user', 'name_user', null);
     });
 
     loadComboboxData(document.getElementById("list_id_product")).done(function () {
-        setNameFromDataList('id_product', 'name_product');
+        autoNameFromDataList('id_product', 'name_product', 'price_product');
     });
 
     console.log('Set Orden ' + getIdOrder());

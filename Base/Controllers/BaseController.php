@@ -328,10 +328,10 @@ class BaseController {
         return $result;
     }
 
-    public function getComboboxData($colname = 'colname', $colvalue = 'colvalue', $where = '') {
+    public function getComboboxData($colname = 'colname', $colvalue = 'colvalue', $othervalue = 'othervalue', $where = '') {
         $result = null;
         if (isset($this->db) && isset($this->model) && isset($colname) && isset($colvalue)) {
-            $result = $this->db->selectJSON($this->model, $colname . ' as iname, ' . $colvalue . ' as ivalue ', $where);
+            $result = $this->db->selectJSON($this->model, $colname . ' as iname, ' . $colvalue . ' as ivalue, '. $othervalue . ' as iothervalue ', $where);
             return $result;
         }
         return null;

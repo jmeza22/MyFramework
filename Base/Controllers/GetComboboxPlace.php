@@ -14,9 +14,11 @@ if ($session->hasLogin()) {
         $enterprise=$session->getEnterpriseID();
         $colname = null;
         $colvalue = null;
+        $othervalue = null;
         $colname = 'description_place';
         $colvalue = 'id_place';
-        echo $bc->getComboboxData($colname, $colvalue, "state_place=1 and id_store=$enterprise ");
+        $othervalue = 'number_place';
+        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "state_place=1 and id_store=$enterprise ");
         $bc->disconnect();
     }
 }else{

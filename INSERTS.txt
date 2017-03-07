@@ -8,6 +8,10 @@ INSERT INTO UserAccountsApp (id_store, id_user, nickname_account, password_accou
 
 INSERT INTO UserAccountsApp (id_store, id_user, nickname_account, password_account, role_account, updated_account) VALUES (1, 2, '85125745', '92042202128fb12b1241f0dce1e6fe8c56c9fb6911c527e063aabcd', 'NN', now());
 
+INSERT INTO CustomersApp (id_user, doctype_customer, doc_customer, fullname_customer) VALUES (2, 'CC', '85125745', 'LISANDRO MEZA SOLANO');
+
+INSERT INTO SellersApp (id_user, doctype_seller, doc_seller, fullname_seller) VALUES (1, 'CC', '1083434734', 'JOSE MEZA MEZA');
+
 INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 1, 1, 'MESA 1');
 
 INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 2, 2, 'MESA 2');

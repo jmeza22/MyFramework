@@ -10,9 +10,11 @@ if ($_POST != null && isset($_POST)) {
     $bc->setAction('findAll');
     $colname = null;
     $colvalue = null;
+    $othervalue = null;
     $colname = 'name_store';
     $colvalue = 'id_store';
-    echo $bc->getComboboxData($colname, $colvalue, 'state_store=1');
+    $othervalue = 'doc_store';
+    echo $bc->getComboboxData($colname, $colvalue, $othervalue, 'state_store=1');
     $bc->disconnect();
 }
 ob_end_flush();

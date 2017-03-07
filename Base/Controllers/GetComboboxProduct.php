@@ -15,9 +15,11 @@ if ($session->hasLogin()) {
         $enterprise=$session->getEnterpriseID();
         $colname = null;
         $colvalue = null;
-        $colname = "concat(name_product,' $',price_product)";
-        $colvalue = $_POST['colvalue'];
-        echo $bc->getComboboxData($colname, $colvalue, "state_product=1 and id_store=$enterprise ");
+        $othervalue = null;
+        $colname = 'name_product';
+        $colvalue = 'id_product';
+        $othervalue = 'price_product';
+        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "state_product=1 and id_store=$enterprise ");
         $bc->disconnect();
     }
 }else{

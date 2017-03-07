@@ -14,8 +14,12 @@ function noContextMenu() {
     document.oncontextmenu = function () {
         return false;
     };
-    document.oncopy = new Function("return false");
-    document.oncut = new Function("return false");
+    document.oncopy = function () {
+        return false;
+    };
+    document.oncut = function () {
+        return false;
+    };
 }
 
 function noBackButton() {
@@ -497,7 +501,7 @@ function getTD(item) {
     return null;
 }
 
-function getColName(combo) {
+function getColNameCombobox(combo) {
     if (combo !== null && (combo.tagName === "SELECT" || combo.tagName === "DATALIST")) {
         if (combo.getAttribute("colname") !== null && combo.getAttribute("colname") !== '') {
             return combo.getAttribute("colname");
@@ -506,10 +510,19 @@ function getColName(combo) {
     return null;
 }
 
-function getColValue(combo) {
+function getColValueCombobox(combo) {
     if (combo !== null && (combo.tagName === "SELECT" || combo.tagName === "DATALIST")) {
         if (combo.getAttribute("colvalue") !== null && combo.getAttribute("colvalue") !== '') {
             return combo.getAttribute("colvalue");
+        }
+    }
+    return null;
+}
+
+function getOtherValueCombobox(combo) {
+    if (combo !== null && (combo.tagName === "SELECT" || combo.tagName === "DATALIST")) {
+        if (combo.getAttribute("othervalue") !== null && combo.getAttribute("othervalue") !== '') {
+            return combo.getAttribute("othervalue");
         }
     }
     return null;
@@ -762,7 +775,7 @@ function setComboboxOptions(combo, json) {
             option = document.createElement('option');
             option.setAttribute('id', json[i]['ivalue']);
             option.setAttribute('value', json[i]['ivalue']);
-            option.setAttribute('data-' + combo.id, json[i]['iname']);
+            option.setAttribute('othervalue', json[i]['iothervalue']);
             option.innerHTML = json[i]['iname'];
             if (selected !== null && option.id === selected) {
                 option.setAttribute('selected', 'selected');
@@ -783,18 +796,21 @@ function loadComboboxData(element) {
     var model = null;
     var colname = null;
     var colvalue = null;
+    var othervalue = null;
     var object = null;
     var vals = null;
 
     url = getURL(element);
     model = getModel(element);
-    colname = getColName(element);
-    colvalue = getColValue(element);
+    colname = getColNameCombobox(element);
+    colvalue = getColValueCombobox(element);
+    othervalue = getOtherValueCombobox(element);
     vals = {
         "model": model,
         "action": 'findAll',
         "colname": colname,
-        "colvalue": colvalue
+        "colvalue": colvalue,
+        "othervalue": othervalue
     };
     if (element !== null &&
             url !== null && url !== '' &&
@@ -1240,47 +1256,68 @@ function sendValue(form1, field1, form2, field2) {
     }
 }
 
-function setNameFromDataList(idfield, idfieldname) {
-
+function setNameFromDataList(idfield, idfieldname, idothervalue) {
     if (idfield !== null && idfieldname !== null) {
-        $("#" + idfield).on('input focus change', function () {
-            var field = null;
-            var fieldTarget = null;
-            var datalist = null;
-            var valuefield = null;
-            var selected = null;
 
-            if (document.getElementById(idfield) !== null) {
-                field = document.getElementById(idfield);
-            }
-            if (field.getAttribute('list') !== null && field.getAttribute('list') !== '') {
-                datalist = field.getAttribute('list');
-            }
-            if (document.getElementById(datalist) !== null) {
-                datalist = document.getElementById(datalist);
-            }
-            if (document.getElementById(idfieldname) !== null) {
-                fieldTarget = document.getElementById(idfieldname);
-            }
+        var field = null;
+        var fieldTarget = null;
+        var fieldOther = null;
+        var datalist = null;
+        var valuefield = null;
+        var selected = null;
 
-            valuefield = field.value;
-            if (datalist !== null && valuefield !== null) {
-                selected = getOptionByValue(datalist, valuefield);
-            }
+        if (document.getElementById(idfield) !== null) {
+            field = document.getElementById(idfield);
+        }
+        if (field.getAttribute('list') !== null && field.getAttribute('list') !== '') {
+            datalist = field.getAttribute('list');
+        }
+        if (document.getElementById(datalist) !== null) {
+            datalist = document.getElementById(datalist);
+        }
+        if (document.getElementById(idfieldname) !== null) {
+            fieldTarget = document.getElementById(idfieldname);
+        }
+        if (document.getElementById(idothervalue) !== null) {
+            fieldOther = document.getElementById(idothervalue);
+        }
 
-            if (selected !== null) {
-                if (selected.innerHTML !== null && selected.innerHTML !== '') {
-                    fieldTarget.value = selected.innerHTML;
-                    console.log('OK set name');
-                }
-            }
+        valuefield = field.value;
+        if (datalist !== null && valuefield !== null) {
+            selected = getOptionByValue(datalist, valuefield);
+        }
 
-            if (valuefield === null || valuefield === '') {
-                fieldTarget.value = '';
+        if (selected !== null) {
+            if (selected.innerHTML !== null && selected.innerHTML !== '') {
+                fieldTarget.value = selected.innerHTML;
             }
+            if (fieldOther !== null && selected.getAttribute('othervalue') !== null) {
+                fieldOther.value = selected.getAttribute('othervalue');
+            }
+        }
 
-        });
+        if (valuefield === null || valuefield === '') {
+            fieldTarget.value = '';
+        }
+
     }
+}
+
+function autoNameFromDataList(idfield, idfieldname, idothervalue) {
+    var field = null;
+    if (idfield !== null) {
+        field = document.getElementById(idfield);
+        field.oninput = function () {
+            setNameFromDataList(idfield, idfieldname, idothervalue);
+        };
+        field.onchange = function () {
+            setNameFromDataList(idfield, idfieldname, idothervalue);
+        };
+        field.onfocus = function () {
+            setNameFromDataList(idfield, idfieldname, idothervalue);
+        };
+    }
+
 }
 
 function getIdFromGET() {

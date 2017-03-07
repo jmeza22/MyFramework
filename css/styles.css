@@ -67,7 +67,7 @@ input{
 }
 
 input[disabled]{
-    cursor: none !important;
+    cursor: default !important;
 }
 
 option{

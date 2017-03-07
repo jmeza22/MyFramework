@@ -11,11 +11,11 @@ jQuery(document).ready(function () {
     dd.setAttribute('readonly', 'readonly');
     
     loadComboboxData(document.getElementById("list_id_user")).done(function () {
-        setNameFromDataList('id_user', 'name_user');
+        autoNameFromDataList('id_user', 'name_user', null);
         user.focus();
     });
     loadComboboxData(document.getElementById("list_id_place")).done(function () {
-        setNameFromDataList('id_place', 'note_order');
+        autoNameFromDataList('id_place', 'note_order', null);
     });
 
     if (getIdEnterprise() !== null) {
@@ -50,7 +50,7 @@ function Send(item) {
                     resetForm(item);
                     setIdOrder(getLastInsertId());
                     setPOST('action','insert');
-                    window.location.href = 'FormOrderDetails.html';
+                    //window.location.href = 'FormOrderDetails.html';
                 }
             }, 100);
         });
