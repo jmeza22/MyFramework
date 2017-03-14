@@ -9,16 +9,20 @@ if ($session->hasLogin()) {
         $bc = new BaseController();
         $bc->connect();
         $bc->preparePostData();
+        $bc->setModel('ProductCategoriesApp');
         $bc->setAction('findAll');
+        $enterprise=$session->getEnterpriseID();
         $colname = null;
         $colvalue = null;
         $othervalue = null;
-        $colname = $_POST['colname'];
-        $colvalue = $_POST['colvalue'];
-        $othervalue = $_POST['othervalue'];
-        echo $bc->getComboboxData($colname, $colvalue, $othervalue, '');
+        $colname = 'name_category';
+        $colvalue = 'id_category';
+        $othervalue = 'description_category';
+        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "state_category=1 and id_store=$enterprise ");
         $bc->disconnect();
     }
+}else{
+    echo $session->getSessionStateJSON();
 }
 ob_end_flush();
 ?>

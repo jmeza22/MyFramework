@@ -48,6 +48,18 @@ class BaseController {
     public function disconnect() {
         $this->db->disconnect();
     }
+    
+    public function commit() {
+        return $this->db->commit();
+    }
+
+    public function rollback() {
+        return $this->db->rollback();
+    }
+    
+    public function beginTransaction() {
+        return $this->db->beginTransaction();
+    }
 
     public function getLastInsertId($name = null) {
         return $this->db->getLastInsertID($name);
@@ -114,7 +126,7 @@ class BaseController {
     }
 
     private function parseWhereParam($param) {
-        if (is_nan($param)) {
+        if ($param != null && $param != '' && is_nan($param)) {
             return "'" . $param . "'";
         } else {
             return $param;
@@ -331,7 +343,7 @@ class BaseController {
     public function getComboboxData($colname = 'colname', $colvalue = 'colvalue', $othervalue = 'othervalue', $where = '') {
         $result = null;
         if (isset($this->db) && isset($this->model) && isset($colname) && isset($colvalue)) {
-            $result = $this->db->selectJSON($this->model, $colname . ' as iname, ' . $colvalue . ' as ivalue, '. $othervalue . ' as iothervalue ', $where);
+            $result = $this->db->selectJSON($this->model, $colname . ' as iname, ' . $colvalue . ' as ivalue, ' . $othervalue . ' as iothervalue ', $where);
             return $result;
         }
         return null;

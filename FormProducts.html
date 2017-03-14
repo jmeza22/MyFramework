@@ -37,11 +37,11 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <label>Codigo</label>
-                        <input type="number" integer="true" name="id_product" id="id_product" value="0" min="0" required="required" maxlength="80" class="form-control" title="Nombre Completo">
+                        <input type="number" integer="true" name="id_product" id="id_product" value="0" min="0" required="required" maxlength="80" class="form-control" title="Codigo">
                     </div>
                     <div class="col-sm-9">
                         <label>Nombre de Producto</label>
-                        <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="80" class="form-control" title="Nombre Completo">
+                        <input type="text" name="name_product" id="name_product" value="" required="required" maxlength="80" class="form-control" title="Nombre de Producto">
                     </div>
                 </div>
 
@@ -55,7 +55,7 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <label>Padre</label>
-                        <input type="number" integer="true" name="parent_id_product" id="parent_id_product" value="" min="0" maxlength="30" class="form-control" title="Codigo Interno" >
+                        <input type="text" integer="true" name="parent_id_product" id="parent_id_product" value="" min="0" maxlength="30" list="list_id_product" class="form-control" title="Codigo Producto Padre" >
                     </div>
                     <div class="col-sm-3">
                         <label>SKU</label>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-sm-3">
                         <label>Categoria</label>
-                        <input type="text" name="id_category" id="id_category" value="" maxlength="30" class="form-control" title="Codigo Interno" >
+                        <input type="text" name="id_category" id="id_category" value="" maxlength="30" list="list_id_category" class="form-control" title="Categoria de Producto" >
                     </div>
                     <div class="col-sm-3">
                         <label>Precio</label>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="row" style="margin-top: 20px;">
                     <div class="col-sm-6">
@@ -81,10 +81,18 @@
                     </div>
                     <div class="col-sm-6">
                         <center>
-                            <button type="reset" id="reset" class="btn btn-success">Nuevo</button> 
+                            <button type="reset" id="reset" class="btn btn-success" onclick="NewForm(this);">Nuevo</button> 
                         </center>
                     </div>
                 </div>
+                
+                <datalist id="list_id_product" name="list_id_product" model="ProductsApp" colname="name_product" colvalue="id_product" url="Base/Controllers/GetComboboxProduct.php">
+                    <option disabled="disabled" value="0">Ninguno</option>
+                </datalist>
+
+                <datalist id="list_id_category" name="list_id_category" model="ProductCategoriesApp" colname="name_category" colvalue="id_category" url="Base/Controllers/GetComboboxCategory.php">
+                    <option disabled="disabled" value="0">Ninguno</option>
+                </datalist>
 
             </form>
         </div>

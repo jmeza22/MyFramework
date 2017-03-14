@@ -15,7 +15,7 @@ jQuery(document).ready(function () {
     });
 
     loadComboboxData(document.getElementById("list_id_product")).done(function () {
-        autoNameFromDataList('id_product', 'name_product', 'price_product');
+        autoNameFromDataList('id_product', 'name_product', 'price_detail');
     });
 
     console.log('Set Orden ' + getIdOrder());

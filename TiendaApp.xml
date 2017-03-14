@@ -51,7 +51,7 @@
       </Fk>
       <Idx clu="0" ftx="0" nm="Customers_doc_Idx" spa="0" unq="1">
         <ClNs>doc_customer, doctype_customer</ClNs>
-        <OptTx/>
+        <OptTx>USES BTREE</OptTx>
       </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -167,7 +167,7 @@
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Llave Primaria</Cm>
       </Cl>
-      <Cl au="0" df="" nm="id_invoice" nu="1">
+      <Cl au="0" df="" nm="id_invoice" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Llave Primaria Factura</Cm>
       </Cl>
@@ -350,7 +350,7 @@
       </Fk>
       <Idx clu="0" ftx="0" nm="ProductTaxes_Idx" spa="0" unq="1">
         <ClNs>id_product, id_tax</ClNs>
-        <OptTx/>
+        <OptTx>USES BTREE</OptTx>
       </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -513,7 +513,7 @@
       </Fk>
       <Idx clu="0" ftx="0" nm="Invoices_number_Idx" spa="0" unq="1">
         <ClNs>number_invoice</ClNs>
-        <OptTx/>
+        <OptTx>USES BTREE</OptTx>
       </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -549,7 +549,7 @@
       </Fk>
       <Idx clu="0" ftx="0" nm="Sellers_doc_Idx" spa="0" unq="1">
         <ClNs>doctype_seller, doc_seller</ClNs>
-        <OptTx/>
+        <OptTx>USES BTREE</OptTx>
       </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -746,11 +746,11 @@
       </Cl>
       <Idx clu="0" ftx="0" nm="Users_doc_Idx" spa="0" unq="1">
         <ClNs>doctype_user, doc_user</ClNs>
-        <OptTx/>
+        <OptTx>USES BTREE</OptTx>
       </Idx>
       <Idx clu="0" ftx="0" nm="Users_email_Idx" spa="0" unq="1">
         <ClNs>email_user</ClNs>
-        <OptTx/>
+        <OptTx>USES BTREE</OptTx>
       </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -784,7 +784,7 @@
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ProductsApp" x="1581" y="327"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrdersApp" x="660" y="366"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="OrderDetailsApp" x="1111" y="356"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PaymentsApp" x="1170" y="992"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PaymentsApp" x="1167" y="985"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="PlacesApp" x="813" y="188"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="TaxesApp" x="2017" y="125"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ProductCategoriesApp" x="1591" y="131"/>
@@ -828,7 +828,7 @@
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.PaymentsApp.fk_PaymentsApp_SalesInvoicesApp" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="1309" x2="1309" y1="868" y2="969"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1309" x2="1309" y1="868" y2="962"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.PlacesApp.fk_Places_Stores" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">

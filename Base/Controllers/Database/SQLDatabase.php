@@ -112,6 +112,18 @@ class SQLDatabase {
         return $this->link = null;
     }
 
+    public function commit() {
+        return $this->link->commit();
+    }
+
+    public function rollback() {
+        return $this->link->rollback();
+    }
+
+    public function beginTransaction() {
+        return $this->link->beginTransaction();
+    }
+
     private function executeSTMT() {
         $result = false;
         $this->errorcode = 0;
