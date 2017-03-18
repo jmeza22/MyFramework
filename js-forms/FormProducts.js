@@ -2,8 +2,12 @@ jQuery(document).ready(function () {
     var myform = document.getElementById("form0");
     var product = document.getElementById("id_product");
     NewForm(myform);
-    loadComboboxData(document.getElementById("list_id_product"));
-    loadComboboxData(document.getElementById("list_id_category"));
+    loadComboboxData(document.getElementById("id_category"));
+    loadComboboxData(document.getElementById("id_unit"));
+    loadComboboxData(document.getElementById("list_id_product")).done(function () {
+        autoNameFromDataList('parent_id_product', 'parent_name_product', null);
+    });
+    
     POST();
     product.onkeypress = function (event) {
         if (event.keyCode === 13 || event.keyCode === 9) {

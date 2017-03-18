@@ -42,7 +42,7 @@ and open the template in the editor.
                     <div class="row">
                         <div class="col-sm-2">
                             <label>Cliente</label>
-                            <input type="text" integer="true" name="id_user" id="id_user" value="0" min="0" class="form-control" title="Codigo de Usuario" list="list_id_user" >
+                            <input type="text" integer="true" name="doc_customer" id="doc_customer" value="0" min="0" class="form-control" title="Codigo de Usuario" list="list_id_customer" >
                         </div>
                         <div class="col-sm-6">
                             <label>Nombre del Cliente</label>
@@ -82,8 +82,8 @@ and open the template in the editor.
                         <option value="">Ninguno</option>
                     </datalist>
                     
-                    <datalist id="list_id_user" name="list_id_user" model="UsersApp" colname="name_user" colvalue="id_user" url="Base/Controllers/GetComboboxUser.php">
-                        <option value="0" disabled="disabled">Ninguno</option>
+                    <datalist id="list_id_customer" name="list_id_customer" model="CustomersApp" colname="fullname_customer" colvalue="doc_customer" url="Base/Controllers/GetComboboxCustomer.php">
+                        <option value="0">Ninguno</option>
                     </datalist>
                 
                 </form>

@@ -32,6 +32,24 @@ INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALU
 
 INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 10, 10, 'MESA 10');
 
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('UND','UNIDAD');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('kg','KILOGRAMO');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('gr','GRAMO');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('mg','MILIGRAMO');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('lt','LITRO');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('ml','MILILITRO');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('cm3','CENTIMETRO CUBICO');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('Caja','CAJA');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('Paquete','PAQUETE');
+
 INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 1010, 'VIVERES');
 
 INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 2020, 'LICORES');

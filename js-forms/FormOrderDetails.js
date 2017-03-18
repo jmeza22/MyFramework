@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {
 
     var order = document.getElementById("id_order");
-    var user = document.getElementById("id_user");
+    var user = document.getElementById("doc_customer");
     var formorder = document.getElementById("formOrder");
     var formdetail = document.getElementById("formDetail");
     var datedetail = document.getElementById("date_detail");
@@ -10,8 +10,8 @@ jQuery(document).ready(function () {
     var action = null;
 
 
-    loadComboboxData(document.getElementById("list_id_user")).done(function () {
-        autoNameFromDataList('id_user', 'name_user', null);
+    loadComboboxData(document.getElementById("list_id_customer")).done(function () {
+        autoNameFromDataList('doc_customer', 'name_user', null);
     });
 
     loadComboboxData(document.getElementById("list_id_product")).done(function () {

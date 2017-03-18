@@ -2,7 +2,7 @@ jQuery(document).ready(function () {
     
     var dd = document.getElementById("date_order");
     var store = document.getElementById("id_store");
-    var user = document.getElementById("id_user");
+    var user = document.getElementById("doc_customer");
     var order = document.getElementById("id_order");
     var myform = document.getElementById("form0");
     var action = null;
@@ -10,8 +10,8 @@ jQuery(document).ready(function () {
     dd.value = getCurrentDate() + 'T' + getCurrentTime();
     dd.setAttribute('readonly', 'readonly');
     
-    loadComboboxData(document.getElementById("list_id_user")).done(function () {
-        autoNameFromDataList('id_user', 'name_user', null);
+    loadComboboxData(document.getElementById("list_id_customer")).done(function () {
+        autoNameFromDataList('doc_customer', 'name_user', null);
         user.focus();
     });
     loadComboboxData(document.getElementById("list_id_place")).done(function () {
@@ -22,7 +22,7 @@ jQuery(document).ready(function () {
         store.value = getIdEnterprise();
     }
     if (getUserIdLogin() !== null) {
-        user.value = getUserIdLogin();
+        user.value = getUsernameLogin();
     }
 
     if (getPOST('action') !== null && getPOST('id_order') !== null) {
