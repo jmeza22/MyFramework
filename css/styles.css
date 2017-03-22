@@ -70,6 +70,10 @@ input[disabled]{
     cursor: default !important;
 }
 
+input[type="number"], input[numeric="true"], input[double="true"]{
+    text-align: right !important;
+}
+
 option{
     font-family: 'Voltaire', sans-serif !important;
     height: auto !important;
@@ -146,9 +150,9 @@ header{
     background-color: black;
     padding-top: 5px !important; 
     padding-bottom: 5px !important; 
-    opacity: 0.8 !important;
-    -moz-opacity:0.8;
-    -khtml-opacity:0.8;
+    opacity: 0.9 !important;
+    -moz-opacity:0.9;
+    -khtml-opacity:0.9;
 }
 
 footer {

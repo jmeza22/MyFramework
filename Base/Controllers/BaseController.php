@@ -48,7 +48,7 @@ class BaseController {
     public function disconnect() {
         $this->db->disconnect();
     }
-    
+
     public function commit() {
         return $this->db->commit();
     }
@@ -56,7 +56,7 @@ class BaseController {
     public function rollback() {
         return $this->db->rollback();
     }
-    
+
     public function beginTransaction() {
         return $this->db->beginTransaction();
     }
@@ -126,9 +126,9 @@ class BaseController {
     }
 
     private function parseWhereParam($param) {
-        if ($param != null && $param != '' && is_nan($param)) {
+        if ($param != null && $param != '' && is_numeric($param) == false) {
             return "'" . $param . "'";
-        } else {
+        } else if(is_numeric($param)) {
             return $param;
         }
         return null;

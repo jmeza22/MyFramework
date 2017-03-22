@@ -13,7 +13,7 @@ and open the template in the editor.
         
         <?php
         // put your code here... Prueba GitHub
-        header('location: FormPrueba.php');
+        header('location: login.html');
         ?>
     </body>
 </html>

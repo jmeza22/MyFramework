@@ -32,23 +32,25 @@ INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALU
 
 INSERT INTO PlacesApp (id_store, id_place, number_place, description_place) VALUES (1, 10, 10, 'MESA 10');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('UND','UNIDAD');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('UND','UNIDADES');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('kg','KILOGRAMO');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('kg','KILOGRAMOS');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('gr','GRAMO');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('lb','LIBRAS');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('mg','MILIGRAMO');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('gr','GRAMOS');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('lt','LITRO');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('mg','MILIGRAMOS');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('ml','MILILITRO');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('lt','LITROS');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('cm3','CENTIMETRO CUBICO');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('ml','MILILITROS');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('Caja','CAJA');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('cm3','CENTIMETROS CUBICOS');
 
-INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('Paquete','PAQUETE');
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('Caja','CAJAS');
+
+INSERT INTO MeasurementUnitsApp (id_unit, name_unit) VALUES ('Paquete','PAQUETES');
 
 INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 1010, 'VIVERES');
 
@@ -88,3 +90,8 @@ INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (
 
 INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 102102, 'ELETRODOMESTICOS LINEA BLANCA');
 
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 200200, 'TECNOLOGIA');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 201201, 'COMPUTADORES Y TABLETS');
+
+INSERT INTO ProductCategoriesApp (id_store, id_category, name_category) VALUES (1, 202202, 'SMARTPHONES y ACCESORIOS');

@@ -36,7 +36,7 @@
 
                 <form id="form0" method="POST" autocomplete="off" url="Base/Controllers/UserController.php" model="UsersApp" findBy="id_user" mainform="true" >
                     <input type="hidden" integer="true" name="id_user" id="id_user" value="0" required="required" class="form-control">
-                    
+
                     <div class="row">
                         <div class="col-sm-6">
                             <label>Nombres</label>
@@ -48,18 +48,18 @@
                             <input type="text" name="lastname_user" id="lastname_user" value="" required="required" maxlength="100" class="form-control" title="Apellidos" >
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-sm-6">
                             <label>Tipo de Documento</label>
                             <select name="doctype_user" id="doctype_user" selected="NN" alphabetic="true" required="required" class="form-control" style="width: 100%; min-width: 100%;"  >
-                                <option value="NN" disabled="disabled">Desconocido</option>
-                                <option value="CC" >Cédula de Ciudadanía</option>
-                                <option value="NIT" >NIT</option>
-                                <option value="CE" >Cédula de Extranjeria</option>
-                                <option value="PP" >Pasaporte</option>
-                                <option value="TI" >Tarjeta de Identidad</option>
-                                <option value="OO" >Otro</option>
+                                <option id="NN" value="NN" disabled="disabled">Desconocido</option>
+                                <option id="CC" value="CC" >Cédula de Ciudadanía</option>
+                                <option id="NIT" value="NIT" >NIT</option>
+                                <option id="CE" value="CE" >Cédula de Extranjeria</option>
+                                <option id="PP" value="PP" >Pasaporte</option>
+                                <option id="TI" value="TI" >Tarjeta de Identidad</option>
+                                <option id="OO" value="OO" >Otro</option>
                             </select>
                         </div>
                         <div class="col-sm-6">
@@ -67,7 +67,7 @@
                             <input type="text" name="doc_user" id="doc_user" value="" maxlength="25" required="required" class="form-control" title="Cedula de Ciudadania">
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-sm-6">
                             <label>Sexo</label>
@@ -83,14 +83,14 @@
                             <input type="date" date="true" name="birthday_user" id="birthday_user" value="" placeholder="1992-04-22" maxlength="10" class="form-control">
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-sm-12">
                             <label>Direccion</label>
                             <input type="text" name="address_user" id="address_user" value="" maxlength="100" class="form-control" title="Direccion">
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-sm-6">
                             <label>Telefono</label>

@@ -1,13 +1,20 @@
 jQuery(document).ready(function () {
-    var idstore = document.getElementById("id_store");
-    var idcategory = document.getElementById("id_category");
+    var id = document.getElementById("doc_customer");
     var mytable = document.getElementById("dataTable0");
-    var valid = getIdEnterprise();
-    if (valid !== null) {
-        idstore.value = valid;
+    var savebutton= document.getElementById("save");
+    
+    if(id!==null && getPOST(id.name)!==null){
+        id.value=getPOST(id.name);
+        unsetPOST(id.name);
     }
-    getData(idcategory);
+    if(getPOST('action')!==null){
+        savebutton.setAttribute('action',getPOST('action'));
+        unsetPOST('action');
+    }
+    
+    getData(id);
     loadTableData(mytable, true);
+    
 });
 
 function Send(item) {
@@ -23,6 +30,7 @@ function Send(item) {
                 var savebutton = null;
                 savebutton = getElement(myform, 'save');
                 savebutton.setAttribute('action', 'insert');
+                document.getElementById("doc_customer").focus();
             }, 100);
         });
     }
@@ -38,7 +46,7 @@ function Edit(item) {
             var savebutton = null;
             savebutton = getElement(myform, 'save');
             savebutton.setAttribute('action', 'update');
-            myform.focus();
+            document.getElementById("doc_customer").focus();
         }, 100);
     });
 }
@@ -58,22 +66,13 @@ function Delete(item) {
 function New(item) {
     var myform = getForm(item);
     var id = null;
-    var identerprise = null;
     resetForm(myform);
     id = getElement(myform, getFindBy(myform));
-    identerprise = getElement(myform, 'id_store');
     if (id !== null) {
         id.value = '';
     }
-    if (identerprise !== null) {
-        identerprise.value = 0;
-    }
-    if (identerprise !== null && getIdEnterprise() !== null) {
-        identerprise.value = getIdEnterprise();
-    }
-    
     var savebutton = null;
     savebutton = getElement(myform, 'save');
     savebutton.setAttribute('action', 'insert');
-    id.focus();
+    document.getElementById("doc_customer").focus();
 }

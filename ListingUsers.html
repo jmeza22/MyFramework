@@ -68,7 +68,7 @@ and open the template in the editor.
                                 <td>{{email_user}}</td>
                                 <td>{{role_account}}</td>
                                 <td>
-                                    <form method="GET" url="Base/Controllers/DefaultController.php" model="UsersApp" findBy="id_user" >
+                                    <form method="GET" url="Base/Controllers/UserController.php" model="UsersApp" findBy="id_user" >
                                         <input type="hidden" name="id_user" id="id_user" value="{{id_user}}" />
                                         <button type="button" name="update" id="update" action="update" class="btn btn-warning" onclick="Edit(this);"><i class="glyphicon glyphicon-edit"></i></button>
                                         <button type="button" name="delete" id="delete" action="delete" class="btn btn-danger" onclick="Delete(this);"><i class="glyphicon glyphicon-remove"></i></button>

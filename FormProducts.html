@@ -37,7 +37,7 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <label>Codigo</label>
-                        <input type="number" integer="true" name="id_product" id="id_product" value="0" min="0" required="required" maxlength="25" class="form-control" title="Codigo">
+                        <input type="number" integer="true" name="id_product" id="id_product" value="0" min="0" required="required" maxlength="25" class="form-control" title="Codigo" style="text-align: left !important;">
                     </div>
                     <div class="col-sm-9">
                         <label>Nombre de Producto</label>
@@ -62,29 +62,41 @@
                     <div class="col-sm-3">
                         <label>Unidad</label>
                         <select name="id_unit" id="id_unit" selected="UND" model="MeasurementUnitsApp" colname="name_unit" colvalue="id_unit" url="Base/Controllers/GetComboboxUnit.php" class="form-control" style="width: 100%;">
-                            <option disabled="disabled" selected="selected" value="UND">Ninguna</option>
+                            <option disabled="disabled" selected="selected" value="NULL">Ninguna</option>
                         </select>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
+                        <label>Precio</label>
+                        <input type="text" name="price_product" id="price_product" numeric="true" value="0" min="0" class="form-control" title="Precio Base">
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Descuento (%)</label>
+                        <input type="number" name="discount_product" id="discount_product" numeric="true" value="0" min="0" max="100" class="form-control" title="Porcentaje Descuento">
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
                         <label>Padre</label>
                         <input type="text" integer="true" name="parent_id_product" id="parent_id_product" value="" min="0" maxlength="25" list="list_id_product" class="form-control" title="Codigo Producto Padre" >
                     </div>
-                    <div class="col-sm-4">
-                        <label>Nombre de Padre</label>
+                    <div class="col-sm-3">
+                        <label>Nombre-Padre</label>
                         <input type="text" name="parent_name_product" id="parent_name_product" value="" min="0" maxlength="100" class="form-control" title="Nombre Producto Padre" disabled="disabled" >
                     </div>
-                </div>
-                
-                <div class="row">
                     <div class="col-sm-3">
                         <label>SKU</label>
                         <input type="text" name="sku_product" id="sku_product" value="" maxlength="30" class="form-control" title="Codigo Interno" >
                     </div>
-
                     <div class="col-sm-3">
-                        <label>Precio</label>
-                        <input type="text" name="price_product" id="price_product" value="0" min="0" class="form-control" title="Precio Base">
+                        <label>Facturable</label>
+                        <select id="forsale_product" name="forsale_product" selected="1" required="required" class="form-control" style="width: 100%;">
+                            <option id="1" value="1" selected="selected">SI</option>
+                            <option id="0" value="0">NO</option>
+                        </select>
                     </div>
+
                 </div>
 
 
@@ -101,13 +113,13 @@
                         </center>
                     </div>
                 </div>
-                
-                               
+
+
                 <datalist id="list_id_product" name="list_id_product" model="ProductsApp" colname="name_product" colvalue="id_product" url="Base/Controllers/GetComboboxProduct.php">
                     <option disabled="disabled" value="0">Ninguno</option>
                 </datalist>
 
-                
+
 
             </form>
         </div>

@@ -66,7 +66,7 @@ and open the template in the editor.
                                 <td>{{name_product}}</td>
                                 <td>{{sku_product}}</td>
                                 <td>{{id_unit}}</td>
-                                <td>${{price_product}}</td>
+                                <td style="text-align: right !important;">${{price_product}}</td>
                                 <td>
                                     <form method="GET" url="Base/Controllers/ProductController.php" model="ProductsApp" findBy="id_product" >
                                         <input type="hidden" name="id_product" id="id_product" value="{{id_product}}" />

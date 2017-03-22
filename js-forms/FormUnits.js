@@ -1,12 +1,7 @@
 jQuery(document).ready(function () {
-    var idstore = document.getElementById("id_store");
-    var idcategory = document.getElementById("id_category");
+    var idunit = document.getElementById("id_unit");
     var mytable = document.getElementById("dataTable0");
-    var valid = getIdEnterprise();
-    if (valid !== null) {
-        idstore.value = valid;
-    }
-    getData(idcategory);
+    getData(idunit);
     loadTableData(mytable, true);
 });
 
@@ -23,6 +18,7 @@ function Send(item) {
                 var savebutton = null;
                 savebutton = getElement(myform, 'save');
                 savebutton.setAttribute('action', 'insert');
+                document.getElementById("id_unit").focus();
             }, 100);
         });
     }
@@ -38,7 +34,7 @@ function Edit(item) {
             var savebutton = null;
             savebutton = getElement(myform, 'save');
             savebutton.setAttribute('action', 'update');
-            myform.focus();
+            document.getElementById("id_unit").focus();
         }, 100);
     });
 }
@@ -58,22 +54,13 @@ function Delete(item) {
 function New(item) {
     var myform = getForm(item);
     var id = null;
-    var identerprise = null;
     resetForm(myform);
     id = getElement(myform, getFindBy(myform));
-    identerprise = getElement(myform, 'id_store');
     if (id !== null) {
         id.value = '';
     }
-    if (identerprise !== null) {
-        identerprise.value = 0;
-    }
-    if (identerprise !== null && getIdEnterprise() !== null) {
-        identerprise.value = getIdEnterprise();
-    }
-    
     var savebutton = null;
     savebutton = getElement(myform, 'save');
     savebutton.setAttribute('action', 'insert');
-    id.focus();
+    document.getElementById("id_unit").focus();
 }
