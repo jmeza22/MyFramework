@@ -16,7 +16,7 @@ if ($session->hasLogin()) {
         $bc->preparePostData();
         $bc->setModel($model);
         $enterprise=$session->getEnterpriseID();
-        $sql = "SELECT U.*, UA.role_account FROM UsersApp U INNER JOIN UserAccountsApp UA ON U.id_user=UA.id_user WHERE U.state_user=1 and UA.id_store = '$enterprise' order by id_user desc";
+        $sql = "SELECT U.*, UA.role_account FROM UsersApp U INNER JOIN UserAccountsApp UA ON U.id_user=UA.id_user WHERE U.status_user=1 and UA.id_store = '$enterprise' order by id_user desc";
         $result = $bc->selectSimple($sql);
         echo $result;
         $bc->disconnect();

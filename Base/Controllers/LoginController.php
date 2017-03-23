@@ -38,7 +38,7 @@ if (isset($_POST) && $_POST != null && isset($_POST['token']) && $_POST['token']
     $password = $crypt->crypt($pw);
     $sql="SELECT UA.id_user as userid, UA.nickname_account as user, UA.role_account as userrole, concat(U.name_user,' ',U.lastname_user) as fullname "
             . "FROM UserAccountsApp UA INNER JOIN UsersApp U ON UA.id_user=U.id_user INNER JOIN StoresApp S ON UA.id_store=S.id_store "
-            . "WHERE UA.nickname_account='$user' and UA.password_account='$password' and UA.id_store=$enterprise and UA.state_account=1 and U.state_user=1 and S.state_store=1";
+            . "WHERE UA.nickname_account='$user' and UA.password_account='$password' and UA.id_store=$enterprise and UA.status_account=1 and U.status_user=1 and S.status_store=1";
     
     $result = $bc->selectSimple($sql);
     

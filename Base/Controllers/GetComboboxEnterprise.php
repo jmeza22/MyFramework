@@ -14,7 +14,7 @@ if ($_POST != null && isset($_POST)) {
     $colname = 'name_store';
     $colvalue = 'id_store';
     $othervalue = 'doc_store';
-    echo $bc->getComboboxData($colname, $colvalue, $othervalue, 'state_store=1');
+    echo $bc->getComboboxData($colname, $colvalue, $othervalue, 'status_store=1');
     $bc->disconnect();
 }
 ob_end_flush();

@@ -19,7 +19,7 @@ if ($session->hasLogin()) {
             $bc->connect();
             $bc->preparePostData();
             $bc->setModel($model);
-            $sql = "SELECT dd.*, pp.name_product FROM $model dd INNER JOIN $modelproduct pp on dd.id_product=pp.id_product WHERE state_detail=1 and $findby = $findbyvalue order by date_detail desc";
+            $sql = "SELECT dd.*, pp.name_product FROM $model dd INNER JOIN $modelproduct pp on dd.id_product=pp.id_product WHERE status_detail=1 and $findby = $findbyvalue order by date_detail desc";
             $result = $bc->selectSimple($sql);
             echo $result;
             $bc->disconnect();

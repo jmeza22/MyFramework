@@ -17,7 +17,7 @@ if ($session->hasLogin()) {
         $colname = "concat(name_user,' ',lastname_user)";
         $colvalue = 'id_user';
         $othervalue = 'doc_user';
-        echo $bc->getComboboxData($colname, $colvalue, $othervalue, 'state_user=1');
+        echo $bc->getComboboxData($colname, $colvalue, $othervalue, 'status_user=1');
         $bc->disconnect();
     }
 }else{

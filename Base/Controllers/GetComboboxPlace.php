@@ -18,7 +18,7 @@ if ($session->hasLogin()) {
         $colname = 'description_place';
         $colvalue = 'id_place';
         $othervalue = 'number_place';
-        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "state_place=1 and id_store=$enterprise ");
+        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "status_place=1 and id_store=$enterprise ");
         $bc->disconnect();
     }
 }else{

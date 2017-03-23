@@ -18,7 +18,7 @@ if ($session->hasLogin()) {
         $colname = 'name_category';
         $colvalue = 'id_category';
         $othervalue = 'description_category';
-        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "state_category=1 and id_store=$enterprise ");
+        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "status_category=1 and id_store=$enterprise ");
         $bc->disconnect();
     }
 }else{

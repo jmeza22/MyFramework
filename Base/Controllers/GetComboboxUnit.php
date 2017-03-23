@@ -18,7 +18,7 @@ if ($session->hasLogin()) {
         $colname = 'name_unit';
         $colvalue = 'id_unit';
         $othervalue = 'id_unit';
-        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "state_unit=1");
+        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "status_unit=1");
         $bc->disconnect();
     }
 }else{

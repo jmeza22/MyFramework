@@ -55,7 +55,7 @@ if ($session->hasLogin() && $session->CheckToken()) {
             $array['nickname_account'] = $pd['doc_user'];
             $array['password_account'] = $crypt->crypt('0000');
             $array['updated_account'] = date('Y-m-d G:i:s');
-            $array['state_account'] = 1;
+            $array['status_account'] = 1;
             $bc->setModel('UserAccountsApp');
             $bc->setAction('insert');
             $bc->execute();

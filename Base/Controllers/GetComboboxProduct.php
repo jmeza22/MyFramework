@@ -19,7 +19,7 @@ if ($session->hasLogin()) {
         $colname = 'name_product';
         $colvalue = 'id_product';
         $othervalue = 'price_product';
-        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "state_product=1 and id_store=$enterprise ");
+        echo $bc->getComboboxData($colname, $colvalue, $othervalue, "status_product=1 and id_store=$enterprise ");
         $bc->disconnect();
     }
 }else{

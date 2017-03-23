@@ -17,7 +17,7 @@ if ($session->hasLogin()) {
         $bc->preparePostData();
         $bc->setModel($model);
         $enterprise=$session->getEnterpriseID();
-        $sql = "SELECT oo.*, fullname_customer as name_user FROM $model OO INNER JOIN $modeluser CC on OO.doc_customer=CC.doc_customer WHERE OO.state_order=1 and OO.id_store = '$enterprise' order by OO.id_order desc";
+        $sql = "SELECT oo.*, fullname_customer as name_user FROM $model OO INNER JOIN $modeluser CC on OO.doc_customer=CC.doc_customer WHERE OO.status_order=1 and OO.id_store = '$enterprise' order by OO.id_order desc";
         $result = $bc->selectSimple($sql);
         echo $result;
         $bc->disconnect();

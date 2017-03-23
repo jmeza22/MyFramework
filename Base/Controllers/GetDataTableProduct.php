@@ -16,7 +16,7 @@ if ($session->hasLogin()) {
         $bc->preparePostData();
         $bc->setModel($model);
         $enterprise=$session->getEnterpriseID();
-        $sql = "SELECT pp.* FROM $model pp WHERE state_product=1 and id_store = '$enterprise' order by id_product desc";
+        $sql = "SELECT pp.* FROM $model pp WHERE status_product=1 and id_store = '$enterprise' order by id_product desc";
         $result = $bc->selectSimple($sql);
         echo $result;
         $bc->disconnect();

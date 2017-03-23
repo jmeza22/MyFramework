@@ -4,6 +4,60 @@
   <DefTblOpts/>
   <DocFolder>C:\Users\JOSEMEZA\Documents</DocFolder>
   <Sch Cm="" nm="schemaA">
+    <Tbl UsSo="1" nm="CitiesApp">
+      <Cm>Ciudades</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_city" nm="pkCitiesApp"/>
+      <Cl au="1" df="" nm="id_city" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria Ciudades</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="code_city" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="20" sc="null" sg="1" un="0"/>
+        <Cm>Codigo Ciudad (DANE)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name_city" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="120" sc="null" sg="1" un="0"/>
+        <Cm>Nombre Ciudad</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_state" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="1" nm="status_city" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_CitiesApp_StatesApp" prLkCl="id_state" upAc="3">
+        <PrTb mn="0" nm="StatesApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="CitiesApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_state" prCl="id_state"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="CountriesApp">
+      <Cm>Paises</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_country" nm="pkCountriesApp"/>
+      <Cl au="1" df="" nm="id_country" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria Paises</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="code_country" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="20" sc="null" sg="1" un="0"/>
+        <Cm>Codigo de Pais (DANE)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name_country" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="120" sc="null" sg="1" un="0"/>
+        <Cm>Nombre del Paises</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="status_country" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="CustomersApp">
       <Cm>Clientes</Cm>
       <TblOpts/>
@@ -40,7 +94,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Email Cliente (Oficina)</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_customer" nu="1">
+      <Cl au="0" df="1" nm="status_customer" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado del Registro</Cm>
       </Cl>
@@ -72,7 +126,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="80" sc="null" sg="1" un="0"/>
         <Cm>Descripcion</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_unit" nu="1">
+      <Cl au="0" df="1" nm="status_unit" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado Unidad</Cm>
       </Cl>
@@ -115,7 +169,7 @@
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Entregado o No Entregado</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_detail" nu="1">
+      <Cl au="0" df="1" nm="status_detail" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado del Detalle</Cm>
       </Cl>
@@ -160,7 +214,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="500" sc="null" sg="1" un="0"/>
         <Cm>Notas Obervaciones</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_order" nu="1">
+      <Cl au="0" df="1" nm="status_order" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado de la Orden</Cm>
       </Cl>
@@ -210,7 +264,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
         <Cm>Medio de Pago</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_payment" nu="1">
+      <Cl au="0" df="1" nm="status_payment" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
@@ -242,7 +296,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Descripcion</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_place" nu="0">
+      <Cl au="0" df="1" nm="status_place" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
@@ -274,7 +328,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="300" sc="null" sg="1" un="0"/>
         <Cm>Descripcion larga de Categoria</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_category" nu="1">
+      <Cl au="0" df="1" nm="status_category" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado del Registro</Cm>
       </Cl>
@@ -336,7 +390,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="500" sc="null" sg="1" un="0"/>
         <Cm>Foto del Producto</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_product" nu="1">
+      <Cl au="0" df="1" nm="status_product" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado del Producto</Cm>
       </Cl>
@@ -423,7 +477,7 @@
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Fecha Hora</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_invoicedetail" nu="1">
+      <Cl au="0" df="1" nm="status_invoicedetail" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
@@ -480,7 +534,7 @@
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Fecha Actualizacion Numero Actual</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_invoicenumber" nu="1">
+      <Cl au="0" df="1" nm="status_invoicenumber" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
@@ -527,7 +581,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
         <Cm>Nota - Observaciones</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_invoice" nu="1">
+      <Cl au="0" df="1" nm="status_invoice" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
@@ -578,7 +632,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Nombre del Vendedor</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_seller" nu="1">
+      <Cl au="0" df="1" nm="status_seller" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
@@ -591,6 +645,37 @@
         <ClNs>doctype_seller, doc_seller</ClNs>
         <OptTx>USES BTREE</OptTx>
       </Idx>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="StatesApp">
+      <Cm>Departamentos</Cm>
+      <TblOpts/>
+      <Pk ClNs="id_state" nm="pkStatesApp"/>
+      <Cl au="1" df="" nm="id_state" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="code_state" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="20" sc="null" sg="1" un="0"/>
+        <Cm>Codigo Departamento (DANE)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name_state" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="120" sc="null" sg="1" un="0"/>
+        <Cm>Nombre Departamento</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="id_country" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Llave Primaria Paises</Cm>
+      </Cl>
+      <Cl au="0" df="1" nm="status_state" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Estado</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_StatesApp_CountriesApp" prLkCl="id_country" upAc="3">
+        <PrTb mn="0" nm="CountriesApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="StatesApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="id_country" prCl="id_country"/>
+      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -629,7 +714,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="1000" sc="null" sg="1" un="0"/>
         <Cm>Logo de Tienda</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_store" nu="1">
+      <Cl au="0" df="1" nm="status_store" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado de Tienda en el Sistema.</Cm>
       </Cl>
@@ -672,7 +757,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="1" sc="null" sg="1" un="0"/>
         <Cm>Tipo de Operacion. Suma O Resta</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_tax" nu="1">
+      <Cl au="0" df="1" nm="status_tax" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado del Registro</Cm>
       </Cl>
@@ -711,7 +796,7 @@
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Fecha y Hora Modificacion</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_account" nu="1">
+      <Cl au="0" df="1" nm="status_account" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado de Cuenta de Usuario</Cm>
       </Cl>
@@ -731,7 +816,7 @@
       </Idx>
       <Idx clu="0" ftx="0" nm="Accounts_nickname_Idx" spa="0" unq="1">
         <ClNs>nickname_account</ClNs>
-        <OptTx/>
+        <OptTx>USES BTREE</OptTx>
       </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -784,7 +869,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="1000" sc="null" sg="1" un="0"/>
         <Cm>Url Foto de Usuario</Cm>
       </Cl>
-      <Cl au="0" df="1" nm="state_user" nu="1">
+      <Cl au="0" df="1" nm="status_user" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado del Usuario en el Sistema</Cm>
       </Cl>
@@ -840,6 +925,14 @@
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="SalesInvoiceDetailsApp" x="1697" y="711"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="SalesInvoiceNumbersApp" x="329" y="976"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="MeasurementUnitsApp" x="1916" y="130"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="CountriesApp" x="2546" y="32"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="StatesApp" x="2553" y="204"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="CitiesApp" x="2556" y="374"/>
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.CitiesApp.fk_CitiesApp_StatesApp" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="SINGLE_LINE" x1="2670" x2="2670" y1="319" y2="351"/>
+      </positionableLines>
+    </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.CustomersApp.fk_Customers_Users" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
         <positionableLine lineRole="SINGLE_LINE" x1="292" x2="579" y1="630" y2="630"/>
@@ -966,6 +1059,11 @@
         <positionableLine lineRole="CHILD_LINE" x1="590" x2="147" y1="861" y2="861"/>
       </positionableLines>
     </FkGl>
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.StatesApp.fk_StatesApp_CountriesApp" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
+      <positionableLines>
+        <positionableLine lineRole="SINGLE_LINE" x1="2664" x2="2664" y1="134" y2="181"/>
+      </positionableLines>
+    </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.TaxesApp.fk_Taxes_Stores" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
         <positionableLine lineRole="PARENT_LINE" x1="283" x2="2319" y1="57" y2="57"/>
@@ -985,7 +1083,7 @@
     <Notes/>
     <Zones/>
   </Dgm>
-  <RnmMgr NxRnmId="39">
+  <RnmMgr NxRnmId="59">
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="StoresApp" SupCls="Schema" SupNme="schemaA">
       <Rnm id="7" nNm="id_store" oNm="Id_store"/>
       <Rnm id="1" nNm="Id_store" oNm="Id"/>
@@ -1091,6 +1189,66 @@
     </RnmCh>
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
       <Rnm id="38" nNm="SalesInvoiceNumbersApp" oNm="SalesInvoiceNumbers"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+      <Rnm id="39" nNm="CountriesApp" oNm="CountriesListApp"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="CountriesApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="40" nNm="id_country" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="StoresApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="41" nNm="status_store" oNm="state_store"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="UserAccountsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="42" nNm="status_account" oNm="state_account"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="UsersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="43" nNm="status_user" oNm="state_user"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="SalesInvoiceNumbersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="44" nNm="status_invoicenumber" oNm="state_invoicenumber"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="PlacesApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="45" nNm="status_place" oNm="state_place"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="OrdersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="46" nNm="status_order" oNm="state_order"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="CustomersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="47" nNm="status_customer" oNm="state_customer"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="SellersApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="48" nNm="status_seller" oNm="state_seller"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ProductCategoriesApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="49" nNm="status_category" oNm="state_category"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="MeasurementUnitsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="50" nNm="status_unit" oNm="state_unit"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="OrderDetailsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="51" nNm="status_detail" oNm="state_detail"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ProductsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="52" nNm="status_product" oNm="state_product"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="SalesInvoiceDetailsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="53" nNm="status_invoicedetail" oNm="state_invoicedetail"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="SalesInvoicesApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="54" nNm="status_invoice" oNm="state_invoice"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="PaymentsApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="55" nNm="status_payment" oNm="state_payment"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="TaxesApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="56" nNm="status_tax" oNm="state_tax"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="StatesApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="57" nNm="id_state" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="CitiesApp" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="58" nNm="id_city" oNm="Id"/>
     </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
