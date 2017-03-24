@@ -20,17 +20,27 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="120" sc="null" sg="1" un="0"/>
         <Cm>Nombre Ciudad</Cm>
       </Cl>
-      <Cl au="0" df="" nm="id_state" nu="1">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="code_country" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="20" sc="null" sg="1" un="0"/>
+        <Cm>Codigo Pais</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="code_state" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="20" sc="null" sg="1" un="0"/>
+        <Cm>Codigo Departamento</Cm>
       </Cl>
       <Cl au="0" df="1" nm="status_city" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_CitiesApp_StatesApp" prLkCl="id_state" upAc="3">
+      <Fk deAc="3" nm="fk_Cities_Countries" prLkCl="code_country" upAc="3">
+        <PrTb mn="0" nm="CountriesApp" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="CitiesApp" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="code_country" prCl="code_country"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_Cities_States" prLkCl="code_state" upAc="3">
         <PrTb mn="0" nm="StatesApp" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="CitiesApp" oe="0" sch="schemaA" zr="1"/>
-        <ClPr cdCl="id_state" prCl="id_state"/>
+        <ClPr cdCl="code_state" prCl="code_state"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -55,6 +65,10 @@
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
+      <Idx clu="0" ftx="0" nm="Countries_code_Idx" spa="0" unq="1">
+        <ClNs>code_country</ClNs>
+        <OptTx>USES BTREE</OptTx>
+      </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -663,19 +677,23 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="120" sc="null" sg="1" un="0"/>
         <Cm>Nombre Departamento</Cm>
       </Cl>
-      <Cl au="0" df="" nm="id_country" nu="1">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Llave Primaria Paises</Cm>
+      <Cl au="0" df="" nm="code_country" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="20" sc="null" sg="1" un="0"/>
+        <Cm>Codigo Pais</Cm>
       </Cl>
       <Cl au="0" df="1" nm="status_state" nu="1">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Estado</Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_StatesApp_CountriesApp" prLkCl="id_country" upAc="3">
+      <Fk deAc="3" nm="fk_States_Countries" prLkCl="code_country" upAc="3">
         <PrTb mn="0" nm="CountriesApp" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="StatesApp" oe="0" sch="schemaA" zr="1"/>
-        <ClPr cdCl="id_country" prCl="id_country"/>
+        <ClPr cdCl="code_country" prCl="code_country"/>
       </Fk>
+      <Idx clu="0" ftx="0" nm="States_code_Idx" spa="0" unq="1">
+        <ClNs>code_state</ClNs>
+        <OptTx>USES BTREE</OptTx>
+      </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -926,12 +944,13 @@
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="SalesInvoiceNumbersApp" x="329" y="976"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="MeasurementUnitsApp" x="1916" y="130"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="CountriesApp" x="2546" y="32"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="StatesApp" x="2553" y="204"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="CitiesApp" x="2556" y="374"/>
-    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.CitiesApp.fk_CitiesApp_StatesApp" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
-      <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="2670" x2="2670" y1="319" y2="351"/>
-      </positionableLines>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="StatesApp" x="2547" y="165"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="CitiesApp" x="2547" y="325"/>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.CitiesApp.fk_Cities_Countries" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.CitiesApp.fk_Cities_States" parentEdge="" positioner="">
+      <positionableLines/>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.CustomersApp.fk_Customers_Users" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
@@ -1059,10 +1078,8 @@
         <positionableLine lineRole="CHILD_LINE" x1="590" x2="147" y1="861" y2="861"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.StatesApp.fk_StatesApp_CountriesApp" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
-      <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="2664" x2="2664" y1="134" y2="181"/>
-      </positionableLines>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.StatesApp.fk_States_Countries" parentEdge="" positioner="">
+      <positionableLines/>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.TaxesApp.fk_Taxes_Stores" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
