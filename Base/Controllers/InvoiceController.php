@@ -4,8 +4,8 @@ ob_start();
 include_once 'BaseController.php';
 include_once 'Security/SessionManager.php';
 $session = new SessionManager();
-$model = 'OrdersApp';
-$findBy = 'id_order';
+$model = 'SalesInvoicesApp';
+$findBy = 'id_invoice';
 $identerprise = null;
 $pd = null;
 if ($session->hasLogin() && $session->CheckToken()) {

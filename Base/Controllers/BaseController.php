@@ -229,7 +229,7 @@ class BaseController {
     public function find($columns = '*') {
         $result = null;
         if (isset($this->db) && isset($this->postData) && isset($this->findBy)) {
-            $result = $this->db->selectJSON($this->model, $columns, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]));
+            $result = $this->db->selectJSON($this->model, $columns, "" . $this->findBy . "=" . $this->parseWhereParam($this->postData[$this->findBy]), false);
             return $result;
         }
         return false;

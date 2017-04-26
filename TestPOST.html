@@ -10,7 +10,7 @@ and open the template in the editor.
         <title>POST Pruebas con Local Storage</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="POST Pruebas con Session Storage">
+        <meta name="description" content="POST Pruebas con Local Storage">
         <meta name="author" content="Jose Meza">
 
         <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
@@ -36,14 +36,14 @@ and open the template in the editor.
                 <div class="row">
                     <div class="col-sm-12">
                         <label>JSON</label>
-                        <textarea name="contenido" id="contenido" required="required" maxlength="1000" class="form-control" title="Nombre Completo" disabled="disabled" ></textarea>
+                        <textarea name="contenido" id="contenido" required="required" class="form-control" title="Nombre Completo" readonly="readonly" ></textarea>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-6">
                         <label>Variable</label>
-                        <input type="text" name="variable" id="variable" value="name" required="required" maxlength="1000" class="form-control" title="Nombre Completo">
+                        <input type="text" name="variable" id="variable" value="name" required="required" maxlength="100" class="form-control" title="Nombre Completo">
                     </div>
 
                     <div class="col-sm-6">
@@ -109,7 +109,7 @@ and open the template in the editor.
             }
 
             function BorrarTodo(item) {
-                resetPOST();
+                resetLocalPOST();
                 document.forms[0].reset();
                 getMyJSON();
             }

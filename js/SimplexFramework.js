@@ -66,6 +66,17 @@ function getCurrentDate() {
     return text;
 }
 
+function getDateTimeString() {
+    var text = '';
+    var date = getCurrentDate();
+    var time = getCurrentTime();
+    date = date.split('-').join('');
+    date = date.split('/').join('');
+    time = time.split(':').join('');
+    text = date + time;
+    return text;
+}
+
 function clearForm(form) {
     if (form !== null && form.tagName === "FORM") {
         form.reset();
@@ -602,6 +613,7 @@ function getSelectedOption(element) {
 
 function submitAjax(formData, url, header, reload) {
     var promise = null;
+    console.log('Trying Submit!.');
     promise = $.ajax({
         method: "POST",
         url: url,
@@ -699,7 +711,7 @@ function setDataForm(myform, json) {
 
                 }
             }
-            console.log('Set Form OK!.');
+            console.log('Set Data Form OK!.');
             return true;
         }
 
@@ -716,6 +728,7 @@ function getData(element) {
     createTempInputs(myform);
     formData = new FormData(myform);
     deleteTemporalElements(myform);
+    console.log('Loading Data Form!');
     if (formData !== null && url !== null && url !== '') {
         promise = $.ajax({
             method: "POST",
@@ -782,7 +795,6 @@ function setComboboxOptions(combo, json) {
             }
             combo.appendChild(option);
             option = null;
-            //console.log(json[i]['ivalue'] + ' => ' + json[i]['iname']);
         }
         console.log('Set ComboBox OK!.');
         return true;
@@ -812,6 +824,7 @@ function loadComboboxData(element) {
         "colvalue": colvalue,
         "othervalue": othervalue
     };
+    console.log('Loading ComboboxData!');
     if (element !== null &&
             url !== null && url !== '' &&
             model !== null && model !== '' &&
@@ -917,6 +930,7 @@ function setTableData(element, json, dynamic) {
     var TRs = null;
     var rowSample = null;
     var newrow = null;
+    var thead = null;
     var tbody = null;
     var values = null;
     var columns = null;
@@ -925,8 +939,13 @@ function setTableData(element, json, dynamic) {
 
     if (element !== null && element.tagName === "TABLE" && json !== null) {
         destroyDataTable(element);
+        if (element.getElementsByTagName('THEAD') !== null) {
+            thead = element.getElementsByTagName('THEAD')[0];
+            thead.setAttribute('id', 'thead' + '_' + element.id);
+        }
         if (element.getElementsByTagName('TBODY') !== null) {
             tbody = element.getElementsByTagName('TBODY')[0];
+            tbody.setAttribute('id', 'tbody' + '_' + element.id);
         }
         if (element.getElementsByTagName('TR') !== null) {
             TRs = element.getElementsByTagName('TR');
@@ -934,7 +953,6 @@ function setTableData(element, json, dynamic) {
         for (var i = 0; i < TRs.length; i++) {
             if (TRs[i].getAttribute('rowSample') !== null) {
                 rowSample = TRs[i].innerHTML;
-                console.log('RowSample Found!');
                 break;
             }
         }
@@ -964,7 +982,6 @@ function setTableData(element, json, dynamic) {
                     col = columns[j];
                     newrow.innerHTML = newrow.innerHTML.split('{{' + col + '}}').join(json[i][col]);
                 }
-
                 tbody.appendChild(newrow);
             }
 
@@ -994,10 +1011,10 @@ function loadTableData(element, dynamic) {
     vals = {
         "model": model,
         "action": 'findAll',
-        "findby": findby,
+        "findBy": findby,
         "findbyvalue": findbyvalue
     };
-    console.log('Loading Table Data');
+    console.log('Loading TableData');
 
     if (element !== null && element.tagName === "TABLE") {
         promise = $.ajax({
@@ -1029,6 +1046,140 @@ function loadTableData(element, dynamic) {
         );
     }
     return promise;
+}
+
+function setNameFieldsValue(object, namefield1, namefield2, namefield3) {
+    var field1 = null;
+    var field2 = null;
+    var field3 = null;
+
+    if (object === null && object !== undefined) {
+        return false;
+    } else {
+        if (object['data'] !== null && object['data'] !== undefined) {
+            object = object['data'];
+        }
+        if (Object.keys(object).length === 1) {
+            if (object[0] !== null && object[0] !== undefined) {
+                object = object[0];
+            }
+        }
+    }
+
+    if (namefield1 !== null) {
+        if (namefield1.tagName === 'INPUT') {
+            field1 = namefield1;
+        } else {
+            field1 = getElementDocument(namefield1);
+        }
+        if (field1 !== null) {
+            field1.value = 'NOT FOUND';
+            if (object[field1.id] !== null && object[field1.id] !== undefined) {
+                field1.value = object[field1.id];
+            }
+        }
+    }
+
+    if (namefield2 !== null) {
+        if (namefield2.tagName === 'INPUT') {
+            field2 = namefield2;
+        } else {
+            field2 = getElementDocument(namefield2);
+        }
+        if (field2 !== null) {
+            field2.value = 'NOT FOUND';
+            if (object[field2.id] !== null && object[field2.id] !== undefined) {
+                field2.value = object[field2.id];
+            }
+        }
+    }
+
+    if (namefield3 !== null) {
+        if (namefield3.tagName === 'INPUT') {
+            field3 = namefield3;
+        } else {
+            field3 = getElementDocument(namefield3);
+        }
+        if (field3 !== null) {
+            field3.value = 'NOT FOUND';
+            if (object[field3.id] !== null && object[field3.id] !== undefined) {
+                field3.value = object[field3.id];
+            }
+        }
+    }
+    console.log('Set NameFieldsValue OK!.');
+    return true;
+}
+
+function loadNameFromId(field, namefield1, namefield2, namefield3) {
+    var promise = null;
+    var url = null;
+    var model = null;
+    var findby = null;
+    var id = null;
+    var vals = null;
+    var object = null;
+    if (field !== null) {
+        if (field.tagName === null || field.tagName === undefined) {
+            field = document.getElementById(field);
+        }
+        url = getURL(field);
+        model = getModel(field);
+        findby = field.name;
+        id = field.value;
+    }
+    vals = {
+        "model": model,
+        "action": 'find',
+        "findBy": findby
+    };
+    vals[findby] = id;
+    console.log('Loading NameFromId!');
+    if (field !== null && namefield1 !== null) {
+        promise = $.ajax({
+            method: "POST",
+            url: url,
+            data: vals,
+            success: function (result, status) {
+                if (result !== null && result !== '') {
+                    try {
+                        result = JSON.parse(result);
+                        console.log('Conversion Exitosa a JSON - Load Name From Id!');
+                    } catch (e) {
+                        console.log('Conversion Fallida a JSON - Load Name From Id!');
+                        console.log(result);
+                    }
+                }
+                if (result !== null && result !== '') {
+                    if (result.data !== null && result.data !== undefined) {
+                        try {
+                            object = result.data;
+                            object = JSON.parse(object);
+                            setNameFieldsValue(object, namefield1, namefield2, namefield3);
+                        } catch (e) {
+                        }
+                    }
+                } else {
+                    console.log('Servicio Web Falló!.');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log(textStatus);
+                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+            }
+        }
+        );
+    }
+}
+
+function autoLoadNameFromId(idfield, namefield1, namefield2, namefield3) {
+    var field = null;
+    if (idfield !== null) {
+        field = document.getElementById(idfield);
+        field.onchange = function () {
+            loadNameFromId(field, namefield1, namefield2, namefield3);
+        };
+    }
 }
 
 function setLogin(data) {
@@ -1251,7 +1402,9 @@ function sendValue(form1, field1, form2, field2) {
                 findby2 = getFindBy(form2);
                 valid2 = getElement(form2, findby2);
             }
-            valid2.value = valid1.value;
+            if (valid1 !== null && valid2 !== null) {
+                valid2.value = valid1.value;
+            }
         }
     }
 }
@@ -1326,40 +1479,33 @@ function getIdFromGET() {
     var findby = null;
     var id = null;
     var result = false;
-    var item = null;
+    var button = null;
     for (var i = 0; i < frms.length; i++) {
         if (frms[i].getAttribute('findBy') !== null && frms[i].getAttribute('findBy') !== '' && frms[i].getAttribute('mainform') !== null && frms[i].getAttribute('mainform') === 'true') {
             form = frms[i];
             findby = form.getAttribute('findBy');
             for (var j = 0; j < form.elements.length; j++) {
                 if (form.elements[j].getAttribute('save') !== null) {
-                    item = form.elements[j];
+                    button = form.elements[j];
                 }
                 if (form.elements[j].id === findby || form.elements[j].name === findby) {
                     id = form.elements[j];
                     if (GET(findby) !== null) {
-                        console.log("FindBy Form GET: " + findby);
                         id.value = GET(findby);
                         result = true;
                     }
                 }
-                if (GET('action') === 'view') {
-                    form.elements[j].setAttribute("readonly", "readonly");
-                    if (form.elements[j].type === 'select-one' || form.elements[j].type === 'button' || form.elements[j].type === 'submit' || form.elements[j].type === 'reset' || form.elements[j].type === 'radio' || form.elements[j].type === 'range') {
+                if (button !== null) {
+                    if (GET('action') !== null) {
+                        button.setAttribute('action', GET('action'));
+                    } else if (GET('action') === 'view') {
+                        form.elements[j].setAttribute("readonly", "readonly");
                         form.elements[j].setAttribute("disabled", "disabled");
                     }
                 }
             }
         }
     }
-    if (item !== null) {
-        if (GET('action') !== null) {
-            item.setAttribute('action', GET('action'));
-            console.log("Action GET: " + GET('action'));
-        }
-        if (GET('update') !== null && GET('update') !== '') {
-            item.setAttribute('action', GET('update'));
-        }
-    }
+
     return result;
 }

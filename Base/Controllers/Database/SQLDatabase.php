@@ -553,9 +553,13 @@ class SQLDatabase {
         return $myarray;
     }
 
-    public function selectJSON($table, $columns, $where = '') {
+    public function selectJSON($table, $columns, $where = '', $model = true) {
         $sql = $this->buildSelectString($table, $columns, $where);
-        $myarray = $this->selectJSONArray($sql, $table);
+        if ($model == true) {
+            $myarray = $this->selectJSONArray($sql, $table);
+        } else {
+            $myarray = $this->selectJSONArray($sql, null);
+        }
         return $myarray;
     }
 

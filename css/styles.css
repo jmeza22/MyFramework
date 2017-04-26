@@ -108,6 +108,21 @@ textarea{
     font-weight: normal !important;
 }
 
+.paginate_button{
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
+    margin-left: 3px !important;
+    margin-right: 3px !important;
+    padding: 3px !important;
+    border: solid #337ab7 1px !important;
+    border-radius: 4px !important;
+    font-weight: bolder !important;
+}
+
+.dataTables_paginate, .dataTables_info{
+    text-align: center !important;
+}
+
 .panel-body .btn{
     min-width: 100px !important;
     font-weight: bolder !important;
@@ -208,6 +223,18 @@ hr{
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
+
+.td-input{
+    padding: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.td-input > input{
+    width: 100% !important;
+    min-height: 28px !important;
+}
+
 .dataTables_length{
     display: none !important;
     width: 0% !important;

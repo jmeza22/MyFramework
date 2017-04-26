@@ -10,9 +10,7 @@ jQuery(document).ready(function () {
     var action = null;
 
 
-    loadComboboxData(document.getElementById("list_id_customer")).done(function () {
-        autoNameFromDataList('doc_customer', 'name_user', null);
-    });
+    autoLoadNameFromId('doc_customer', 'fullname_customer', null, null);
 
     loadComboboxData(document.getElementById("list_id_product")).done(function () {
         autoNameFromDataList('id_product', 'name_product', 'price_detail');

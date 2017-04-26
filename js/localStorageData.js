@@ -285,6 +285,85 @@ function getIdOrder() {
     return null;
 }
 
+function setValueToJSON(jsonstring, index, value) {
+    var json = null;
+    var element = null;
+    if (LocalStorageStatus()) {
+        if (jsonstring !== null && jsonstring !== undefined && index !== null && value !== null) {
+            if (jsonstring !== "" && jsonstring !== "[]") {
+                try {
+                    json = JSON.parse(jsonstring);
+                } catch (e) {
+                    console.error('String to JSON Failed (' + jsonstring + ')');
+                    json = null;
+                }
+            } else {
+                json = null;
+                json = new Array();
+            }
+            if (json !== null) {
+                element = new Object();
+                element[index] = value;
+                json.push(element);
+                json = JSON.stringify(json);
+            }
+        }
+    }
+    return json;
+}
+
+function getValueFromJSON(jsonstring, index) {
+    var json = null;
+    var jsonvalue = null;
+    if (LocalStorageStatus()) {
+        if (jsonstring !== null && jsonstring !== undefined && index !== null) {
+            if (jsonstring !== "" && jsonstring !== "[]") {
+                try {
+                    json = JSON.parse(jsonstring);
+                } catch (e) {
+                    console.error('String to JSON Failed (' + jsonstring + ')');
+                    json = null;
+                }
+                if (json !== null) {
+                    for (var i = 0; i < json.length; i++) {
+                        if (Object.keys(json[i])[0] === index) {
+                            jsonvalue = json[i][index];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return jsonvalue;
+}
+
+function unsetToJSON(jsonstring, index) {
+    var json = null;
+    if (LocalStorageStatus()) {
+        if (jsonstring !== null && jsonstring !== undefined && index !== null) {
+            if (jsonstring !== "" && jsonstring !== "[]") {
+                try {
+                    json = JSON.parse(jsonstring);
+                } catch (e) {
+                    console.error('String to JSON Failed (' + jsonstring + ')');
+                    json = null;
+                }
+                if (json !== null) {
+                    for (var i = 0; i < json.length; i++) {
+                        if (Object.keys(json[i])[0] === index) {
+                            json[i] = null;
+                            json.splice(i, 1);
+                        }
+                    }
+                    json = JSON.stringify(json);
+                }
+            }
+        }
+    }
+    return json;
+}
+
+
 function setLocalPOST(post) {
     if (LocalStorageStatus()) {
         if (post !== null) {
@@ -300,8 +379,10 @@ function getLocalPOST() {
     if (LocalStorageStatus()) {
         var post = null;
         post = localStorage.getItem("POST");
-        if (post === null) {
+        if (post === null || post === undefined) {
             console.log("LocalPOST is null");
+            setLocalPOST("[]");
+            return getLocalPOST();
         } else {
             return post;
         }
@@ -309,83 +390,62 @@ function getLocalPOST() {
     return null;
 }
 
-function setPOST(pname, pvalue) {
+function resetLocalPOST() {
     if (LocalStorageStatus()) {
-        if (pname !== null && pvalue !== null) {
-            var post = null;
-            var element = null;
-            post = getLocalPOST();
-            if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
-                post = JSON.parse(post);
-            } else {
-                post = null;
-                post = new Array();
-            }
-            if (post !== null) {
-                element = new Object();
-                element[pname] = pvalue;
-                post.push(element);
-                post = JSON.stringify(post);
-                console.log('Datos: ' + post);
-                setLocalPOST(post);
-                return true;
-            }
+        localStorage.removeItem("POST");
+        getLocalPOST();
+        return true;
+    }
+    return false;
+}
+
+function setPOST(pname, pvalue) {
+    if (pname !== null && pvalue !== null) {
+        var inputpost = null;
+        var outputpost = null;
+        inputpost = getLocalPOST();
+        outputpost = setValueToJSON(inputpost, pname, pvalue);
+        if (outputpost !== undefined && outputpost !== null && outputpost !== inputpost) {
+            setLocalPOST(outputpost);
+            return true;
         }
+
     }
     return false;
 }
 
 function getPOST(pname) {
-    if (LocalStorageStatus()) {
-        if (pname !== null) {
-            var post = null;
-            var pvalue = null;
-            post = getLocalPOST();
-            if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
-                post = JSON.parse(post);
-                if (post !== null) {
-                    for (var i = 0; i < post.length; i++) {
-                        if (Object.keys(post[i])[0] == pname) {
-                            pvalue = post[i][pname];
-                            console.log("Found: " + pname);
-                        }
-                    }
-                }
-            }
-            return pvalue;
-        }
+    if (pname !== null) {
+        var post = null;
+        var pvalue = null;
+        post = getLocalPOST();
+        pvalue = getValueFromJSON(post, pname);
+        return pvalue;
     }
     return null;
 }
 
 function unsetPOST(pname) {
-    if (LocalStorageStatus()) {
-        if (pname !== null) {
-            var post = null;
-            post = getLocalPOST();
-            if (post !== null && post !== '' && post !== 'undefined' && post !== '[]') {
-                post = JSON.parse(post);
-                if (post !== null) {
-                    for (var i = 0; i < post.length; i++) {
-                        if (Object.keys(post[i])[0] == pname) {
-                            post[i] = null;
-                            post.splice(i, 1);
-                        }
-                    }
-                }
-            }
-            post = JSON.stringify(post);
-            setLocalPOST(post);
+    if (pname !== null) {
+        var inputpost = null;
+        var outputpost = null;
+        inputpost = getLocalPOST();
+        outputpost = unsetToJSON(inputpost, pname);
+        if (outputpost !== undefined && outputpost !== null && outputpost !== inputpost) {
+            setLocalPOST(outputpost);
             return true;
         }
     }
     return false;
 }
 
-function resetPOST() {
+function setLastInsertId(lastid) {
     if (LocalStorageStatus()) {
-        localStorage.removeItem("POST");
-        return true;
+        if (lastid !== null) {
+            localStorage.removeItem("LastInsertId");
+            localStorage.setItem("LastInsertId", lastid);
+            return true;
+        }
     }
     return false;
 }
@@ -394,7 +454,11 @@ function getLastInsertId() {
     if (LocalStorageStatus()) {
         var id = null;
         id = sessionStorage.getItem("LastInsertId");
-        return id;
+        if (id === null) {
+            console.log("LastInsertId is null");
+        } else {
+            return id;
+        }
     }
     return null;
 }
@@ -405,41 +469,34 @@ function getIdFromPOST() {
     var findby = null;
     var id = null;
     var result = false;
-    var item = null;
+    var button = null;
     for (var i = 0; i < frms.length; i++) {
         if (frms[i].getAttribute('findBy') !== null && frms[i].getAttribute('findBy') !== '' && frms[i].getAttribute('mainform') !== null && frms[i].getAttribute('mainform') === 'true') {
             form = frms[i];
             findby = form.getAttribute('findBy');
             for (var j = 0; j < form.elements.length; j++) {
                 if (form.elements[j].getAttribute('save') !== null) {
-                    item = form.elements[j];
+                    button = form.elements[j];
                 }
                 if (form.elements[j].id === findby || form.elements[j].name === findby) {
                     id = form.elements[j];
                     if (getPOST(findby) !== null) {
-                        console.log("FindBy Form POST: " + findby);
                         id.value = getPOST(findby);
                         result = true;
                     }
                 }
-                if (getPOST('action') === 'view') {
-                    form.elements[j].setAttribute("readonly", "readonly");
-                    if (form.elements[j].type === 'select-one' || form.elements[j].type === 'button' || form.elements[j].type === 'submit' || form.elements[j].type === 'reset' || form.elements[j].type === 'radio' || form.elements[j].type === 'range') {
+                if (button !== null) {
+                    if (getPOST('action') !== null) {
+                        button.setAttribute('action', getPOST('action'));
+                    } else if (getPOST('action') === 'view') {
+                        form.elements[j].setAttribute("readonly", "readonly");
                         form.elements[j].setAttribute("disabled", "disabled");
                     }
                 }
             }
         }
     }
-    if (item !== null) {
-        if (getPOST('action') !== null) {
-            item.setAttribute('action', getPOST('action'));
-            console.log("Action POST: " + getPOST('action'));
-        }
-        if (getPOST('update') !== null && getPOST('update') !== '') {
-            item.setAttribute('action', getPOST('update'));
-        }
-    }
+
     return result;
 }
 

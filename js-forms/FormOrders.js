@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-    
+
     var dd = document.getElementById("date_order");
     var store = document.getElementById("id_store");
     var user = document.getElementById("doc_customer");
@@ -9,11 +9,10 @@ jQuery(document).ready(function () {
 
     dd.value = getCurrentDate() + 'T' + getCurrentTime();
     dd.setAttribute('readonly', 'readonly');
+
+    autoLoadNameFromId('doc_customer', 'fullname_customer', null, null);
+    user.focus();
     
-    loadComboboxData(document.getElementById("list_id_customer")).done(function () {
-        autoNameFromDataList('doc_customer', 'name_user', null);
-        user.focus();
-    });
     loadComboboxData(document.getElementById("list_id_place")).done(function () {
         autoNameFromDataList('id_place', 'note_order', null);
     });
@@ -32,13 +31,13 @@ jQuery(document).ready(function () {
         unsetPOST('action');
         unsetPOST('id_order');
     }
-    
-    if(getUserRoleLogin()!=='AA' && getUserRoleLogin()!=='VN'){
+
+    if (getUserRoleLogin() !== 'AA' && getUserRoleLogin() !== 'VN') {
         user.setAttribute('readonly', 'readonly');
     }
-    
+
     getData(order);
-    
+
 });
 
 function Send(item) {
@@ -49,8 +48,8 @@ function Send(item) {
                 if (getLastInsertId() !== null && getLastInsertId() !== '' && getLastInsertId() !== 0) {
                     resetForm(item);
                     setIdOrder(getLastInsertId());
-                    setPOST('action','insert');
-                    //window.location.href = 'FormOrderDetails.html';
+                    setPOST('action', 'insert');
+                    window.location.href = 'FormOrderDetails.html';
                 }
             }, 100);
         });
