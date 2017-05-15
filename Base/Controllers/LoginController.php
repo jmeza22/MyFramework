@@ -1,9 +1,7 @@
 <?php
 
 ob_start();
-include_once 'BaseController.php';
-include_once 'Security/MyCrypt.php';
-include_once 'Security/SessionManager.php';
+include_once 'Libraries/Controllers.php';
 $session = new SessionManager();
 $model = 'UserAccountsApp';
 $findBy = 'id_user';
@@ -45,13 +43,13 @@ if (isset($_POST) && $_POST != null && isset($_POST['token']) && $_POST['token']
     $array = array();
     $array['message'] = '';
     $array['error'] = null;
-    $array['state'] = 0;
+    $array['status'] = 0;
     $array['data'] = null;
     if ($result == null || strcmp($result, '') == 0 || strcmp($result, '[]') == 0) {
         $array['message'] = 'User / Password Wrong!.';
-        $array['state'] = 0;
+        $array['status'] = 0;
     } else {
-        $array['state'] = 1;
+        $array['status'] = 1;
         $login = json_decode($result, true);
         $login = $login[0];
         if (!$session->hasLogin()) {
@@ -59,7 +57,7 @@ if (isset($_POST) && $_POST != null && isset($_POST['token']) && $_POST['token']
             $array['token'] = $session->getToken();
             $array['data'] = json_encode($login);
         } else {
-            $array['state'] = 0;
+            $array['status'] = 0;
             $array['message'] = 'You have a Active Session!.';
         }
     }

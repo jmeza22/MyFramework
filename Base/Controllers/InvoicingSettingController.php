@@ -3,16 +3,16 @@
 ob_start();
 include_once 'Libraries/Controllers.php';
 $session = new SessionManager();
-$model = 'CountriesApp';
-$findBy = 'id_country';
-if ($session->hasLogin() && $session->CheckToken()) {
+$model='InvoicingSettingsApp';
+$findBy='id_invoicing';
+if ($session->hasLogin()) {
     if (isset($_POST) && $_POST != null) {
-        $result = null;
         $bc = new BaseController();
         $bc->connect();
         $bc->preparePostData();
         $bc->setModel($model);
         $bc->setFindBy($findBy);
+        $result = null;
         $result = $bc->execute(false);
         echo $result;
         $result = null;

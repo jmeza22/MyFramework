@@ -1,8 +1,7 @@
 <?php
 
 ob_start();
-include_once 'BaseController.php';
-include_once 'Security/MyCrypt.php';
+include_once 'Libraries/Controllers.php';
 $bc = null;
 $bc = new BaseController();
 $bc->connect();

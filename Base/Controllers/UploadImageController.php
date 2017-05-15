@@ -5,14 +5,13 @@
  *
  * @author JOSEMEZA
  */
-include_once 'Security/SetsAndHeaders.php';
-include_once 'UploadImage.php';
+include_once 'Libraries/Controllers.php';
 $upload = null;
-if (isset($_POST) && $_POST != null) {
+if (isset($_REQUEST) && $_REQUEST != null) {
     $upload = new UploadImage();
     $upload->setFileName('imageFile');
-    $upload->setPrefix('Photo');
-    $upload->setNewName(date("dmYhGis"));
+    $upload->setPrefix($_REQUEST['prefix_image']);
+    $upload->setNewName($_REQUEST['name_image']);
     if($upload->Upload()){
         echo 'Imagen Subida con Exito';
     }

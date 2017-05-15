@@ -11,8 +11,7 @@
  *
  * @author JOSEMEZA
  */
-include_once 'Database/SQLDatabase.php';
-include_once 'XML/DataSettings.php';
+include_once 'SQLDatabase.php';
 
 class BaseController {
 
@@ -266,10 +265,16 @@ class BaseController {
         }
         return null;
     }
+    public function selectAssocArray($sql) {
+        if ($sql != null) {
+            return $this->db->selectAssocArray($sql);
+        }
+        return null;
+    }
 
     public function parseResults($result, $message = '', $state = 0) {
         $array = array();
-        $array = ["data" => NULL, "message" => $message, "state" => $state, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId()];
+        $array = ["data" => NULL, "message" => $message, "status" => $state, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId()];
         if ($result != NULL) {
             $array = ["data" => $result, "message" => $message, "state" => $state, "error" => null, "lastInsertId" => $this->getLastInsertId()];
         }

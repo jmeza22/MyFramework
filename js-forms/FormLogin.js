@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-    resetPOST();
+    resetLocalPOST();
     document.getElementById("nick_user").value = getUsernameLogin();
     document.getElementById("password_user").value = getPasswordLogin();
     loadComboboxData(document.getElementById("id_enterprise"));

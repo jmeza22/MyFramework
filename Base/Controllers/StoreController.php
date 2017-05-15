@@ -1,9 +1,7 @@
 <?php
 
 ob_start();
-include_once 'BaseController.php';
-include_once 'Security/SessionManager.php';
-include_once 'UploadImage.php';
+include_once 'Libraries/Controllers.php';
 $session = new SessionManager();
 $model='StoresApp';
 $findBy='id_store';

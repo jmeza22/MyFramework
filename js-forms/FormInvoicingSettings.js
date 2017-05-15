@@ -1,12 +1,21 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 jQuery(document).ready(function () {
-    var idstore = document.getElementById("id_store");
-    var idplace = document.getElementById("id_place");
+    var idstore=document.getElementById('id_store');
+    var idinvoicing=document.getElementById('id_invoicing');
+    var createdate=document.getElementById('create_invoicing');
+    var updatedate=document.getElementById('update_invoicing');
     var mytable = document.getElementById("dataTable0");
-    var valid = getIdEnterprise();
-    if (valid !== null) {
-        idstore.value = valid;
-    }
-    getData(idplace);
+    
+    idstore.value=getIdEnterprise();
+    createdate.value=getCurrentDate() + 'T' + getCurrentTime();
+    updatedate.value=getCurrentDate() + 'T' + getCurrentTime();
+    createdate.setAttribute('disabled', 'disabled');
+    updatedate.setAttribute('disabled', 'disabled');
+    getData(idinvoicing);
     loadTableData(mytable, true);
 });
 
@@ -75,4 +84,7 @@ function New(item) {
     var savebutton = null;
     savebutton = getElement(myform, 'save');
     savebutton.setAttribute('action', 'insert');
+    document.getElementById("number_place").focus();
 }
+
+

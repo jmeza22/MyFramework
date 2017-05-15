@@ -647,7 +647,7 @@ function submitAjax(formData, url, header, reload) {
                         console.log('Hubo error con el lastInsertId.');
                     }
                 }
-                if (result.state !== null && result.state !== undefined && result.state === 1) {
+                if (result.status !== null && result.status !== undefined && result.status === 1) {
                     console.log('Submit OK!.');
                     if (reload === true) {
                         window.location.reload();
@@ -1177,6 +1177,7 @@ function autoLoadNameFromId(idfield, namefield1, namefield2, namefield3) {
     if (idfield !== null) {
         field = document.getElementById(idfield);
         field.onchange = function () {
+            console.log('Getting data for '+field.id);
             loadNameFromId(field, namefield1, namefield2, namefield3);
         };
     }
@@ -1254,7 +1255,7 @@ function login(element, destinationPage) {
                     if (result.error !== null && result.error !== '') {
                         console.error(result.error);
                     }
-                    if (result.state === 1) {
+                    if (result.status === 1) {
                         try {
                             object = JSON.parse(result.data);
                             console.log('Conversion Exitosa a JSON - Login!');

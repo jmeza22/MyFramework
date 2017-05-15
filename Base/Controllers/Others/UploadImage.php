@@ -14,7 +14,6 @@ class UploadImage {
     private $error = '';
 
     public function __construct() {
-        
     }
 
     public function setURL($url) {

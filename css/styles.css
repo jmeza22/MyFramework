@@ -28,7 +28,7 @@ body{
     font-weight: bolder !important;
     text-align: center !important;
     font-family: 'Orbitron', sans-serif !important;
-    font-size: 16pt;
+    font-size: 12pt !important;
 }
 
 .panel{
@@ -124,7 +124,7 @@ textarea{
 }
 
 .panel-body .btn{
-    min-width: 100px !important;
+    min-width: 85px !important;
     font-weight: bolder !important;
     font-family: 'Orbitron', sans-serif !important;
 }
@@ -136,11 +136,17 @@ textarea{
 
 label{
     display: block !important;
-    margin-top: 10px !important;
+    margin-top: 5px !important;
+    margin-bottom: 3px !important;
     font-family: 'Orbitron', sans-serif !important;
 }
 
 .form-control{
+    height: 30px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    padding-left: 6px !important;
+    padding-right: 4px !important;
     font-weight: 900 !important;
 }
 
@@ -291,7 +297,7 @@ hr{
     left: 0 !important;
     right: 0 !important;
     top: 0 !important;
-    z-index: 1000 !important;
+    z-index: 10000 !important;
     padding-top: 60px !important;
     margin-bottom: 60px !important;
     text-align: center !important;
@@ -364,10 +370,7 @@ hr{
         max-width: 40% !important;
         max-height: 40% !important;
     }
-    .panel-heading{
-        font-size: 10pt !important;
-    }
-
+    
     .photoPanel{
         margin-top: 10px !important;
     }

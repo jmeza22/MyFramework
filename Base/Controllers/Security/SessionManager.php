@@ -222,7 +222,7 @@ class SessionManager {
         $array['message'] = 'You must be login.';
         $array['error'] = null;
         $array['data'] = null;
-        $array['state'] = 0;
+        $array['status'] = 0;
         $data['userid'] = null;
         $data['user'] = null;
         $data['userrole'] = null;
@@ -233,7 +233,7 @@ class SessionManager {
             $data['userrole'] = $this->getUserType();
             $data['fullname'] = $this->getFullname();
             $array['message'] = 'You have a Active Session.';
-            $array['state'] = 1;
+            $array['status'] = 1;
         }
         $data = json_encode($data);
         $array['data'] = $data;

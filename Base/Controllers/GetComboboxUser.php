@@ -1,8 +1,7 @@
 <?php
 
 ob_start();
-include_once 'BaseController.php';
-include_once 'Security/SessionManager.php';
+include_once 'Libraries/Controllers.php';
 $session = new SessionManager();
 if ($session->hasLogin()) {
     if ($_POST != null && isset($_POST)) {
