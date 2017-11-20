@@ -117,6 +117,7 @@ textarea{
     border: solid #337ab7 1px !important;
     border-radius: 4px !important;
     font-weight: bolder !important;
+    cursor: pointer !important;
 }
 
 .dataTables_paginate, .dataTables_info{
@@ -228,17 +229,6 @@ td{
 hr{
     margin-top: 5px !important;
     margin-bottom: 5px !important;
-}
-
-.td-input{
-    padding: 0px !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-}
-
-.td-input > input{
-    width: 100% !important;
-    min-height: 28px !important;
 }
 
 .dataTables_length{
@@ -370,7 +360,7 @@ hr{
         max-width: 40% !important;
         max-height: 40% !important;
     }
-    
+
     .photoPanel{
         margin-top: 10px !important;
     }

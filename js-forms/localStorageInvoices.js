@@ -13,32 +13,9 @@ function getIdInvoice() {
     if (LocalStorageStatus()) {
         var invoice = null;
         invoice = localStorage.getItem("IdInvoice");
-        if (invoice === null) {
-            console.log("Invoice is null");
-        } else {
-            return invoice;
-        }
-    }
-    return null;
-}
-
-function setNumberInvoice(invoice) {
-    if (LocalStorageStatus()) {
-        if (invoice !== null) {
-            localStorage.removeItem("NumberInvoice");
-            localStorage.setItem("NumberInvoice", invoice);
-            return true;
-        }
-    }
-    return false;
-}
-
-function getNumberInvoice() {
-    if (LocalStorageStatus()) {
-        var invoice = null;
-        invoice = localStorage.getItem("NumberInvoice");
-        if (invoice === null) {
-            console.log("NumberInvoice is null");
+        if (invoice === null || invoice === undefined) {
+            console.log("IdInvoice is null");
+            setIdInvoice("[]");
         } else {
             return invoice;
         }
@@ -61,8 +38,9 @@ function getDetails() {
     if (LocalStorageStatus()) {
         var details = null;
         details = localStorage.getItem("InvoiceDetails");
-        if (details === null) {
+        if (details === null || details === undefined) {
             console.log("InvoiceDetails is null");
+            setDetails("[]");
         } else {
             return details;
         }

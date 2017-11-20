@@ -191,6 +191,15 @@ class BaseController {
         }
         return false;
     }
+    
+    public function replace() {
+        if (isset($this->db) && isset($this->postData)) {
+            if ($this->db->replaceStmt($this->model, $this->postData)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function update($arraydata = null) {
         $data = $this->postData;
@@ -298,6 +307,14 @@ class BaseController {
             }
             if (strcmp($this->action, 'insert') == 0) {
                 $result = $this->insert();
+                if ($result == true) {
+                    $result = $this->parseResults($result, "Registro Exitoso!", 1);
+                } else {
+                    $result = $this->parseResults($result, "Registro Fallido!", 0);
+                }
+            }
+            if (strcmp($this->action, 'replace') == 0) {
+                $result = $this->replace;
                 if ($result == true) {
                     $result = $this->parseResults($result, "Registro Exitoso!", 1);
                 } else {

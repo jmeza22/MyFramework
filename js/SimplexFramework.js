@@ -30,6 +30,14 @@ function noBackButton() {
     };
 }
 
+function RandomNumber(lowerlimit, upperlimit) {
+    var num = null;
+    if (lowerlimit !== null && upperlimit !== null && (!isNaN(lowerlimit) && !isNaN(upperlimit))) {
+        num = Math.round(Math.random() * (upperlimit - lowerlimit) + parseInt(lowerlimit));
+    }
+    return num;
+}
+
 function getCurrentTime() {
     var hh = new Date().getHours();
     var mm = new Date().getMinutes();
@@ -233,27 +241,27 @@ function disableElement(element) {
     return false;
 }
 
-function getForm(item) {
-    if (item !== null) {
+function getForm(element) {
+    if (element !== null) {
 
-        if (item.tagName === "FORM") {
-            return item;
+        if (element.tagName === "FORM") {
+            return element;
         }
-        if (item.parentNode.tagName === "FORM") {
-            console.log('Formulario Encontrado: ' + item.parentNode);
-            return item.parentNode;
+        if (element.parentNode.tagName === "FORM") {
+            console.log('Formulario Encontrado: ' + element.parentNode);
+            return element.parentNode;
         } else {
-            return getForm(item.parentNode);
+            return getForm(element.parentNode);
         }
     }
     console.log('No Se Encontró Formulario!.');
     return null;
 }
 
-function disabledForm(item) {
+function disabledForm(element) {
     var form = null;
-    if (item !== null) {
-        form = getForm(item);
+    if (element !== null) {
+        form = getForm(element);
         for (var i = 0; i < document.forms.length; i++) {
             if (form === document.forms[i]) {
                 form = document.forms[i];
@@ -267,10 +275,10 @@ function disabledForm(item) {
     return false;
 }
 
-function resetForm(item) {
+function resetForm(element) {
     var form = null;
-    if (item !== null) {
-        form = getForm(item);
+    if (element !== null) {
+        form = getForm(element);
         for (var i = 0; i < document.forms.length; i++) {
             if (form === document.forms[i]) {
                 form = document.forms[i];
@@ -286,10 +294,10 @@ function resetForm(item) {
     return false;
 }
 
-function readOnlyForm(item) {
+function readOnlyForm(element) {
     var form = null;
-    if (item !== null) {
-        form = getForm(item);
+    if (element !== null) {
+        form = getForm(element);
         for (var i = 0; i < document.forms.length; i++) {
             if (form === document.forms[i]) {
                 form = document.forms[i];
@@ -297,13 +305,13 @@ function readOnlyForm(item) {
                     form.elements[j].setAttribute('readonly', 'readonly');
                     console.log(form.elements[j].tagName);
                     if (form.elements[j].tagName === "SELECT") {
-                        var newitem = document.createElement('INPUT');
-                        newitem.setAttribute('type', 'hidden');
-                        newitem.setAttribute('id', form.elements[j].getAttribute('id'));
-                        newitem.setAttribute('name', form.elements[j].getAttribute('name'));
-                        newitem.setAttribute('value', form.elements[j].getAttribute('value'));
-                        newitem.value = form.elements[j].value;
-                        form.appendChild(newitem);
+                        var newelement = document.createElement('INPUT');
+                        newelement.setAttribute('type', 'hidden');
+                        newelement.setAttribute('id', form.elements[j].getAttribute('id'));
+                        newelement.setAttribute('name', form.elements[j].getAttribute('name'));
+                        newelement.setAttribute('value', form.elements[j].getAttribute('value'));
+                        newelement.value = form.elements[j].value;
+                        form.appendChild(newelement);
                         form.elements[j].setAttribute('disabled', 'disabled');
                     }
                     if (form.elements[j].tagName === "BUTTON" ||
@@ -326,10 +334,10 @@ function readOnlyForm(item) {
 }
 
 function getElementDocument(id) {
-    var item = null;
+    var element = null;
     if (id !== null && id !== '') {
-        item = document.getElementById(id);
-        return item;
+        element = document.getElementById(id);
+        return element;
     }
     return null;
 }
@@ -429,10 +437,10 @@ function deleteTemporalElements(parent) {
     return false;
 }
 
-function getActionButton(item) {
+function getActionButton(element) {
     var form = null;
-    if (item !== null) {
-        form = getForm(item);
+    if (element !== null) {
+        form = getForm(element);
         if (form !== null && form.tagName === "FORM") {
             for (var j = 0; j < form.elements.length; j++) {
                 if (form.elements[j] !== null && (form.elements[j].tagName === "BUTTON" || form.elements[j].tagName === "INPUT")) {
@@ -501,12 +509,12 @@ function createTempInputs(form) {
     }
 }
 
-function getTD(item) {
-    if (item !== null) {
-        if (item.parentNode.tagName === "TD") {
-            return item.parentNode;
+function getTD(element) {
+    if (element !== null) {
+        if (element.parentNode.tagName === "TD") {
+            return element.parentNode;
         } else {
-            return getTD(item.parentNode);
+            return getTD(element.parentNode);
         }
     }
     return null;
@@ -626,7 +634,7 @@ function submitAjax(formData, url, header, reload) {
                 try {
                     result = JSON.parse(result);
                 } catch (e) {
-                    console.log(result);
+                    console.error(result);
                 }
             }
             if (result !== null && result !== '') {
@@ -667,7 +675,7 @@ function submitAjax(formData, url, header, reload) {
 }
 
 function setDataForm(myform, json) {
-    var columns = null, values = null, col = null, item = null;
+    var columns = null, values = null, col = null, element = null;
     if (json !== null && myform !== null && myform.tagName === "FORM") {
         columns = Array();
         if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModel(myform)) {
@@ -689,24 +697,24 @@ function setDataForm(myform, json) {
 
             for (var j = 0; j < columns.length; j++) {
                 col = null;
-                item = null;
+                element = null;
                 col = columns[j];
-                item = getElement(myform, "" + col);
-                if (item !== null) {
-                    item.value = "";
-                    item.value = values[col];
+                element = getElement(myform, "" + col);
+                if (element !== null) {
+                    element.value = "";
+                    element.value = values[col];
                     if (values[col] === null) {
-                        item.value = '';
+                        element.value = '';
                     }
-                    if (item.value === '[object Object]') {
-                        item.value = '';
+                    if (element.value === '[object Object]') {
+                        element.value = '';
                     }
-                    if (item.getAttribute('type') !== null && item.getAttribute('type') === 'password') {
-                        item.value = '';
+                    if (element.getAttribute('type') !== null && element.getAttribute('type') === 'password') {
+                        element.value = '';
                     }
-                    if (item.tagName === "SELECT") {
-                        item.setAttribute('selected', values[col]);
-                        item.selected = values[col];
+                    if (element.tagName === "SELECT") {
+                        element.setAttribute('selected', values[col]);
+                        element.selected = values[col];
                     }
 
                 }
@@ -742,8 +750,8 @@ function getData(element) {
                         result = JSON.parse(result);
                         console.log('Conversion Exitosa a JSON - Get Data Form!.');
                     } catch (e) {
-                        console.log('Conversion Fallida a JSON - Get Data Form!.');
                         console.log(result);
+                        console.error('Conversion Fallida a JSON - Get Data Form!.');
                     }
                 }
                 if (result !== null && result !== '') {
@@ -756,7 +764,7 @@ function getData(element) {
                             object = JSON.parse(object);
                             setDataForm(myform, object);
                         } catch (e) {
-                            console.log("Error de Conversion JSON (Data) - Get Data Form!.");
+                            console.error("Error de Conversion JSON (Data) - Get Data Form!.");
                         }
                     }
 
@@ -824,13 +832,12 @@ function loadComboboxData(element) {
         "colvalue": colvalue,
         "othervalue": othervalue
     };
-    console.log('Loading ComboboxData!');
+    console.log('Loading ComboboxData: ' + element.id);
     if (element !== null &&
             url !== null && url !== '' &&
             model !== null && model !== '' &&
             colname !== null && colname !== '' &&
             colvalue !== null && colvalue !== '') {
-        console.log('Cargando Opciones para ' + element.id);
         promise = $.ajax({
             method: "POST",
             url: url,
@@ -841,8 +848,8 @@ function loadComboboxData(element) {
                         result = JSON.parse(result);
                         console.log('Conversion Exitosa a JSON - Load Combobox!.');
                     } catch (e) {
-                        console.log('Conversion Fallida a JSON - Load Combobox!.');
                         console.log(result);
+                        console.error('Conversion Fallida a JSON - Load Combobox!.');
                     }
                 }
                 if (result !== null && result !== '') {
@@ -853,6 +860,7 @@ function loadComboboxData(element) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
+                console.error(textStatus);
                 console.error("Hubo un Error de Conexion. Intente Nuevamente.");
             }
         }
@@ -1014,7 +1022,7 @@ function loadTableData(element, dynamic) {
         "findBy": findby,
         "findbyvalue": findbyvalue
     };
-    console.log('Loading TableData');
+    console.log('Loading TableData: ' + element.id);
 
     if (element !== null && element.tagName === "TABLE") {
         promise = $.ajax({
@@ -1027,8 +1035,8 @@ function loadTableData(element, dynamic) {
                         result = JSON.parse(result);
                         console.log('Conversion Exitosa a JSON - Load TableData!');
                     } catch (e) {
-                        console.log('Conversion Fallida a JSON - Load TableData!');
                         console.log(result);
+                        console.error('Conversion Fallida a JSON - Load TableData!');
                     }
                 }
                 if (result !== null && result !== '') {
@@ -1039,7 +1047,7 @@ function loadTableData(element, dynamic) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.log(textStatus);
+                console.error(textStatus);
                 console.error("Hubo un Error de Conexion. Intente Nuevamente.");
             }
         }
@@ -1134,7 +1142,7 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
         "findBy": findby
     };
     vals[findby] = id;
-    console.log('Loading NameFromId!');
+    console.log('Loading NameFromId: ' + field.id);
     if (field !== null && namefield1 !== null) {
         promise = $.ajax({
             method: "POST",
@@ -1146,8 +1154,8 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
                         result = JSON.parse(result);
                         console.log('Conversion Exitosa a JSON - Load Name From Id!');
                     } catch (e) {
-                        console.log('Conversion Fallida a JSON - Load Name From Id!');
                         console.log(result);
+                        console.log('Conversion Fallida a JSON - Load Name From Id!');
                     }
                 }
                 if (result !== null && result !== '') {
@@ -1164,7 +1172,7 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.log(textStatus);
+                console.error(textStatus);
                 console.error("Hubo un Error de Conexion. Intente Nuevamente.");
             }
         }
@@ -1177,7 +1185,7 @@ function autoLoadNameFromId(idfield, namefield1, namefield2, namefield3) {
     if (idfield !== null) {
         field = document.getElementById(idfield);
         field.onchange = function () {
-            console.log('Getting data for '+field.id);
+            console.log('Getting data for ' + field.id);
             loadNameFromId(field, namefield1, namefield2, namefield3);
         };
     }
@@ -1327,10 +1335,20 @@ function logout(url, destinationPage, token) {
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log(textStatus);
+                console.error(textStatus);
                 console.error("Hubo un Error de Conexion. Intente Nuevamente.");
             }
         }
         );
+    }
+}
+
+function submitJSON(action, json, url) {
+    var next = false;
+    var formdata = null;
+    var promise = null;
+    if (action !== null && json !== null && url !== null) {
+        
     }
 }
 

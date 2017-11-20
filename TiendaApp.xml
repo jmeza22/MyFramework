@@ -358,7 +358,7 @@
         <Cm>Llave Primaria</Cm>
       </Cl>
       <Cl au="0" df="" nm="id_invoice" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="45" sc="null" sg="1" un="0"/>
         <Cm>Llave Primaria Factura</Cm>
       </Cl>
       <Cl au="0" df="0" nm="amount_payment" nu="0">
@@ -567,22 +567,22 @@
       <TblOpts/>
       <Pk ClNs="id_invoicedetail" nm="pkSalesInvoiceDetailsApp"/>
       <Cl au="0" df="" nm="id_invoicedetail" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="45" sc="null" sg="1" un="0"/>
         <Cm>Llave Primaria Detalle Factura</Cm>
       </Cl>
       <Cl au="0" df="" nm="id_invoice" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="45" sc="null" sg="1" un="0"/>
         <Cm>Llave Foranea Factura</Cm>
       </Cl>
       <Cl au="0" df="" nm="id_product" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="25" sc="null" sg="1" un="0"/>
         <Cm>Llave Foranea Producto</Cm>
       </Cl>
-      <Cl au="0" df="0" nm="quantity_product" nu="1">
+      <Cl au="0" df="0" nm="quantity_product" nu="0">
         <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Cantidad de Producto</Cm>
       </Cl>
-      <Cl au="0" df="0" nm="price_product" nu="1">
+      <Cl au="0" df="0" nm="price_product" nu="0">
         <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Precio del Producto</Cm>
       </Cl>
@@ -611,8 +611,8 @@
       <Cm>Facturas de Venta</Cm>
       <TblOpts/>
       <Pk ClNs="id_invoice" nm="pkSalesInvoicesApp"/>
-      <Cl au="1" df="" nm="id_invoice" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="id_invoice" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="45" sc="null" sg="1" un="0"/>
         <Cm>Llave Primaria Factura</Cm>
       </Cl>
       <Cl au="0" df="" nm="id_store" nu="0">
@@ -629,10 +629,6 @@
       <Cl au="0" df="" nm="doc_customer" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="35" sc="null" sg="1" un="0"/>
         <Cm>Documento del Cliente</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="number_invoice" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
-        <Cm>Numero de Factura</Cm>
       </Cl>
       <Cl au="0" df="" nm="date_invoice" nu="1">
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
@@ -666,10 +662,6 @@
         <CdTb mn="1" nm="SalesInvoicesApp" oe="0" sch="schemaA" zr="1"/>
         <ClPr cdCl="id_store" prCl="id_store"/>
       </Fk>
-      <Idx clu="0" ftx="0" nm="Invoices_number_Idx" spa="0" unq="1">
-        <ClNs>number_invoice</ClNs>
-        <OptTx>USES BTREE</OptTx>
-      </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -987,7 +979,7 @@
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="CustomersApp" x="603" y="561"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="SalesInvoicesApp" x="1160" y="701"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="SellersApp" x="613" y="812"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="SalesInvoiceDetailsApp" x="1697" y="711"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="SalesInvoiceDetailsApp" x="1707" y="699"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="InvoicingSettingsApp" x="238" y="946"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="MeasurementUnitsApp" x="1916" y="130"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="CountriesApp" x="2546" y="32"/>
@@ -1044,7 +1036,7 @@
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.PaymentsApp.fk_Payments_Invoices" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="1288" x2="1288" y1="868" y2="962"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1288" x2="1288" y1="855" y2="962"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.PlacesApp.fk_Places_Stores" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
@@ -1091,12 +1083,12 @@
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.SalesInvoiceDetailsApp.fk_InvoiceDetails_Invoices" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="1434" x2="1674" y1="773" y2="773"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1424" x2="1684" y1="783" y2="783"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.SalesInvoiceDetailsApp.fk_InvoiceDetails_Products" parentEdge="SOUTH" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="1842" x2="1842" y1="552" y2="688"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1842" x2="1842" y1="552" y2="676"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="NORTH" nm="schemaA.SalesInvoicesApp.fk_SalesInvoices_Customers" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
@@ -1115,7 +1107,7 @@
     <FkGl bkCl="ff000000" childEdge="SOUTH" nm="schemaA.SalesInvoicesApp.fk_SalesInvoices_Sellers" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
         <positionableLine lineRole="PARENT_LINE" x1="883" x2="1161" y1="871" y2="871"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1165" x2="1165" y1="868" y2="867"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1165" x2="1165" y1="855" y2="867"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.SalesInvoicesApp.fk_SalesInvoices_Stores" parentEdge="EAST" positioner="ThreeLineUserLinkPositioner">

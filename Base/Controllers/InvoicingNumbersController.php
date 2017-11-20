@@ -53,10 +53,6 @@ if ($session->hasLogin()) {
                         $result['status'] = 1;
                         $result['error'] = null;
                         $result['message'] = '';
-                        $data = array();
-                        $data['number_invoice'] = $invoice_number;
-                        $data = json_encode($data);
-                        $result['data'] = $data;
                         $invoicing->setModel($invoicing->model_numbers);
                         $invoicing->setAction('insert');
                         $array = array();
@@ -68,7 +64,13 @@ if ($session->hasLogin()) {
                         $array['statusnumber_number'] = -1;
                         $invoicing->setPostData($array);
                         $invoicing->execute(false);
-                        $result['lastInsertId'] = $invoicing->getLastInsertId();
+                        if ($invoicing->getLastInsertId() != null && $invoicing->getLastInsertId() != 0) {
+                            $data = array();
+                            $data['id_invoice'] = $array['fullnumber_number'];
+                            $data = json_encode($data);
+                            $result['data'] = $data;
+                            $result['lastInsertId'] = $invoicing->getLastInsertId();
+                        }
                         $result = json_encode($result);
                     }
                 } else {

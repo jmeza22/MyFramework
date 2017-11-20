@@ -19,7 +19,7 @@
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="datatables/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
-        
+
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
@@ -102,8 +102,8 @@
                                 <td>
                                     <form method="GET" url="Base/Controllers/DefaultController.php" model="MeasurementUnitsApp" findBy="id_unit" >
                                         <input type="hidden" name="id_unit" id="id_unit" value="{{id_unit}}" />
-                                        <button type="button" name="update" id="update" action="update" class="btn btn-warning" onclick="Edit(this);"><i class="glyphicon glyphicon-edit"></i></button>
-                                        <button type="button" name="delete" id="delete" action="delete" class="btn btn-danger" onclick="Delete(this);"><i class="glyphicon glyphicon-remove"></i></button>
+                                        <button type="button" name="update" id="update" action="update" class="btn btn-warning btn-xs" onclick="Edit(this);"><i class="glyphicon glyphicon-edit"></i></button>
+                                        <button type="button" name="delete" id="delete" action="delete" class="btn btn-danger btn-xs" onclick="Delete(this);"><i class="glyphicon glyphicon-remove"></i></button>
                                     </form>
                                 </td>
                             </tr>
@@ -115,6 +115,6 @@
 
         <script type="text/javascript" src="datatables/js/dataTables.bootstrap.js"></script>
         <script type="text/javascript" src="datatables/js/jquery.dataTables.min.js"></script>
-        
+
     </body>
 </html>

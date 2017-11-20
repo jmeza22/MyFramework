@@ -324,6 +324,14 @@ class SQLDatabase {
         }
         return '';
     }
+    
+    private function buildReplaceString($table, $values) {
+        if ($table != null && $values != null) {
+            $sql = 'REPLACE INTO ' . $table . ' values(' . $values . ')';
+            return $sql;
+        }
+        return '';
+    }
 
     private function buildUpdateString($table, $setvalues, $where = NULL) {
         if ($table != null && $setvalues != null) {
@@ -361,6 +369,28 @@ class SQLDatabase {
     private function buildInsertStmtString($table, $array) {
         if (is_array($array)) {
             $sql = "INSERT INTO " . $table . " ";
+            $sql = $sql . "(";
+            $columns = $this->getColumns($array);
+            foreach ($columns as $column) {
+                $sql = $sql . " " . $column . ",";
+            }
+            $sql = substr($sql, 0, -1);
+            $sql = $sql . ")";
+            $sql = $sql . " VALUES ";
+            $sql = $sql . "(";
+            foreach ($columns as $column) {
+                $sql = $sql . " :" . $column . ",";
+            }
+            $sql = substr($sql, 0, -1);
+            $sql = $sql . ")";
+            return $sql;
+        }
+        return null;
+    }
+    
+    private function buildReplaceStmtString($table, $array) {
+        if (is_array($array)) {
+            $sql = "REPLACE INTO " . $table . " ";
             $sql = $sql . "(";
             $columns = $this->getColumns($array);
             foreach ($columns as $column) {
@@ -424,6 +454,21 @@ class SQLDatabase {
         $this->stmt = null;
         if ($this->link != null && $table != null && isset($table) && $array != null && isset($array)) {
             $sql = $this->buildInsertStmtString($table, $array);
+            $this->stmt = $this->link->prepare($sql);
+            $this->stmt = $this->bindParams($this->stmt, $array);
+            $this->executeSTMT();
+            if ($this->stmt->rowCount() > 0) {
+                $result = true;
+            }
+        }
+        return $result;
+    }
+    
+    public function replaceStmt($table, $array) {
+        $result = false;
+        $this->stmt = null;
+        if ($this->link != null && $table != null && isset($table) && $array != null && isset($array)) {
+            $sql = $this->buildReplaceStmtString($table, $array);
             $this->stmt = $this->link->prepare($sql);
             $this->stmt = $this->bindParams($this->stmt, $array);
             $this->executeSTMT();
@@ -569,6 +614,15 @@ class SQLDatabase {
 
     public function insert($table, $values) {
         $sql = $this->buildInsertString($table, $values);
+        $result = false;
+        if ($this->exec($sql) > 0) {
+            $result = true;
+        }
+        return $result;
+    }
+    
+    public function replace($table, $values) {
+        $sql = $this->buildReplaceString($table, $values);
         $result = false;
         if ($this->exec($sql) > 0) {
             $result = true;
