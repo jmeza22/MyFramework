@@ -133,6 +133,7 @@ textarea{
 .panel-body table tr td .btn {
     min-width: 0px !important;
     max-width: 34px !important;
+    min-height: 24px !important;
 }
 
 label{
@@ -217,18 +218,18 @@ table form{
 
 th{
     white-space: nowrap !important;
-    padding-left: 5px !important;
-    padding-right: 5px !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
 }
 
 td{
-    padding-left: 5px !important;
-    padding-right: 5px !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
 }
 
 hr{
-    margin-top: 5px !important;
-    margin-bottom: 5px !important;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
 }
 
 .dataTables_length{

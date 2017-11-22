@@ -1343,12 +1343,52 @@ function logout(url, destinationPage, token) {
     }
 }
 
-function submitJSON(action, json, url) {
+function submitJSON(url, json, action, model, token) {
     var next = false;
     var formdata = null;
     var promise = null;
-    if (action !== null && json !== null && url !== null) {
-        
+    if (url !== null && json !== null && action !== null && model !== null && token !== null) {
+        formdata = {
+            "json": json,
+            "model": model,
+            "action": action,
+            "token": token
+        };
+        promise = $.ajax({
+            method: "POST",
+            url: url,
+            data: formdata,
+            dataType: 'json',
+            success: function (result, status) {
+                if (result !== null && result !== '') {
+                    if (result.message !== null && result.message !== '') {
+                        console.log(result.message);
+                    }
+                    if (result.error !== null && result.error !== '') {
+                        console.error(result.error);
+                    }
+                    if (result.data !== null) {
+                        try {
+                            object = JSON.parse(result.data);
+                            console.log('Conversion Exitosa a JSON - submitJSON!');
+                        } catch (e) {
+                            console.error("Error de Conversion JSON - submitJSON");
+                        }
+                        
+                    }
+
+                } else {
+                    console.log('Servicio Web Falló!.');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log(textStatus);
+                console.error(textStatus);
+                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+            }
+        }
+        );
+
     }
 }
 

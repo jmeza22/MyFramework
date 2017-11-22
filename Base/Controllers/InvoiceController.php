@@ -20,7 +20,7 @@ if ($session->hasLogin() && $session->CheckToken()) {
         $bc->setPostData($pd);
         $bc->setModel($model);
         $bc->setFindBy($findBy);
-        if ((strcmp($bc->getAction(), 'delete') == 0) && (strcmp($session->getUserType(), 'AA') != 0)) {
+        if ((strcmp($bc->getAction(), 'delete') == 0 || strcmp($bc->getAction(), 'update') == 0) && (strcmp($session->getUserType(), 'AA') != 0)) {
             $bc->setAction(null);
         }
         $result = $bc->execute(false);

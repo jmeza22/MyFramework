@@ -43,7 +43,7 @@ jQuery(document).ready(function () {
     autoLoadNameFromId('id_product', 'name_product', 'id_unit', 'price_product');
 
     loadTableData(mytable, true);
-
+    Listing();
 });
 
 function newInvoiceNumber(element) {
@@ -138,6 +138,55 @@ function autoCalculateSubtotal() {
     };
 }
 
+function SendMaster(button) {
+    var form = getForm(button);
+    if (validateForm(form)) {
+        submitForm(form, false).done(function () {
+            console.log("Listo");
+        });
+    }
+}
+
+function SendDetail(button) {
+    var form = getForm(button);
+    var url = null;
+    var json = null;
+    var token = null;
+    var action = null;
+    var model = null;
+
+    if (form !== null && form !== 'undefined') {
+        url = "Base/Controllers/InvoiceDetailController.php";
+        json = getDetails();
+        token = getTokenLogin();
+        action = "Replace";
+        model = "SalesInvoiceDetailsApp";
+        submitJSON(url, json, action, model, token);
+    }
+}
+
+function Send(button) {
+    SendMaster(button);
+}
+
+function NewForm(button) {
+
+}
+
+function ResetDetail() {
+    var form = null;
+    var iddetail = null;
+
+    form = document.getElementById("form1");
+    if (form !== null) {
+        form.reset();
+        iddetail = getElement(form, 'id_invoicedetail');
+        iddetail.value = "";
+        return true;
+    }
+    return false;
+}
+
 function SaveDetail(button) {
     var form = null;
     var formparent = null;
@@ -194,10 +243,11 @@ function SaveDetail(button) {
             unit.value = "UND";
             idinvoice.value = "NULL";
             iddetail.value = "NULL";
-
             $('#modal_form').modal('hide');
+            return true;
         }
     }
+    return false;
 }
 
 function EditDetail(button) {
@@ -225,7 +275,9 @@ function EditDetail(button) {
         $("#modal_form").modal('show');
         quantity = getElement(formtarget, 'quantity_product');
         quantity.focus();
+        return true;
     }
+    return false;
 }
 
 function DeleteDetail(button) {
@@ -240,7 +292,9 @@ function DeleteDetail(button) {
         details = getDetails();
         details = unsetToJSON(details, iddetail);
         setDetails(details);
+        return true;
     }
+    return false;
 }
 
 function Listing() {
@@ -251,9 +305,17 @@ function Listing() {
     var subindex = null;
     var aux = null;
     var mytable = null;
+    var mainform = null;
+    var idinvoice = null;
+    var j = null;
 
     jsonstring = getDetails();
     mytable = document.getElementById("dataTable0");
+    mainform = document.getElementById("form0");
+    if (mainform !== null) {
+        idinvoice = getElement(mainform, 'id_invoice');
+        idinvoice = idinvoice.value;
+    }
     if (LocalStorageStatus()) {
         if (jsonstring !== null && jsonstring !== undefined) {
             if (jsonstring !== "" && jsonstring !== "[]") {
@@ -265,10 +327,9 @@ function Listing() {
                 }
 
                 if (json !== null) {
-
+                    j = 0;
                     for (var i = 0; i < json.length; i++) {
                         subindex = Object.keys(json[i])[0];
-                        console.log("ItemIndex=" + subindex);
                         aux = json[i][subindex];
                         console.log("Item=" + aux);
                         try {
@@ -276,8 +337,9 @@ function Listing() {
                         } catch (e) {
                             aux = null;
                         }
-
+                        console.log(aux['id_invoice'])
                         array[i] = aux;
+
                         aux = null;
                     }
 
@@ -285,8 +347,9 @@ function Listing() {
             }
         }
         setTableData(mytable, array, true);
+        return true;
     }
-    console.log(array);
+    return false;
 }
 
 function SaveAndListing(button) {
