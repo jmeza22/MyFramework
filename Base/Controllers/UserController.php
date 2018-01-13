@@ -8,7 +8,7 @@ $findBy = 'id_user';
 $photo = 'User';
 $array = null;
 $crypt = null;
-$atate = null;
+$status = null;
 $enterprise = null;
 if ($session->hasLogin() && $session->CheckToken()) {
     if (isset($_POST) && $_POST != null) {
@@ -40,10 +40,10 @@ if ($session->hasLogin() && $session->CheckToken()) {
         }
         $bc->setPostData($pd);
         $result = $bc->execute(false);
-        $state = json_decode($result, true);
-        $state = $state['state'];
+        $status = json_decode($result, true);
+        $status = $status['status'];
 
-        if (strcmp($bc->getAction(), 'insert') == 0 && $state == 1) {
+        if (strcmp($bc->getAction(), 'insert') == 0 && $status == 1) {
             $crypt = new MyCrypt();
             $array = array();
             $array['id_user'] = $bc->getLastInsertId();

@@ -140,11 +140,14 @@ function autoCalculateSubtotal() {
 
 function SendMaster(button) {
     var form = getForm(button);
+    var result = null;
     if (validateForm(form)) {
-        submitForm(form, false).done(function () {
-            console.log("Listo");
+        result = submitForm(form, false).done(function () {
+            console.log("Invoice Sent!.");
         });
+        delay(500);
     }
+    return result;
 }
 
 function SendDetail(button) {
@@ -154,19 +157,30 @@ function SendDetail(button) {
     var token = null;
     var action = null;
     var model = null;
+    var result = null;
 
     if (form !== null && form !== 'undefined') {
         url = "Base/Controllers/InvoiceDetailController.php";
-        json = getDetails();
-        token = getTokenLogin();
+        try {
+            json = getDetails();
+            json = parseDetailsToArray(json);
+            json = JSON.stringify(json);
+        } catch (e) {
+            console.error(e);
+        }
         action = "Replace";
         model = "SalesInvoiceDetailsApp";
-        submitJSON(url, json, action, model, token);
+        token = getTokenLogin();
+        result = submitJSON(url, json, action, model, token);
+        delay(500);
     }
+    return result;
 }
 
 function Send(button) {
     SendMaster(button);
+    SendDetail(button);
+
 }
 
 function NewForm(button) {
@@ -260,14 +274,12 @@ function EditDetail(button) {
     formparent = getForm(button);
     formtarget = document.getElementById("form1");
     iddetail = getElement(formparent, "id_invoicedetail");
-    console.log("Detalle: " + iddetail.value);
     if (iddetail !== null && formtarget !== null && formtarget.tagName === "FORM") {
         iddetail = iddetail.value;
         details = getDetails();
         details = getValueFromJSON(details, iddetail);
         try {
             details = JSON.parse(details);
-            console.log("Contenido: " + details);
         } catch (e) {
             console.error(e);
         }
@@ -297,18 +309,44 @@ function DeleteDetail(button) {
     return false;
 }
 
-function Listing() {
+function parseDetailsToArray(jsonstring) {
     var json = null;
-    var jsonvalue = null;
-    var jsonstring = null;
     var array = [];
     var subindex = null;
     var aux = null;
+    var j = null;
+
+    try {
+        json = JSON.parse(jsonstring);
+    } catch (e) {
+        console.error(e);
+        json = null;
+    }
+
+    if (json !== null && json !== undefined) {
+        j = 0;
+        for (var i = 0; i < json.length; i++) {
+            subindex = Object.keys(json[i])[0];
+            aux = json[i][subindex];
+            console.log("Item[" + aux + "]Item");
+            try {
+                aux = JSON.parse(aux);
+            } catch (e) {
+                aux = null;
+            }
+            array[i] = aux;
+            aux = null;
+        }
+    }
+    return array;
+}
+
+function Listing() {
+    var jsonstring = null;
+    var array = null;
     var mytable = null;
     var mainform = null;
     var idinvoice = null;
-    var j = null;
-
     jsonstring = getDetails();
     mytable = document.getElementById("dataTable0");
     mainform = document.getElementById("form0");
@@ -319,31 +357,7 @@ function Listing() {
     if (LocalStorageStatus()) {
         if (jsonstring !== null && jsonstring !== undefined) {
             if (jsonstring !== "" && jsonstring !== "[]") {
-                try {
-                    json = JSON.parse(jsonstring);
-                } catch (e) {
-                    console.error(e);
-                    json = null;
-                }
-
-                if (json !== null) {
-                    j = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        subindex = Object.keys(json[i])[0];
-                        aux = json[i][subindex];
-                        console.log("Item=" + aux);
-                        try {
-                            aux = JSON.parse(aux);
-                        } catch (e) {
-                            aux = null;
-                        }
-                        console.log(aux['id_invoice'])
-                        array[i] = aux;
-
-                        aux = null;
-                    }
-
-                }
+                array = parseDetailsToArray(jsonstring);
             }
         }
         setTableData(mytable, array, true);

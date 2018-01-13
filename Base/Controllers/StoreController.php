@@ -17,7 +17,7 @@ if ($session->hasLogin()) {
         $pd = null;
         $upload = null;
         $r = json_decode($result, true);
-        if (is_array($r) && $r['state'] == 1) {
+        if (is_array($r) && $r['status'] == 1) {
             $pd = $bc->getPostData();
             $upload = new UploadImage();
             $upload->setURL('ImageFiles/');

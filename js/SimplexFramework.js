@@ -85,6 +85,14 @@ function getDateTimeString() {
     return text;
 }
 
+function delay(milliseconds) {
+    var i = 0;
+    for (i = 0; i <= milliseconds; i++) {
+        setTimeout('return 0', 1);
+    }
+    return 1;
+}
+
 function clearForm(form) {
     if (form !== null && form.tagName === "FORM") {
         form.reset();
@@ -470,6 +478,9 @@ function getActionFromButton(button) {
             }
             if (button.getAttribute("action") === 'insert') {
                 form.setAttribute('do', 'insert');
+            }
+            if (button.getAttribute("action") === 'replace') {
+                form.setAttribute('do', 'replace');
             }
             if (button.getAttribute("action") === 'update') {
                 form.setAttribute('do', 'update');
@@ -1361,6 +1372,8 @@ function submitJSON(url, json, action, model, token) {
             dataType: 'json',
             success: function (result, status) {
                 if (result !== null && result !== '') {
+                     console.log(result);
+                    
                     if (result.message !== null && result.message !== '') {
                         console.log(result.message);
                     }
@@ -1374,16 +1387,15 @@ function submitJSON(url, json, action, model, token) {
                         } catch (e) {
                             console.error("Error de Conversion JSON - submitJSON");
                         }
-                        
-                    }
 
+                    }
+                    
                 } else {
                     console.log('Servicio Web Falló!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log(textStatus);
-                console.error(textStatus);
                 console.error("Hubo un Error de Conexion. Intente Nuevamente.");
             }
         }

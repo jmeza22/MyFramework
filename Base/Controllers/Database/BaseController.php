@@ -281,11 +281,11 @@ class BaseController {
         return null;
     }
 
-    public function parseResults($result, $message = '', $state = 0) {
+    public function parseResults($result, $message = '', $status = 0) {
         $array = array();
-        $array = ["data" => NULL, "message" => $message, "status" => $state, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId()];
+        $array = ["data" => NULL, "message" => $message, "status" => $status, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId()];
         if ($result != NULL) {
-            $array = ["data" => $result, "message" => $message, "state" => $state, "error" => null, "lastInsertId" => $this->getLastInsertId()];
+            $array = ["data" => $result, "message" => $message, "status" => $status, "error" => null, "lastInsertId" => $this->getLastInsertId()];
         }
         $array = json_encode($array);
         return $array;
@@ -314,7 +314,7 @@ class BaseController {
                 }
             }
             if (strcmp($this->action, 'replace') == 0) {
-                $result = $this->replace;
+                $result = $this->replace();
                 if ($result == true) {
                     $result = $this->parseResults($result, "Registro Exitoso!", 1);
                 } else {
