@@ -234,6 +234,10 @@ hr{
     margin-bottom: 4px !important;
 }
 
+td > input[type="text"]  {
+    width: 100% !important;
+}
+
 .dataTables_length{
     display: none !important;
     width: 0% !important;
@@ -252,7 +256,17 @@ hr{
 .dataTables_filter > label > input{
     display: inline-block !important;
     width: calc(100% - 70px) !important;
-}   
+}
+
+.table-form > tbody > tr > td > input[type="text"], 
+.table-form > tbody > tr > td > input[type="tel"],
+.table-form > tbody > tr > td > input[type="email"],
+.table-form > tbody > tr > td > input[type="number"],
+.table-form > tbody > tr > td > input[type="date"]{
+    border: 0px !important;
+    background-color: inherit !important;
+    text-transform: capitalize !important;
+}
 
 .imagePhoto{
     width: 100%;

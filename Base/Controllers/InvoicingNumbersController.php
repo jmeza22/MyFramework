@@ -24,9 +24,9 @@ if ($session->hasLogin()) {
     $result['data'] = null;
     $result['lastInsertId'] = null;
 
-    if (isset($_POST) && $_POST != null) {
-        if (isset($_POST['action']) && $_POST['action'] != null) {
-            if (strcmp($_POST['action'], 'Generate') == 0) {
+    if (isset($_REQUEST) && $_REQUEST != null) {
+        if (isset($_REQUEST['action']) && $_REQUEST['action'] != null) {
+            if (strcmp($_REQUEST['action'], 'Generate') == 0) {
                 if ((strcmp($session->getUserType(), 'AA') == 0 || strcmp($session->getUserType(), 'VN') == 0)) {
 
                     $invoicing = new Invoicing();
@@ -71,14 +71,15 @@ if ($session->hasLogin()) {
                             $result['data'] = $data;
                             $result['lastInsertId'] = $invoicing->getLastInsertId();
                         }
-                        $result = json_encode($result);
+                        
                     }
                 } else {
-                    $result['message'] = 'Access Denied For Your User!';
+                    $result['message'] = 'Access Denied For Your Account!';
                 }
             }
         }
     }
+    $result = json_encode($result);
     echo $result;
 } else {
     echo $session->getSessionStateJSON();

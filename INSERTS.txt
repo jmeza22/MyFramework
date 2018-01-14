@@ -1,6 +1,6 @@
 INSERT INTO StoresApp (id_store, doc_store, name_store, admin_store) VALUES (1,'1083434734', 'INVERSIONES MEZA', 'JOSE MEZA');
 
-INSERT INTO InvoicingSettingsApp (id_store, prefix_invoicing, lowerlimit_invoicing, upperlimit_invoicing) VALUES (1, 'FACT', 10000, 1000000);
+INSERT INTO InvoicingSettingsApp (id_store, prefix_invoicing, lowerlimit_invoicing, upperlimit_invoicing, startdate_invoicing, enddate_invoicing) VALUES (1, 'FACT', 10000, 1000000, '1990-01-01', '2028-01-01');
 
 INSERT INTO UsersApp (id_user, name_user, lastname_user, doctype_user, doc_user, sex_user, birthday_user, phone_user) VALUES (1, 'CLIENTE', 'VENTAS MENOR CUANTIA', 'CC', '00000000', 'M', '1990-01-01', '0000000000');
 
@@ -8,9 +8,9 @@ INSERT INTO UsersApp (id_user, name_user, lastname_user, doctype_user, doc_user,
 
 INSERT INTO UsersApp (id_user, name_user, lastname_user, doctype_user, doc_user, sex_user, birthday_user, phone_user) VALUES (3, 'LISANDRO', 'MEZA', 'CC', '85125745', 'M', '1966-01-03', '3017012163');
 
-INSERT INTO UserAccountsApp (id_store, id_user, nickname_account, password_account, role_account, updated_account) VALUES (1, 1, '1083434734', '92042202128fb12b1241f0dce1e6fe8c56c9fb6911c527e063aabcd', 'AA', now());
+INSERT INTO UserAccountsApp (id_store, id_user, nickname_account, password_account, role_account, updated_account) VALUES (1, 2, '1083434734', '92042202128fb12b1241f0dce1e6fe8c56c9fb6911c527e063aabcd', 'AA', now());
 
-INSERT INTO UserAccountsApp (id_store, id_user, nickname_account, password_account, role_account, updated_account) VALUES (1, 2, '85125745', '92042202128fb12b1241f0dce1e6fe8c56c9fb6911c527e063aabcd', 'NN', now());
+INSERT INTO UserAccountsApp (id_store, id_user, nickname_account, password_account, role_account, updated_account) VALUES (1, 3, '85125745', '92042202128fb12b1241f0dce1e6fe8c56c9fb6911c527e063aabcd', 'NN', now());
 
 INSERT INTO CustomersApp (id_user, doctype_customer, doc_customer, fullname_customer) VALUES (1, 'CC', '0', 'CUANTIAS MENORES');
 

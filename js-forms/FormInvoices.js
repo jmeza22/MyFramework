@@ -75,8 +75,9 @@ function newInvoiceNumber(element) {
                     }
                 }
                 if (result !== null && result !== '') {
-                    console.log(result.message);
+                    console.log("Result: "+result);
                     if (result.status !== null && result.status !== undefined && result.status === 1) {
+                        console.log(result.message);
                         setLastInsertId(result.lastInsertId);
                         object = result.data;
                         try {

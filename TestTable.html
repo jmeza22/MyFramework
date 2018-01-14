@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Prueba Tabla</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/styles.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/SimplexFramework.js"></script>
+
+    </head>
+    <body>
+        <div><h1>Prueba Tabla</h1></div>
+        <form name="formTable" id="formTable" action="Base/Controllers/TestTable.php" > 
+            <div>
+                <button type="button" name="nuevaFila" id="nuevaFila" onclick="addNewRowInTable('mytable');">Agregar</button>
+
+            </div>
+            <table name="mytable" id="mytable" border="1" class="table-form" >
+                <thead>
+                    <tr>
+                        <th>Campo 1</th>
+                        <th>Campo 2</th>
+                        <th>Campo 3</th>
+                        <th>Campo 4</th>
+                    </tr>
+                </thead>
+                <tbody id="tablebody">
+                    <tr id="rowsample" style="display: none;">
+                        <td> <input type="text" name="campo1[]" id="campo1" value=""></td>
+                        <td> <input type="text" name="campo2[]" id="campo2" value=""></td>
+                        <td> <input type="text" name="campo3[]" id="campo3" value=""></td>
+                        <td><button type="button" name="EliminarFila" id="EliminarFila" onclick="deleteRowInTable('mytable');">Eliminar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <button type="submit" name="guardar" id="guardar" onclick="">Guardar</button>
+            </div>
+        </form>
+    </body>
+</html>

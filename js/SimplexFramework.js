@@ -249,6 +249,13 @@ function disableElement(element) {
     return false;
 }
 
+function getParent(element) {
+    if (element !== null && element.parentNode !== null && element.parentNode !== undefined) {
+        return element.parentNode;
+    }
+    return null;
+}
+
 function getForm(element) {
     if (element !== null) {
 
@@ -256,13 +263,47 @@ function getForm(element) {
             return element;
         }
         if (element.parentNode.tagName === "FORM") {
-            console.log('Formulario Encontrado: ' + element.parentNode);
+            console.log('Formulario Encontrado: ' + element.id);
             return element.parentNode;
         } else {
             return getForm(element.parentNode);
         }
     }
     console.log('No Se Encontró Formulario!.');
+    return null;
+}
+
+function getParentTable(element) {
+    if (element !== null) {
+
+        if (element.tagName === "TABLE") {
+            return element;
+        }
+        if (element.parentNode.tagName === "TABLE") {
+            console.log('Tabla Padre Encontrada: ' + element.parentNode);
+            return element.parentNode;
+        } else {
+            return getParentTable(element.parentNode);
+        }
+    }
+    console.log('No Se Encontró la Tabla(TABLE) Padre del Elemento!.');
+    return null;
+}
+
+function getParentTR(element) {
+    if (element !== null) {
+
+        if (element.tagName === "TR") {
+            return element;
+        }
+        if (element.parentNode.tagName === "TR") {
+            console.log('Fila Padre Encontrada: ' + element.parentNode);
+            return element.parentNode;
+        } else {
+            return getParentTR(element.parentNode);
+        }
+    }
+    console.log('No Se Encontró la Fila(TR) Padre del Elemento!.');
     return null;
 }
 
@@ -354,15 +395,13 @@ function getElement(parent, id) {
     var j = 0;
     var elements = null;
 
-    if (parent !== null && id !== null && id !== '') {
-        if (parent.tagName === "FORM") {
-            elements = parent.elements;
-            if (elements.length > 0) {
-                for (j = 0; j < elements.length; j++) {
-                    if (elements[j].getAttribute("id") === id) {
-                        console.log("Found: " + elements[j].getAttribute("id"));
-                        return elements[j];
-                    }
+    if (parent !== null && parent.elements !== null && parent.elements !== undefined && id !== null && id !== '') {
+        elements = parent.elements;
+        if (elements.length > 0) {
+            for (j = 0; j < elements.length; j++) {
+                if (elements[j].getAttribute("id") === id) {
+                    console.log("Found: " + elements[j].getAttribute("id"));
+                    return elements[j];
                 }
             }
         }
@@ -880,6 +919,48 @@ function loadComboboxData(element) {
     return promise;
 }
 
+function addNewRowInTable(mytable) {
+    var sample = null;
+    var newrow = null;
+    var tbody = null;
+    if (mytable !== null && mytable.tagName === undefined) {
+        mytable = getElementDocument(mytable);
+    }
+    if (mytable !== null && mytable.tagName === "TABLE") {
+        tbody = getElement(mytable, "tablebody");
+        sample = getElement(mytable, "rowsample");
+        if (tbody !== null && tbody.tagName === "TBODY" && sample !== null && sample.tagName === "TR") {
+            newrow = sample.cloneNode(true);
+        }
+        if (newrow !== null && newrow.tagName === "TR") {
+            newrow.id = "row" + mytable.id + getDateTimeString();
+            newrow.style = "";
+            tbody.appendChild(newrow);
+            console.log('Nueva Fila Agregada en Tabla ' + mytable.id);
+        }
+    }
+    return newrow;
+}
+
+function deleteRowInTable(mytable) {
+    var myrow = null;
+    var element = null;
+    var foundelement = null;
+    if (mytable !== null && mytable.tagName === undefined) {
+        mytable = getElementDocument(mytable);
+    }
+    if (mytable !== null && mytable.tagName === "TABLE") {
+        console.log('Eliminar Fila?');
+        if (document.activeElement) {
+            element = document.activeElement;
+            myrow = getParentTR(element);
+            if (deleteElement(myrow)) {
+                console.log('Fila Eliminada!');
+            }
+        }
+    }
+}
+
 function clearTableData(element) {
     var TRs = null;
     if (element !== null && element.tagName === "TABLE") {
@@ -1372,8 +1453,8 @@ function submitJSON(url, json, action, model, token) {
             dataType: 'json',
             success: function (result, status) {
                 if (result !== null && result !== '') {
-                     console.log(result);
-                    
+                    console.log(result);
+
                     if (result.message !== null && result.message !== '') {
                         console.log(result.message);
                     }
@@ -1389,7 +1470,7 @@ function submitJSON(url, json, action, model, token) {
                         }
 
                     }
-                    
+
                 } else {
                     console.log('Servicio Web Falló!.');
                 }
