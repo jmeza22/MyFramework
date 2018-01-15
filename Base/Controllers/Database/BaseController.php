@@ -63,6 +63,10 @@ class BaseController {
     public function getLastInsertId($name = null) {
         return $this->db->getLastInsertID($name);
     }
+    
+    public function getRowCount() {
+        return $this->db->getRowCount();
+    }
 
     public function setToken($token) {
         $this->token = $token;
@@ -181,6 +185,22 @@ class BaseController {
             return true;
         }
         return false;
+    }
+    
+    public function parseMultiRows($postdata) {
+        if (isset($postdata) && ($postdata)) {
+            $columns= array_keys($postdata);
+            $numrows= count($postdata[$columns[0]]);
+            $newarray=array();
+            for($i=0;$i<$numrows;$i++){
+                $newarray[$i]=array();
+                foreach ($columns as $col){
+                    $newarray[$i][$col]=$postdata[$col][$i];
+                }
+            }
+            return $newarray;
+        }
+        return null;
     }
 
     public function insert() {

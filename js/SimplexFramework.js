@@ -343,6 +343,41 @@ function resetForm(element) {
     return false;
 }
 
+function resetControls(parent) {
+    if (parent.value !== null && parent.value !== undefined) {
+        parent.value = '';
+    }
+    if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined) {
+        for (var i = 0; i < parent.childNodes.length; i++) {
+            if (parent.childNodes[i].value !== null && parent.childNodes[i].value !== undefined) {
+                console.log('Seteando Valor Vacio '+parent.childNodes[i].id);
+                parent.childNodes[i].value = "";
+            }
+            if (parent.childNodes[i].childNodes !== null && parent.childNodes[i].childNodes !== undefined) {
+                resetControls(parent.childNodes[i]);
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+function removeAttributeDisabled(parent) {
+    if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined) {
+        for (var i = 0; i < parent.childNodes.length; i++) {
+            if (parent.childNodes[i].disabled !== null && parent.childNodes[i].disabled !== undefined) {
+                console.log('Removiendo Atributo Disabled '+parent.childNodes[i].id);
+                parent.childNodes[i].removeAttribute("disabled");
+            }
+            if (parent.childNodes[i].childNodes !== null && parent.childNodes[i].childNodes !== undefined) {
+                removeAttributeDisabled(parent.childNodes[i]);
+            }
+        }
+    }
+    
+    return false;
+}
+
 function readOnlyForm(element) {
     var form = null;
     if (element !== null) {
@@ -927,7 +962,7 @@ function addNewRowInTable(mytable) {
         mytable = getElementDocument(mytable);
     }
     if (mytable !== null && mytable.tagName === "TABLE") {
-        tbody = getElement(mytable, "tablebody");
+        tbody = getElement(mytable, "tbody_"+mytable.id);
         sample = getElement(mytable, "rowsample");
         if (tbody !== null && tbody.tagName === "TBODY" && sample !== null && sample.tagName === "TR") {
             newrow = sample.cloneNode(true);
@@ -936,6 +971,8 @@ function addNewRowInTable(mytable) {
             newrow.id = "row" + mytable.id + getDateTimeString();
             newrow.style = "";
             tbody.appendChild(newrow);
+            removeAttributeDisabled(newrow);
+            resetControls(newrow);
             console.log('Nueva Fila Agregada en Tabla ' + mytable.id);
         }
     }
@@ -1051,7 +1088,7 @@ function setTableData(element, json, dynamic) {
             TRs = element.getElementsByTagName('TR');
         }
         for (var i = 0; i < TRs.length; i++) {
-            if (TRs[i].getAttribute('rowSample') !== null) {
+            if (TRs[i].getAttribute('rowSample') !== null || TRs[i].id === 'rowSample') {
                 rowSample = TRs[i].innerHTML;
                 break;
             }

@@ -5,9 +5,10 @@ include_once 'Libraries/Controllers.php';
 $session = new SessionManager();
 $model = 'ProductCategoriesApp';
 $findBy = 'id_category';
+$bc = null;
+$result = null;
 if ($session->hasLogin() && $session->CheckToken()) {
     if (isset($_POST) && $_POST != null) {
-        $result = null;
         $bc = new BaseController();
         $bc->connect();
         $bc->preparePostData();

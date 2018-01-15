@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of MySQLDatabase
+ * Description of SQLDatabase
  *
  * @author José José Meza Meza
  * 1083434734
@@ -198,6 +198,19 @@ class SQLDatabase {
             try {
                 $lastid = $this->link->lastInsertId($name);
                 return $lastid;
+            } catch (Exception $ex) {
+                
+            }
+        }
+        return null;
+    }
+    
+    public function getRowCount() {
+        if ($this->link != null && $this->stmt!=null) {
+            $rowcount=null;
+            try {
+                $rowcount=$this->stmt->rowCount();
+                return $rowcount;
             } catch (Exception $ex) {
                 
             }

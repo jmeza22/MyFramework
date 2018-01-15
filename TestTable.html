@@ -11,36 +11,41 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/styles.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/Validator.js"></script>
+        <script type="text/javascript" src="js/localStorageData.js"></script>
         <script type="text/javascript" src="js/SimplexFramework.js"></script>
-
+        <script type="text/javascript" src="js-forms/TestTable.js"></script>
     </head>
     <body>
         <div><h1>Prueba Tabla</h1></div>
-        <form name="formTable" id="formTable" action="Base/Controllers/TestTable.php" > 
+        <form style="width: 100% !Important;" name="formTable" id="formTable"  method="POST" autocomplete="off" url="Base/Controllers/TestTable.php" action="Base/Controllers/TestTable.php" model="TestTableApp" findBy="id_testtable" mainform="true" > 
             <div>
-                <button type="button" name="nuevaFila" id="nuevaFila" onclick="addNewRowInTable('mytable');">Agregar</button>
+                <button type="button" name="nuevaFila" id="nuevaFila" onclick="addNewRowInTable('dataTable0');">Agregar</button>
 
             </div>
-            <table name="mytable" id="mytable" border="1" class="table-form" >
-                <thead>
+            <table name="dataTable0" id="dataTable0" border="1" class="table-form" model="TestTableApp" url="Base/Controllers/GetDataTable.php" >
+                <thead id="thead_dataTable0">
                     <tr>
+                        <th>Id</th>
                         <th>Campo 1</th>
                         <th>Campo 2</th>
                         <th>Campo 3</th>
-                        <th>Campo 4</th>
+                        <th>Opciones</th>
                     </tr>
                 </thead>
-                <tbody id="tablebody">
-                    <tr id="rowsample" style="display: none;">
-                        <td> <input type="text" name="campo1[]" id="campo1" value=""></td>
-                        <td> <input type="text" name="campo2[]" id="campo2" value=""></td>
-                        <td> <input type="text" name="campo3[]" id="campo3" value=""></td>
-                        <td><button type="button" name="EliminarFila" id="EliminarFila" onclick="deleteRowInTable('mytable');">Eliminar</button></td>
+                <tbody id="tbody_dataTable0">
+                    <tr id="rowsample" rowsample="true" style="display: none;">
+                        <td> <input type="text" disabled="disabled" name="id_testtable[]" id="id_testtable" value="{{id_testtable}}"></td>
+                        <td> <input type="text" disabled="disabled" name="field1_testtable[]" id="field1_testtable" value="{{field1_testtable}}"></td>
+                        <td> <input type="text" disabled="disabled" name="field2_testtable[]" id="field2_testtable" value="{{field2_testtable}}"></td>
+                        <td> <input type="text" disabled="disabled" name="field3_testtable[]" id="field3_testtable" value="{{field3_testtable}}"></td>
+                        <td><button type="button" name="EliminarFila" id="EliminarFila" onclick="deleteRowInTable('dataTable0');">Eliminar</button></td>
                     </tr>
                 </tbody>
             </table>
             <div>
-                <button type="submit" name="guardar" id="guardar" onclick="">Guardar</button>
+                <button type="button" id="guardar" name="guardar" action="replace" onclick="Send(this);" >Grabar</button>
+                <button type="submit" name="guardar2" id="guardar2" >GrabarPHP</button>
             </div>
         </form>
     </body>
