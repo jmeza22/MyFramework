@@ -23,9 +23,9 @@ and open the template in the editor.
                 <button type="button" name="nuevaFila" id="nuevaFila" onclick="addNewRowInTable('dataTable0');">Agregar</button>
 
             </div>
-            <table name="dataTable0" id="dataTable0" border="1" class="table-form" model="TestTableApp" url="Base/Controllers/GetDataTable.php" >
+            <table name="dataTable0" id="dataTable0" border="1" class="table-form" model="TestTableApp" url="Base/Controllers/GetDataTableTestTable.php" >
                 <thead id="thead_dataTable0">
-                    <tr>
+                    <tr rowhead="true">
                         <th>Id</th>
                         <th>Campo 1</th>
                         <th>Campo 2</th>
@@ -39,7 +39,13 @@ and open the template in the editor.
                         <td> <input type="text" disabled="disabled" name="field1_testtable[]" id="field1_testtable" value="{{field1_testtable}}"></td>
                         <td> <input type="text" disabled="disabled" name="field2_testtable[]" id="field2_testtable" value="{{field2_testtable}}"></td>
                         <td> <input type="text" disabled="disabled" name="field3_testtable[]" id="field3_testtable" value="{{field3_testtable}}"></td>
-                        <td><button type="button" name="EliminarFila" id="EliminarFila" onclick="deleteRowInTable('dataTable0');">Eliminar</button></td>
+                        <td>
+                            <button type="button" name="EditarFila" id="EditarFila" onclick="EditRowInTable(this);">Editar</button>
+                            <button type="button" name="EliminarFila" id="EliminarFila" onclick="deleteRowInTable('dataTable0');">Eliminar</button>
+                        </td>
+                        <td style="display: none; visibility: hidden;"> 
+                            <input type="text" disabled="disabled" name="status_testtable[]" id="status_testtable" value="1">
+                        </td>
                     </tr>
                 </tbody>
             </table>

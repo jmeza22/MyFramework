@@ -998,6 +998,21 @@ function deleteRowInTable(mytable) {
     }
 }
 
+function EditRowInTable(item) {
+    if (item !== null && item !== undefined) {
+        var tr = null;
+        tr = getParentTR(item);
+        if (tr !== null && tr !== undefined) {
+            removeAttributeDisabled(tr);
+            if (item.tagName === 'BUTTON') {
+                item.setAttribute('disabled', 'disabled');
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
 function clearTableData(element) {
     var TRs = null;
     if (element !== null && element.tagName === "TABLE") {
@@ -1005,10 +1020,10 @@ function clearTableData(element) {
             TRs = element.getElementsByTagName('TR');
             for (var i = 0; i < TRs.length; i++) {
                 if (TRs[i] !== null && TRs[i] !== undefined) {
-                    if (TRs[i].getAttribute('rowSample') !== null) {
+                    if (TRs[i].getAttribute('rowsample') !== null) {
                         hideElement(TRs[i]);
                     }
-                    if (TRs[i].getAttribute('rowHead') === null && TRs[i].getAttribute('rowSample') === null) {
+                    if (TRs[i].getAttribute('rowhead') === null && TRs[i].getAttribute('rowsample') === null) {
                         deleteElement(TRs[i]);
                         if (i > 0) {
                             i = i - 1;
@@ -1088,7 +1103,7 @@ function setTableData(element, json, dynamic) {
             TRs = element.getElementsByTagName('TR');
         }
         for (var i = 0; i < TRs.length; i++) {
-            if (TRs[i].getAttribute('rowSample') !== null || TRs[i].id === 'rowSample') {
+            if (TRs[i].getAttribute('rowsample') !== null || TRs[i].id === 'rowsample') {
                 rowSample = TRs[i].innerHTML;
                 break;
             }

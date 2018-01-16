@@ -25,7 +25,7 @@ if (isset($_POST) && $_POST != null) {
         $postdata = $bc->getPostData();
         $count = count($_POST['id_testtable']);
 
-        if ($count > 1) {
+        if ($count >= 1) {
             $postdata = $bc->parseMultiRows($postdata);
             $count = count($postdata);
             for ($i = 0; $i < $count; $i++) {
