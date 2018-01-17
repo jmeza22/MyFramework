@@ -57,16 +57,11 @@ input[type="button"], input[type="submit"], button{
     font-family: 'Orbitron', sans-serif !important;
 }
 
-button[disabled]{
-    display: none !important;
-    visibility: hidden !important;
-}
-
 input{
     font-family: 'Voltaire', sans-serif !important;
 }
 
-input[disabled]{
+input[disabled], button[disabled]{
     cursor: default !important;
 }
 

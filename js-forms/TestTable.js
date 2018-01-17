@@ -28,6 +28,7 @@ function DeleteItem(item) {
         }
         if (id !== null && status !== null && mytable !== null) {
             console.log('Tratando de Eliminar id: ' + id);
+            addAttributeDisabled(mytable);
             removeAttributeDisabled(tr);
             status.value = 0;
             Send(item);

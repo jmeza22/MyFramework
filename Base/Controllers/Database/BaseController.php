@@ -303,9 +303,9 @@ class BaseController {
 
     public function parseResults($result, $message = '', $status = 0) {
         $array = array();
-        $array = ["data" => NULL, "message" => $message, "status" => $status, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId()];
+        $array = ["data" => NULL, "message" => $message, "status" => $status, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId(), "rowcount"=> $this->getRowCount()];
         if ($result != NULL) {
-            $array = ["data" => $result, "message" => $message, "status" => $status, "error" => null, "lastInsertId" => $this->getLastInsertId()];
+            $array = ["data" => $result, "message" => $message, "status" => $status, "error" => null, "lastInsertId" => $this->getLastInsertId(), "rowcount"=> $this->getRowCount()];
         }
         $array = json_encode($array);
         return $array;
@@ -336,9 +336,9 @@ class BaseController {
             if (strcmp($this->action, 'replace') == 0) {
                 $result = $this->replace();
                 if ($result == true) {
-                    $result = $this->parseResults($result, "Registro Exitoso!", 1);
+                    $result = $this->parseResults($result, "Registro/Actualizacion Exitosa!", 1);
                 } else {
-                    $result = $this->parseResults($result, "Registro Fallido!", 0);
+                    $result = $this->parseResults($result, "Registro/Actualizacion Fallida!", 0);
                 }
             }
             if (strcmp($this->action, 'update') == 0) {

@@ -365,12 +365,31 @@ function resetControls(parent) {
 function removeAttributeDisabled(parent) {
     if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined) {
         for (var i = 0; i < parent.childNodes.length; i++) {
-            if (parent.childNodes[i].disabled !== null && parent.childNodes[i].disabled !== undefined) {
-                console.log('Removiendo Atributo Disabled ' + parent.childNodes[i].id);
-                parent.childNodes[i].removeAttribute("disabled");
+            if (parent.childNodes[i].nodeType === 1 && parent.childNodes[i].disabled !== null && parent.childNodes[i].disabled !== undefined) {
+                if (parent.childNodes[i].getAttribute('editable') !== null && parent.childNodes[i].getAttribute('editable') !== undefined) {
+                    console.log('Removiendo Atributo Disabled ' + parent.childNodes[i].id);
+                    parent.childNodes[i].removeAttribute("disabled");
+                }
             }
             if (parent.childNodes[i].childNodes !== null && parent.childNodes[i].childNodes !== undefined) {
                 removeAttributeDisabled(parent.childNodes[i]);
+            }
+        }
+    }
+    return false;
+}
+
+function addAttributeDisabled(parent) {
+    if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined) {
+        for (var i = 0; i < parent.childNodes.length; i++) {
+            if (parent.childNodes[i] !== null && parent.childNodes[i] !== undefined && parent.childNodes[i].nodeType === 1) {
+                if (parent.childNodes[i].getAttribute('editable') !== null && parent.childNodes[i].getAttribute('editable') !== undefined) {
+                    console.log('Agregando Atributo Disabled ' + parent.childNodes[i].id);
+                    parent.childNodes[i].setAttribute("disabled", "disabled");
+                }
+            }
+            if (parent.childNodes[i].childNodes !== null && parent.childNodes[i].childNodes !== undefined) {
+                addAttributeDisabled(parent.childNodes[i]);
             }
         }
     }
@@ -1012,9 +1031,6 @@ function editRowInTable(item) {
         tr = getParentTR(item);
         if (tr !== null && tr !== undefined) {
             removeAttributeDisabled(tr);
-            if (item.tagName === 'BUTTON') {
-                item.setAttribute('disabled', 'disabled');
-            }
             return true;
         }
     }
