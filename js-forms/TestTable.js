@@ -34,6 +34,5 @@ function DeleteItem(item) {
             Send(item);
             deleteRowInTable(mytable);
         }
-        
     }
 }

@@ -8,7 +8,39 @@ jQuery(document).ready(function () {
     AjaxLoading();
     getIdFromGET();
     setTokenForms();
+    RequestNotificationPermission();
 });
+
+function RequestNotificationPermission() {
+    if (Notification.permission == "default" || Notification.permission == "denied") {
+        Notification.requestPermission();
+        alert('Por favor habilite las Notificaciones a continuacion! ');
+    }
+    if (Notification.permission == "denied") {
+        RequestNotificationPermission();
+    }
+}
+
+function showNotification(mytitle, mytext) {
+    if (Notification.permission == "granted") {
+        if (mytitle !== null && mytext !== null) {
+            var message = null;
+            var title = mytitle;
+            var extra = {
+                body: mytext
+            };
+            message = new Notification(title, extra);
+            setTimeout(function () {
+                message.close();
+            }, 3000);
+            return true;
+        }
+    } else {
+        alert(mytext);
+    }
+    return false;
+}
+
 
 function noContextMenu() {
     document.oncontextmenu = function () {
@@ -116,15 +148,6 @@ function GET(key) {
 function getErrorMessage() {
     var message = 'Connection Error!.';
     return message;
-}
-
-function showNotification(text) {
-    var notifications = document.getElementById("notification");
-    if (text !== null || text !== "") {
-        notifications.value = text;
-        notifications.innerHTML = text;
-    }
-    return notifications;
 }
 
 function AjaxLoading() {
@@ -752,9 +775,10 @@ function submitAjax(formData, url, header, reload) {
             if (result !== null && result !== '') {
                 if (result.error !== null && result.error !== undefined && result.error !== '') {
                     console.error(result.error);
+                    showNotification('Error:', result.error);
                 }
                 if (result.message !== null && result.message !== undefined && result.message !== '') {
-                    alert(result.message);
+                    showNotification('Resultado de la Operacion:', result.message);
                 }
                 if (result.data !== null && result.data !== undefined && result.data !== '') {
                     console.log('Data: ' + result.data);
@@ -775,11 +799,14 @@ function submitAjax(formData, url, header, reload) {
                 } else {
                     console.error('Hubo error - Submit!.');
                 }
+            } else {
+                showNotification('Resultado de la Operacion:', 'Respuesta Nula. Hubo un error durante el proceso.');
             }
 
         },
         error: function (xhr, textStatus, errorThrown) {
-            alert("Hubo un Error de Conexion. Intente Nuevamente.");
+            console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+            showNotification('Error de Conexion:', 'Intente Nuevamente!');
         }
 
     });
@@ -867,8 +894,12 @@ function getData(element) {
                     }
                 }
                 if (result !== null && result !== '') {
+                    if (result.error !== null && result.error !== undefined && result.error !== '') {
+                        console.error(result.error);
+                        showNotification('Error:', result.error);
+                    }
                     if (result.message !== null && result.message !== undefined && result.message !== '') {
-                        alert(result.message);
+                        showNotification('Resultado de la Operacion:', result.message);
                     }
                     if (result.data !== null && result.data !== undefined && result.data !== '') {
                         object = result.data;
@@ -881,11 +912,12 @@ function getData(element) {
                     }
 
                 } else {
-                    alert('Servicio Web Falló!.');
+                    showNotification('Error:', 'Servicio Web Falló!');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error de Comunicacion - Get Data Form!.");
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
         );
@@ -972,8 +1004,8 @@ function loadComboboxData(element) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error(textStatus);
-                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
         );
@@ -1215,8 +1247,8 @@ function loadTableData(element, dynamic) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error(textStatus);
-                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
         );
@@ -1340,8 +1372,8 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error(textStatus);
-                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
         );
@@ -1425,12 +1457,14 @@ function login(element, destinationPage) {
             dataType: 'json',
             success: function (result, status) {
                 if (result !== null) {
-                    if (result.message !== null && result.message !== '') {
-                        alert(result.message);
-                    }
-                    if (result.error !== null && result.error !== '') {
+                    if (result.error !== null && result.error !== undefined && result.error !== '') {
                         console.error(result.error);
+                        showNotification('Error:', result.error);
                     }
+                    if (result.message !== null && result.message !== '') {
+                        showNotification('Resultado de la Operacion:', result.message);
+                    }
+
                     if (result.status === 1) {
                         try {
                             object = JSON.parse(result.data);
@@ -1450,7 +1484,8 @@ function login(element, destinationPage) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                alert("Hubo un Error de Conexion. Intente Nuevamente.");
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
 
         });
@@ -1477,11 +1512,12 @@ function logout(url, destinationPage, token) {
             dataType: 'json',
             success: function (result, status) {
                 if (result !== null && result !== '') {
+                    if (result.error !== null && result.error !== undefined && result.error !== '') {
+                        console.error(result.error);
+                        showNotification('Error:', result.error);
+                    }
                     if (result.message !== null && result.message !== '') {
                         console.log(result.message);
-                    }
-                    if (result.error !== null && result.error !== '') {
-                        console.error(result.error);
                     }
                     if (result.data !== null) {
                         try {
@@ -1502,9 +1538,8 @@ function logout(url, destinationPage, token) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.log(textStatus);
-                console.error(textStatus);
-                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
         );
@@ -1530,12 +1565,12 @@ function submitJSON(url, json, action, model, token) {
             success: function (result, status) {
                 if (result !== null && result !== '') {
                     console.log(result);
-
+                    if (result.error !== null && result.error !== undefined && result.error !== '') {
+                        console.error(result.error);
+                        showNotification('Error:', result.error);
+                    }
                     if (result.message !== null && result.message !== '') {
                         console.log(result.message);
-                    }
-                    if (result.error !== null && result.error !== '') {
-                        console.error(result.error);
                     }
                     if (result.data !== null) {
                         try {
@@ -1552,8 +1587,8 @@ function submitJSON(url, json, action, model, token) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.log(textStatus);
-                console.error("Hubo un Error de Conexion. Intente Nuevamente.");
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
         );

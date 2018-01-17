@@ -63,7 +63,7 @@ class BaseController {
     public function getLastInsertId($name = null) {
         return $this->db->getLastInsertID($name);
     }
-    
+
     public function getRowCount() {
         return $this->db->getRowCount();
     }
@@ -131,7 +131,7 @@ class BaseController {
     private function parseWhereParam($param) {
         if ($param != null && $param != '' && is_numeric($param) == false) {
             return "'" . $param . "'";
-        } else if(is_numeric($param)) {
+        } else if (is_numeric($param)) {
             return $param;
         }
         return null;
@@ -186,16 +186,18 @@ class BaseController {
         }
         return false;
     }
-    
+
     public function parseMultiRows($postdata) {
         if (isset($postdata) && ($postdata)) {
-            $columns= array_keys($postdata);
-            $numrows= count($postdata[$columns[0]]);
-            $newarray=array();
-            for($i=0;$i<$numrows;$i++){
-                $newarray[$i]=array();
-                foreach ($columns as $col){
-                    $newarray[$i][$col]=$postdata[$col][$i];
+            $columns = array_keys($postdata);
+            $numrows = count($postdata[$columns[0]]);
+            $newarray = array();
+            for ($i = 0; $i < $numrows; $i++) {
+                $newarray[$i] = array();
+                foreach ($columns as $col) {
+                    if (isset($postdata[$col][$i])) {
+                        $newarray[$i][$col] = $postdata[$col][$i];
+                    }
                 }
             }
             return $newarray;
@@ -211,7 +213,7 @@ class BaseController {
         }
         return false;
     }
-    
+
     public function replace() {
         if (isset($this->db) && isset($this->postData)) {
             if ($this->db->replaceStmt($this->model, $this->postData)) {
@@ -294,6 +296,7 @@ class BaseController {
         }
         return null;
     }
+
     public function selectAssocArray($sql) {
         if ($sql != null) {
             return $this->db->selectAssocArray($sql);
@@ -303,9 +306,9 @@ class BaseController {
 
     public function parseResults($result, $message = '', $status = 0) {
         $array = array();
-        $array = ["data" => NULL, "message" => $message, "status" => $status, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId(), "rowcount"=> $this->getRowCount()];
+        $array = ["data" => NULL, "message" => $message, "status" => $status, "error" => $this->db->getErrorMessage(), "lastInsertId" => $this->getLastInsertId(), "rowcount" => $this->getRowCount()];
         if ($result != NULL) {
-            $array = ["data" => $result, "message" => $message, "status" => $status, "error" => null, "lastInsertId" => $this->getLastInsertId(), "rowcount"=> $this->getRowCount()];
+            $array = ["data" => $result, "message" => $message, "status" => $status, "error" => null, "lastInsertId" => $this->getLastInsertId(), "rowcount" => $this->getRowCount()];
         }
         $array = json_encode($array);
         return $array;
@@ -336,9 +339,9 @@ class BaseController {
             if (strcmp($this->action, 'replace') == 0) {
                 $result = $this->replace();
                 if ($result == true) {
-                    $result = $this->parseResults($result, "Registro/Actualizacion Exitosa!", 1);
+                    $result = $this->parseResults($result, "Operacion Exitosa!", 1);
                 } else {
-                    $result = $this->parseResults($result, "Registro/Actualizacion Fallida!", 0);
+                    $result = $this->parseResults($result, "Operacion Exitosa!", 0);
                 }
             }
             if (strcmp($this->action, 'update') == 0) {
