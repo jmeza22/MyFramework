@@ -350,7 +350,7 @@ function resetControls(parent) {
     if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined) {
         for (var i = 0; i < parent.childNodes.length; i++) {
             if (parent.childNodes[i].value !== null && parent.childNodes[i].value !== undefined) {
-                console.log('Seteando Valor Vacio '+parent.childNodes[i].id);
+                console.log('Seteando Valor Vacio ' + parent.childNodes[i].id);
                 parent.childNodes[i].value = "";
             }
             if (parent.childNodes[i].childNodes !== null && parent.childNodes[i].childNodes !== undefined) {
@@ -366,7 +366,7 @@ function removeAttributeDisabled(parent) {
     if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined) {
         for (var i = 0; i < parent.childNodes.length; i++) {
             if (parent.childNodes[i].disabled !== null && parent.childNodes[i].disabled !== undefined) {
-                console.log('Removiendo Atributo Disabled '+parent.childNodes[i].id);
+                console.log('Removiendo Atributo Disabled ' + parent.childNodes[i].id);
                 parent.childNodes[i].removeAttribute("disabled");
             }
             if (parent.childNodes[i].childNodes !== null && parent.childNodes[i].childNodes !== undefined) {
@@ -374,7 +374,6 @@ function removeAttributeDisabled(parent) {
             }
         }
     }
-    
     return false;
 }
 
@@ -429,19 +428,28 @@ function getElementDocument(id) {
 function getElement(parent, id) {
     var j = 0;
     var elements = null;
-
-    if (parent !== null && parent.elements !== null && parent.elements !== undefined && id !== null && id !== '') {
-        elements = parent.elements;
+    var result = null;
+    if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined && id !== null && id !== '') {
+        elements = parent.childNodes;
         if (elements.length > 0) {
             for (j = 0; j < elements.length; j++) {
-                if (elements[j].getAttribute("id") === id) {
-                    console.log("Found: " + elements[j].getAttribute("id"));
-                    return elements[j];
+                if (elements[j].id === id) {
+                    console.log("Elemento Encontrado: " + elements[j].id);
+                    result = elements[j];
+                    break;
+                }
+                if (elements.childNodes !== null && result === null) {
+                    result = getElement(elements[j], id);
                 }
             }
         }
     }
-    return getElementDocument(id);
+    if (parent !== null && parent !== undefined && result === null) {
+        if (parent.id === id) {
+            return parent;
+        }
+    }
+    return result;
 }
 
 function getOptionByValue(parent, value) {
@@ -962,7 +970,7 @@ function addNewRowInTable(mytable) {
         mytable = getElementDocument(mytable);
     }
     if (mytable !== null && mytable.tagName === "TABLE") {
-        tbody = getElement(mytable, "tbody_"+mytable.id);
+        tbody = getElement(mytable, "tbody_" + mytable.id);
         sample = getElement(mytable, "rowsample");
         if (tbody !== null && tbody.tagName === "TBODY" && sample !== null && sample.tagName === "TR") {
             newrow = sample.cloneNode(true);
@@ -998,7 +1006,7 @@ function deleteRowInTable(mytable) {
     }
 }
 
-function EditRowInTable(item) {
+function editRowInTable(item) {
     if (item !== null && item !== undefined) {
         var tr = null;
         tr = getParentTR(item);

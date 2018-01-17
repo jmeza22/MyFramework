@@ -40,11 +40,11 @@ and open the template in the editor.
                         <td> <input type="text" disabled="disabled" name="field2_testtable[]" id="field2_testtable" value="{{field2_testtable}}"></td>
                         <td> <input type="text" disabled="disabled" name="field3_testtable[]" id="field3_testtable" value="{{field3_testtable}}"></td>
                         <td>
-                            <button type="button" name="EditarFila" id="EditarFila" onclick="EditRowInTable(this);">Editar</button>
-                            <button type="button" name="EliminarFila" id="EliminarFila" onclick="deleteRowInTable('dataTable0');">Eliminar</button>
+                            <button type="button" name="EditarFila" id="EditarFila" onclick="editRowInTable(this);">Editar</button>
+                            <button type="button" name="EliminarFila" id="EliminarFila" onclick="DeleteItem(this);">Eliminar</button>
                         </td>
-                        <td style="display: none; visibility: hidden;"> 
-                            <input type="text" disabled="disabled" name="status_testtable[]" id="status_testtable" value="1">
+                        <td style="display: none;"> 
+                            <input type="text" disabled="disabled"  name="status_testtable[]" id="status_testtable" value="1">
                         </td>
                     </tr>
                 </tbody>

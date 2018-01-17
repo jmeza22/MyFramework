@@ -26,6 +26,7 @@ if (isset($_POST) && $_POST != null) {
         $count = count($_POST['id_testtable']);
 
         if ($count >= 1) {
+            //print_r($postdata);
             $postdata = $bc->parseMultiRows($postdata);
             $count = count($postdata);
             for ($i = 0; $i < $count; $i++) {
@@ -33,19 +34,18 @@ if (isset($_POST) && $_POST != null) {
                 $result = $bc->execute(false);
                 if ($bc->getRowCount() > 0) {
                     $rowcount++;
-                }else{
+                } else {
                     break;
                 }
             }
         }
     }
-    if($rowcount == $count) {
+    if ($rowcount == $count) {
         $bc->commit();
-        echo $result;
-    }else{
+    } else {
         $bc->rollback();
-        echo $result;
     }
+    echo $result;
     $result = null;
     $bc->disconnect();
 }

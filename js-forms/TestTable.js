@@ -16,36 +16,23 @@ function Send(item) {
 }
 
 function DeleteItem(item) {
-    var form = getForm(item);
-    var tr = getParentTR(item);
-    var id = getElement(tr, 'id_testtable');
-    var url = null;
-    var json = null;
-    var token = null;
-    var action = null;
-    var model = null;
-    var result = null;
-
-    if (form !== null && form !== 'undefined') {
-        url = getURL(form);
-        action = "replace";
-        model = getModel(form);
-        token = getTokenLogin();
-
-        try {
-            json = {
-                "model": model,
-                "action": action,
-                "token": token,
-                "id_testtable": id,
-                "status_testtable": 0
-            };
-            result = submitJSON(url, json, action, model, token);
-            deleteRowInTable("dataTable0");
-        } catch (e) {
-            console.error(e);
+    if (confirm('Desea eliminar este Registro?')) {
+        var form = getForm(item);
+        var tr = getParentTR(item);
+        var mytable = getParentTable(item);
+        var id = null;
+        var status = null;
+        if (tr !== null && tr !== undefined) {
+            id = getElement(tr, 'id_testtable');
+            status = getElement(tr, 'status_testtable');
         }
-
-        delay(500);
+        if (id !== null && status !== null && mytable !== null) {
+            console.log('Tratando de Eliminar id: ' + id);
+            removeAttributeDisabled(tr);
+            status.value = 0;
+            Send(item);
+            deleteRowInTable(mytable);
+        }
+        
     }
 }
