@@ -21,7 +21,6 @@ and open the template in the editor.
         <form style="width: 100% !Important;" name="formTable" id="formTable"  method="POST" autocomplete="off" url="Base/Controllers/TestTable.php" action="Base/Controllers/TestTable.php" model="TestTableApp" findBy="id_testtable" mainform="true" > 
             <div>
                 <button type="button" name="nuevaFila" id="nuevaFila" onclick="addNewRowInTable('dataTable0');">Agregar</button>
-
             </div>
             <table name="dataTable0" id="dataTable0" border="1" class="table-form" model="TestTableApp" url="Base/Controllers/GetDataTableTestTable.php" >
                 <thead id="thead_dataTable0">
@@ -35,16 +34,14 @@ and open the template in the editor.
                 </thead>
                 <tbody id="tbody_dataTable0">
                     <tr id="rowsample" rowsample="true" style="display: none;">
-                        <td> <input type="text" editable="true" disabled="disabled" name="id_testtable[]" id="id_testtable" value="{{id_testtable}}"></td>
-                        <td> <input type="text" editable="true" disabled="disabled" name="field1_testtable[]" id="field1_testtable" value="{{field1_testtable}}"></td>
-                        <td> <input type="text" editable="true" disabled="disabled" name="field2_testtable[]" id="field2_testtable" value="{{field2_testtable}}"></td>
-                        <td> <input type="text" editable="true" disabled="disabled" name="field3_testtable[]" id="field3_testtable" value="{{field3_testtable}}"></td>
+                        <td> <input type="text" editable="true" disabled="disabled" required="required" name="id_testtable[]" id="id_testtable" value="{{id_testtable}}"> </td>
+                        <td> <input type="text" editable="true" disabled="disabled" required="required" name="field1_testtable[]" id="field1_testtable" value="{{field1_testtable}}"> </td>
+                        <td> <input type="text" editable="true" disabled="disabled" required="required" name="field2_testtable[]" id="field2_testtable" value="{{field2_testtable}}"> </td>
+                        <td> <input type="text" editable="true" disabled="disabled" required="required" name="field3_testtable[]" id="field3_testtable" value="{{field3_testtable}}"> </td>
                         <td>
+                            <input type="hidden" editable="false" disabled="disabled" name="status_testtable[]" id="status_testtable" value="1" >
                             <button type="button" name="EditarFila" id="EditarFila" onclick="editRowInTable(this);">Editar</button>
                             <button type="button" name="EliminarFila" id="EliminarFila" onclick="DeleteItem(this);">Eliminar</button>
-                        </td>
-                        <td style="display: none;"> 
-                            <input type="text" editable="true" disabled="disabled"  name="status_testtable[]" id="status_testtable" value="1">
                         </td>
                     </tr>
                 </tbody>

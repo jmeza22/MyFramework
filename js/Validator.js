@@ -1,4 +1,26 @@
 
+function showAlert(mytext) {
+    if (Notification) {
+        if (Notification.permission === "granted") {
+            if (mytext !== null) {
+                var message = null;
+                var title = 'Validador:';
+                var extra = {
+                    body: mytext
+                };
+                message = new Notification(title, extra);
+                setTimeout(function () {
+                    message.close();
+                }, 4000);
+                return true;
+            }
+        } else {
+            showAlert(mytext);
+        }
+    }
+    return false;
+}
+
 function goToElement(Obj) {
     if (Obj !== null) {
         Obj.focus();
@@ -176,15 +198,14 @@ function validateForm(form) {
                         item.focus();
                         requireElement(item);
                         next = false;
-                        alert('Campo Vacio: Obligatorio');
+                        showAlert('Campo Vacio: Obligatorio');
                         break;
                     }
-
                     if (item.getAttribute('type') === 'text') {
                         if (!validateText(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Campo Vacio: Texto');
+                            showAlert('Campo Vacio: Texto');
                             break;
                         }
                     }
@@ -192,7 +213,7 @@ function validateForm(form) {
                         if (!validateAlphabetic(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Formato Invalido: Texto Alfabetico');
+                            showAlert('Formato Invalido: Texto Alfabetico');
                             break;
                         }
                     }
@@ -200,7 +221,7 @@ function validateForm(form) {
                         if (!validateOnlyTextAlphanumeric(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Formato Invalido: Texto Alfanumerico');
+                            showAlert('Formato Invalido: Texto Alfanumerico');
                             break;
                         }
                     }
@@ -208,7 +229,7 @@ function validateForm(form) {
                         if (!validateOnlyNumeric(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Formato Invalido: Número Entero');
+                            showAlert('Formato Invalido: Número Entero');
                             break;
                         }
                     }
@@ -216,7 +237,7 @@ function validateForm(form) {
                         if (!isDate(item.value) || !validateDateYYYYMMDD(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Formato Invalido: Fecha');
+                            showAlert('Formato Invalido: Fecha');
                             break;
                         }
                     }
@@ -224,7 +245,7 @@ function validateForm(form) {
                         if (!validateEmail(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Formato Invalido: Email');
+                            showAlert('Formato Invalido: Email');
                             break;
                         }
                     }
@@ -232,7 +253,7 @@ function validateForm(form) {
                         if (!validatePassword(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Formato Invalido: Password');
+                            showAlert('Formato Invalido: Password');
                             break;
                         }
                     }
@@ -240,7 +261,7 @@ function validateForm(form) {
                         if (!validateUser(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Formato Invalido: Username');
+                            showAlert('Formato Invalido: Username');
                             break;
                         }
                     }
@@ -248,7 +269,7 @@ function validateForm(form) {
                         if (!validateOnlyNumeric(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Formato Invalido: Telefono');
+                            showAlert('Formato Invalido: Telefono');
                             break;
                         }
                     }
@@ -256,7 +277,7 @@ function validateForm(form) {
                         if (!validateNumber(item.value)) {
                             item.focus();
                             next = false;
-                            alert('Campo Vacio: Numerico');
+                            showAlert('Campo Vacio: Numerico');
                             break;
                         }
                     }

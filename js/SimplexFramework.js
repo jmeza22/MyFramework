@@ -22,21 +22,23 @@ function RequestNotificationPermission() {
 }
 
 function showNotification(mytitle, mytext) {
-    if (Notification.permission == "granted") {
-        if (mytitle !== null && mytext !== null) {
-            var message = null;
-            var title = mytitle;
-            var extra = {
-                body: mytext
-            };
-            message = new Notification(title, extra);
-            setTimeout(function () {
-                message.close();
-            }, 3000);
-            return true;
+    if (Notification) {
+        if (Notification.permission === "granted") {
+            if (mytitle !== null && mytext !== null) {
+                var message = null;
+                var title = mytitle;
+                var extra = {
+                    body: mytext
+                };
+                message = new Notification(title, extra);
+                setTimeout(function () {
+                    message.close();
+                }, 3000);
+                return true;
+            }
+        } else {
+            alert(mytext);
         }
-    } else {
-        alert(mytext);
     }
     return false;
 }
@@ -367,14 +369,17 @@ function resetForm(element) {
 }
 
 function resetControls(parent) {
-    if (parent.value !== null && parent.value !== undefined) {
+    if (parent.nodeType === 1 && parent.value !== null && parent.value !== undefined && parent.getAttribute('editable') !== null && parent.getAttribute('editable') === 'true') {
+        console.log('Seteando Valor Vacio ' + parent.id);
         parent.value = '';
     }
     if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined) {
         for (var i = 0; i < parent.childNodes.length; i++) {
-            if (parent.childNodes[i].value !== null && parent.childNodes[i].value !== undefined) {
-                console.log('Seteando Valor Vacio ' + parent.childNodes[i].id);
-                parent.childNodes[i].value = "";
+            if (parent.childNodes[i].nodeType === 1 && parent.childNodes[i].getAttribute('editable') !== null && parent.childNodes[i].getAttribute('editable') === 'true') {
+                if (parent.childNodes[i].value !== null && parent.childNodes[i].value !== undefined) {
+                    console.log('Seteando Valor Vacio ' + parent.childNodes[i].id);
+                    parent.childNodes[i].value = "";
+                }
             }
             if (parent.childNodes[i].childNodes !== null && parent.childNodes[i].childNodes !== undefined) {
                 resetControls(parent.childNodes[i]);
