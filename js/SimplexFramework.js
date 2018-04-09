@@ -126,7 +126,6 @@ function delay(milliseconds) {
     }
     return 1;
 }
-
 function clearForm(form) {
     if (form !== null && form.tagName === "FORM") {
         form.reset();
@@ -209,17 +208,32 @@ function hideAjaxLoading() {
     return false;
 }
 
+function setWSPath() {
+    var path = null;
+    if (LocalStorageStatus()) {
+        path = prompt('Ingrese la ruta del Servicio Web:', '');
+        if (path !== null && path !== "") {
+            localStorage.setItem("WebServicePath", path);
+            return true;
+        } else {
+            return setWSPath();
+        }
+    }
+}
+
 function getWSPath() {
     var path = null;
     if (LocalStorageStatus()) {
         path = localStorage.getItem("WebServicePath");
         if (path === null) {
-            console.log("WebServicePath is null");
+            console.log("WebServicePath is null.");
+            setWSPath();
+            getWSPath();
         } else {
             return path;
         }
     }
-    return "http://localhost/MyFramework/";
+    return null;
 }
 
 function setTokenForms() {
@@ -810,7 +824,7 @@ function submitAjax(formData, url, header, reload) {
 
         },
         error: function (xhr, textStatus, errorThrown) {
-            console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+            console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
             showNotification('Error de Conexion:', 'Intente Nuevamente!');
         }
 
@@ -921,7 +935,7 @@ function getData(element) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1009,7 +1023,7 @@ function loadComboboxData(element) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1252,7 +1266,7 @@ function loadTableData(element, dynamic) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1377,7 +1391,7 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1489,7 +1503,7 @@ function login(element, destinationPage) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
 
@@ -1543,7 +1557,7 @@ function logout(url, destinationPage, token) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1592,7 +1606,7 @@ function submitJSON(url, json, action, model, token) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown) + ']';
+                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
