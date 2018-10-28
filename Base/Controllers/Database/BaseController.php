@@ -213,6 +213,15 @@ class BaseController {
         }
         return false;
     }
+    
+    public function insertOrUpdate() {
+        if (isset($this->db) && isset($this->postData)) {
+            if ($this->db->insertOrUpdateStmt($this->model, $this->postData)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function replace() {
         if (isset($this->db) && isset($this->postData)) {
@@ -336,12 +345,20 @@ class BaseController {
                     $result = $this->parseResults($result, "Registro Fallido!", 0);
                 }
             }
+            if (strcmp($this->action, 'insertorupdate') == 0) {
+                $result = $this->insertOrUpdate();
+                if ($result == true) {
+                    $result = $this->parseResults($result, "Operacion Exitosa!", 1);
+                } else {
+                    $result = $this->parseResults($result, "Operacion Fallida!", 0);
+                }
+            }
             if (strcmp($this->action, 'replace') == 0) {
                 $result = $this->replace();
                 if ($result == true) {
                     $result = $this->parseResults($result, "Operacion Exitosa!", 1);
                 } else {
-                    $result = $this->parseResults($result, "Operacion Exitosa!", 0);
+                    $result = $this->parseResults($result, "Operacion Fallida!", 0);
                 }
             }
             if (strcmp($this->action, 'update') == 0) {

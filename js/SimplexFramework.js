@@ -228,7 +228,7 @@ function getWSPath() {
         if (path === null) {
             console.log("WebServicePath is null.");
             setWSPath();
-            getWSPath();
+            return getWSPath();
         } else {
             return path;
         }
@@ -302,7 +302,7 @@ function getForm(element) {
             return element;
         }
         if (element.parentNode.tagName === "FORM") {
-            console.log('Formulario Encontrado: ' + element.id);
+            console.log('Formulario Encontrado: ' + element.parentNode.id);
             return element.parentNode;
         } else {
             return getForm(element.parentNode);
@@ -622,6 +622,9 @@ function getActionFromButton(button) {
             if (button.getAttribute("action") === 'insert') {
                 form.setAttribute('do', 'insert');
             }
+            if (button.getAttribute("action") === 'insertorupdate') {
+                form.setAttribute('do', 'insertorupdate');
+            }
             if (button.getAttribute("action") === 'replace') {
                 form.setAttribute('do', 'replace');
             }
@@ -746,6 +749,15 @@ function getFindBy(element) {
     return null;
 }
 
+function getStatusFieldName(element) {
+    if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
+        if (element.getAttribute("statusfield") !== null && element.getAttribute("statusfield") !== '') {
+            return element.getAttribute("statusfield");
+        }
+    }
+    return null;
+}
+
 function getFindByValue(element) {
     if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
         if (element.getAttribute("findbyvalue") !== null && element.getAttribute("findbyvalue") !== '') {
@@ -775,7 +787,8 @@ function getSelectedOption(element) {
 
 function submitAjax(formData, url, header, reload) {
     var promise = null;
-    console.log('Trying Submit!.');
+    console.log('Trying Submit!. ' + Object.keys(formData));
+    console.log(formData);
     promise = $.ajax({
         method: "POST",
         url: url,
@@ -824,7 +837,7 @@ function submitAjax(formData, url, header, reload) {
 
         },
         error: function (xhr, textStatus, errorThrown) {
-            console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
+            console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
             showNotification('Error de Conexion:', 'Intente Nuevamente!');
         }
 
@@ -871,6 +884,8 @@ function setDataForm(myform, json) {
                         element.value = '';
                     }
                     if (element.tagName === "SELECT") {
+                        element.setAttribute('value', values[col]);
+                        element.value = values[col];
                         element.setAttribute('selected', values[col]);
                         element.selected = values[col];
                     }
@@ -935,7 +950,7 @@ function getData(element) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
+                console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -980,6 +995,8 @@ function loadComboboxData(element) {
     var colname = null;
     var colvalue = null;
     var othervalue = null;
+    var findby = null;
+    var findbyvalue = null;
     var object = null;
     var vals = null;
 
@@ -988,15 +1005,20 @@ function loadComboboxData(element) {
     colname = getColNameCombobox(element);
     colvalue = getColValueCombobox(element);
     othervalue = getOtherValueCombobox(element);
+    findby = getFindBy(element);
+    findbyvalue = getFindByValue(element);
     vals = {
         "model": model,
         "action": 'findAll',
         "colname": colname,
         "colvalue": colvalue,
-        "othervalue": othervalue
+        "othervalue": othervalue,
+        "findby": findby,
+        "findbyvalue": findbyvalue
     };
     console.log('Loading ComboboxData: ' + element.id);
     if (element !== null &&
+            (element.tagName === "SELECT" || element.tagName === "DATALIST") &&
             url !== null && url !== '' &&
             model !== null && model !== '' &&
             colname !== null && colname !== '' &&
@@ -1023,7 +1045,7 @@ function loadComboboxData(element) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
+                console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1238,7 +1260,7 @@ function loadTableData(element, dynamic) {
     vals = {
         "model": model,
         "action": 'findAll',
-        "findBy": findby,
+        "findby": findby,
         "findbyvalue": findbyvalue
     };
     console.log('Loading TableData: ' + element.id);
@@ -1266,7 +1288,7 @@ function loadTableData(element, dynamic) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
+                console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1358,7 +1380,7 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
     vals = {
         "model": model,
         "action": 'find',
-        "findBy": findby
+        "findby": findby
     };
     vals[findby] = id;
     console.log('Loading NameFromId: ' + field.id);
@@ -1391,7 +1413,7 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
+                console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1475,6 +1497,7 @@ function login(element, destinationPage) {
             processData: false,
             dataType: 'json',
             success: function (result, status) {
+                console.log('Resultado:' + result);
                 if (result !== null) {
                     if (result.error !== null && result.error !== undefined && result.error !== '') {
                         console.error(result.error);
@@ -1503,7 +1526,7 @@ function login(element, destinationPage) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
+                console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
 
@@ -1557,7 +1580,7 @@ function logout(url, destinationPage, token) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
+                console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }
@@ -1606,7 +1629,7 @@ function submitJSON(url, json, action, model, token) {
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
-                console.error("Error: [" + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
+                console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
                 showNotification('Error de Conexion:', 'Intente Nuevamente!');
             }
         }

@@ -18,6 +18,12 @@ class SessionManager {
     private $index_nickname = 'nickname';
     private $index_fullname = 'fullname';
     private $index_enterpriseid = 'enterpriseid';
+    private $index_superadmin = 'superadmin';
+    private $index_admin = 'admin';
+    private $index_management = 'management';
+    private $index_standard = 'standard';
+    private $index_limited = 'limited';
+    private $index_external = 'external';
     private $index_time = 'starttime';
 
     function __construct() {
@@ -43,6 +49,15 @@ class SessionManager {
         }
     }
 
+    function setUserPermissions($super = null, $admin = null, $management = null, $standard = null, $limited = null, $external = null) {
+        $_SESSION[$this->index_superadmin] = $super;
+        $_SESSION[$this->index_admin] = $admin;
+        $_SESSION[$this->index_management] = $management;
+        $_SESSION[$this->index_standard] = $standard;
+        $_SESSION[$this->index_limited] = $limited;
+        $_SESSION[$this->index_external] = $external;
+    }
+
     function setUserIdForm($userid) {
         if ($userid != null) {
             $_SESSION[$this->index_userid] = $userid;
@@ -60,7 +75,7 @@ class SessionManager {
             $_SESSION[$this->index_nickname] = $nickname;
         }
     }
-    
+
     function setFullnameForm($fullname) {
         if ($fullname != null) {
             $_SESSION[$this->index_fullname] = $fullname;
@@ -139,7 +154,7 @@ class SessionManager {
         $_SESSION['tokensingup'] = null;
     }
 
-    function setLogin($iduser, $user, $type = null, $fullname=null, $identerprise = null) {
+    function setLogin($iduser, $user, $type = null, $fullname = null, $identerprise = null, $super = null, $admin = null, $management = null, $standard = null, $limited = null, $external = null) {
         if ($iduser != null && $user != null) {
             $_SESSION[$this->index_time] = time();
             $_SESSION[$this->index_userid] = $iduser;
@@ -147,6 +162,12 @@ class SessionManager {
             $_SESSION[$this->index_usertype] = $type;
             $_SESSION[$this->index_fullname] = $fullname;
             $_SESSION[$this->index_enterpriseid] = $identerprise;
+            $_SESSION[$this->index_superadmin] = $super;
+            $_SESSION[$this->index_admin] = $admin;
+            $_SESSION[$this->index_management] = $management;
+            $_SESSION[$this->index_standard] = $standard;
+            $_SESSION[$this->index_limited] = $limited;
+            $_SESSION[$this->index_external] = $external;
             $this->GenerateToken();
             return true;
         } else {
@@ -160,6 +181,12 @@ class SessionManager {
         $_SESSION[$this->index_nickname] = null;
         $_SESSION[$this->index_usertype] = null;
         $_SESSION[$this->index_enterpriseid] = null;
+        $_SESSION[$this->index_superadmin] = null;
+        $_SESSION[$this->index_admin] = null;
+        $_SESSION[$this->index_management] = null;
+        $_SESSION[$this->index_standard] = null;
+        $_SESSION[$this->index_limited] = null;
+        $_SESSION[$this->index_external] = null;
         $_SESSION[$this->index_token] = null;
         session_unset();
         session_destroy();
@@ -201,7 +228,7 @@ class SessionManager {
         }
         return null;
     }
-    
+
     function getFullname() {
         if (isset($_SESSION[$this->index_fullname])) {
             return $_SESSION[$this->index_fullname];
@@ -212,6 +239,48 @@ class SessionManager {
     function getEnterpriseID() {
         if (isset($_SESSION[$this->index_enterpriseid])) {
             return $_SESSION[$this->index_enterpriseid];
+        }
+        return null;
+    }
+
+    function getSuperAdmin() {
+        if (isset($_SESSION[$this->index_superadmin])) {
+            return $_SESSION[$this->index_superadmin];
+        }
+        return null;
+    }
+
+    function getAdmin() {
+        if (isset($_SESSION[$this->index_admin])) {
+            return $_SESSION[$this->index_admin];
+        }
+        return null;
+    }
+
+    function getManagement() {
+        if (isset($_SESSION[$this->index_management])) {
+            return $_SESSION[$this->index_management];
+        }
+        return null;
+    }
+
+    function getStandard() {
+        if (isset($_SESSION[$this->index_standard])) {
+            return $_SESSION[$this->index_standard];
+        }
+        return null;
+    }
+
+    function getLimited() {
+        if (isset($_SESSION[$this->index_limited])) {
+            return $_SESSION[$this->index_limited];
+        }
+        return null;
+    }
+
+    function getExternal() {
+        if (isset($_SESSION[$this->index_external])) {
+            return $_SESSION[$this->index_external];
         }
         return null;
     }

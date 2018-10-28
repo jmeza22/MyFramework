@@ -204,12 +204,12 @@ class SQLDatabase {
         }
         return null;
     }
-    
+
     public function getRowCount() {
-        if ($this->link != null && $this->stmt!=null) {
-            $rowcount=null;
+        if ($this->link != null && $this->stmt != null) {
+            $rowcount = null;
             try {
-                $rowcount=$this->stmt->rowCount();
+                $rowcount = $this->stmt->rowCount();
                 return $rowcount;
             } catch (Exception $ex) {
                 
@@ -337,7 +337,7 @@ class SQLDatabase {
         }
         return '';
     }
-    
+
     private function buildReplaceString($table, $values) {
         if ($table != null && $values != null) {
             $sql = 'REPLACE INTO ' . $table . ' values(' . $values . ')';
@@ -400,7 +400,34 @@ class SQLDatabase {
         }
         return null;
     }
-    
+
+    private function buildInsertOrUpdateStmtString($table, $array) {
+        if (is_array($array)) {
+            $sql = "INSERT INTO " . $table . " ";
+            $sql = $sql . "(";
+            $columns = $this->getColumns($array);
+            foreach ($columns as $column) {
+                $sql = $sql . " " . $column . ",";
+            }
+            $sql = substr($sql, 0, -1);
+            $sql = $sql . ")";
+            $sql = $sql . " VALUES ";
+            $sql = $sql . "(";
+            foreach ($columns as $column) {
+                $sql = $sql . " :" . $column . ",";
+            }
+            $sql = substr($sql, 0, -1);
+            $sql = $sql . ")";
+            $sql = $sql . " ON DUPLICATE KEY UPDATE ";
+            foreach ($columns as $column) {
+                $sql = $sql . " " . $column . "= :" . $column . ",";
+            }
+            $sql = substr($sql, 0, -1);
+            return $sql;
+        }
+        return null;
+    }
+
     private function buildReplaceStmtString($table, $array) {
         if (is_array($array)) {
             $sql = "REPLACE INTO " . $table . " ";
@@ -476,7 +503,22 @@ class SQLDatabase {
         }
         return $result;
     }
-    
+
+    public function insertOrUpdateStmt($table, $array) {
+        $result = false;
+        $this->stmt = null;
+        if ($this->link != null && $table != null && isset($table) && $array != null && isset($array)) {
+            $sql = $this->buildInsertOrUpdateStmtString($table, $array);
+            $this->stmt = $this->link->prepare($sql);
+            $this->stmt = $this->bindParams($this->stmt, $array);
+            $this->executeSTMT();
+            if ($this->stmt->rowCount() > 0) {
+                $result = true;
+            }
+        }
+        return $result;
+    }
+
     public function replaceStmt($table, $array) {
         $result = false;
         $this->stmt = null;
@@ -633,7 +675,7 @@ class SQLDatabase {
         }
         return $result;
     }
-    
+
     public function replace($table, $values) {
         $sql = $this->buildReplaceString($table, $values);
         $result = false;
