@@ -391,8 +391,9 @@ function resetControls(parent) {
         for (var i = 0; i < parent.childNodes.length; i++) {
             if (parent.childNodes[i].nodeType === 1 && parent.childNodes[i].getAttribute('editable') !== null && parent.childNodes[i].getAttribute('editable') === 'true') {
                 if (parent.childNodes[i].value !== null && parent.childNodes[i].value !== undefined) {
-                    console.log('Seteando Valor Vacio ' + parent.childNodes[i].id);
+                    console.log('Seteando Valor Vacio: ' + parent.childNodes[i].id);
                     parent.childNodes[i].value = "";
+                    parent.childNodes[i].removeAttribute("selected");
                 }
             }
             if (parent.childNodes[i].childNodes !== null && parent.childNodes[i].childNodes !== undefined) {
@@ -959,6 +960,22 @@ function getData(element) {
     return promise;
 }
 
+function setComboboxValue(combo) {
+    var option = null;
+    var selected = null;
+    if (combo !== undefined && combo !== null) {
+        selected = combo.getAttribute("selected");
+        console.log('Set Combobox Value');
+        for (var i = 0; i < combo.childNodes.length; i++) {
+            option = combo.childNodes[i];
+            if (selected !== null && (option.id === selected || option.value === selected)) {
+                console.log('Combobox Value: '+selected);
+                option.setAttribute('selected', 'selected');
+            }
+        }
+    }
+}
+
 function setComboboxOptions(combo, json) {
     var option = null;
     var selected = null;
@@ -976,7 +993,7 @@ function setComboboxOptions(combo, json) {
             option.setAttribute('value', json[i]['ivalue']);
             option.setAttribute('othervalue', json[i]['iothervalue']);
             option.innerHTML = json[i]['iname'];
-            if (selected !== null && option.id === selected) {
+            if (selected !== null && (option.id === selected || option.value === selected)) {
                 option.setAttribute('selected', 'selected');
             }
             combo.appendChild(option);
@@ -1070,6 +1087,7 @@ function addNewRowInTable(mytable) {
         if (newrow !== null && newrow.tagName === "TR") {
             newrow.id = "row" + mytable.id + getDateTimeString();
             newrow.style = "";
+            newrow.removeAttribute("rowsample");
             tbody.appendChild(newrow);
             removeAttributeDisabled(newrow);
             resetControls(newrow);
