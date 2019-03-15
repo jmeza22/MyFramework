@@ -14,10 +14,10 @@ jQuery(document).ready(function () {
 function RequestNotificationPermission() {
     if (Notification.permission == "default" || Notification.permission == "denied") {
         Notification.requestPermission();
-        alert('Por favor habilite las Notificaciones a continuacion! ');
+        alert('Please enable the Notifications! ');
     }
     if (Notification.permission == "denied") {
-        RequestNotificationPermission();
+        //RequestNotificationPermission();
     }
 }
 
@@ -64,7 +64,7 @@ function noBackButton() {
     };
 }
 
-function RandomNumber(lowerlimit, upperlimit) {
+function getRandomNumber(lowerlimit, upperlimit) {
     var num = null;
     if (lowerlimit !== null && upperlimit !== null && (!isNaN(lowerlimit) && !isNaN(upperlimit))) {
         num = Math.round(Math.random() * (upperlimit - lowerlimit) + parseInt(lowerlimit));
@@ -180,7 +180,7 @@ function createAjaxLoading() {
     imgload.setAttribute("class", "ImageLoading");
     imgload.setAttribute("src", "css/loadingAnimation.gif");
     text.setAttribute("class", "TextLoading");
-    text.innerHTML = '...CARGANDO...';
+    text.innerHTML = '...LOADING...';
 
     maindiv.appendChild(subdiv);
     subdiv.appendChild(imgload);
@@ -211,7 +211,7 @@ function hideAjaxLoading() {
 function setWSPath() {
     var path = null;
     if (LocalStorageStatus()) {
-        path = prompt('Ingrese la ruta del Servicio Web:', '');
+        path = prompt('Enter the Web Service path:', '');
         if (path !== null && path !== "") {
             localStorage.setItem("WebServicePath", path);
             return true;
@@ -288,61 +288,84 @@ function disableElement(element) {
     return false;
 }
 
-function getParent(element) {
-    if (element !== null && element.parentNode !== null && element.parentNode !== undefined) {
-        return element.parentNode;
+function getParent(element, tagname = null) {
+    if (element !== null) {
+        if (element.parentNode !== null && element.parentNode !== undefined) {
+            if (tagname !== null && tagname !== undefined && tagname !== '') {
+                if (element.parentNode.tagName === tagname) {
+                    return element.parentNode;
+                } else {
+                    return getParent(element.parentNode, tagname);
+                }
+            } else {
+                return element.parentNode;
+            }
+        }
     }
     return null;
 }
 
 function getForm(element) {
     if (element !== null) {
-
-        if (element.tagName === "FORM") {
+        var found = null;
+        if (element.tagName === 'FORM') {
             return element;
         }
-        if (element.parentNode.tagName === "FORM") {
-            console.log('Formulario Encontrado: ' + element.parentNode.id);
-            return element.parentNode;
-        } else {
-            return getForm(element.parentNode);
+        found = getParent(element, 'FORM');
+        if (found !== null) {
+            console.log('FORM Found: ' + found.id);
+            return found;
         }
     }
-    console.log('No Se Encontró Formulario!.');
+    console.log('FORM not found!.');
     return null;
 }
 
 function getParentTable(element) {
     if (element !== null) {
-
-        if (element.tagName === "TABLE") {
+        var found = null;
+        if (element.tagName === 'TABLE') {
             return element;
         }
-        if (element.parentNode.tagName === "TABLE") {
-            console.log('Tabla Padre Encontrada: ' + element.parentNode);
-            return element.parentNode;
-        } else {
-            return getParentTable(element.parentNode);
+        found = getParent(element, 'TABLE');
+        if (found !== null) {
+            console.log('Parent (HTML TABLE) Found: ' + found.id);
+            return found;
         }
     }
-    console.log('No Se Encontró la Tabla(TABLE) Padre del Elemento!.');
+    console.log('Parent (HTML TABLE) Not Found!.');
     return null;
 }
 
 function getParentTR(element) {
     if (element !== null) {
-
-        if (element.tagName === "TR") {
+        var found = null;
+        if (element.tagName === 'TR') {
             return element;
         }
-        if (element.parentNode.tagName === "TR") {
-            console.log('Fila Padre Encontrada: ' + element.parentNode);
-            return element.parentNode;
-        } else {
-            return getParentTR(element.parentNode);
+        found = getParent(element, 'TR');
+        if (found !== null) {
+            console.log('Parent (HTML TR) Found: ' + found.id);
+            return found;
         }
     }
-    console.log('No Se Encontró la Fila(TR) Padre del Elemento!.');
+    console.log('Parent (HTML TR) Not Found!.');
+    return null;
+}
+
+function getParentTD(element) {
+    if (element !== null) {
+        var found = null;
+        if (element.tagName === 'TD') {
+            return element;
+        }
+        found = getParent(element, 'TD');
+        if (found !== null) {
+            console.log('Parent (HTML TD) Found: ' + found.id);
+            return found;
+        }
+    }
+    console.log('Parent (HTML TD) Not Found!.');
     return null;
 }
 
@@ -384,14 +407,14 @@ function resetForm(element) {
 
 function resetControls(parent) {
     if (parent.nodeType === 1 && parent.value !== null && parent.value !== undefined && parent.getAttribute('editable') !== null && parent.getAttribute('editable') === 'true') {
-        console.log('Seteando Valor Vacio ' + parent.id);
+        console.log('Setting Empty Value to: ' + parent.id);
         parent.value = '';
     }
     if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined) {
         for (var i = 0; i < parent.childNodes.length; i++) {
             if (parent.childNodes[i].nodeType === 1 && parent.childNodes[i].getAttribute('editable') !== null && parent.childNodes[i].getAttribute('editable') === 'true') {
                 if (parent.childNodes[i].value !== null && parent.childNodes[i].value !== undefined) {
-                    console.log('Seteando Valor Vacio: ' + parent.childNodes[i].id);
+                    console.log('Setting Empty Value to: ' + parent.childNodes[i].id);
                     parent.childNodes[i].value = "";
                     parent.childNodes[i].removeAttribute("selected");
                 }
@@ -410,7 +433,7 @@ function removeAttributeDisabled(parent) {
         for (var i = 0; i < parent.childNodes.length; i++) {
             if (parent.childNodes[i].nodeType === 1 && parent.childNodes[i].disabled !== null && parent.childNodes[i].disabled !== undefined) {
                 if (parent.childNodes[i].getAttribute('editable') !== null && parent.childNodes[i].getAttribute('editable') !== undefined) {
-                    console.log('Removiendo Atributo Disabled ' + parent.childNodes[i].id);
+                    console.log('Removing [Disabled] Attribute: ' + parent.childNodes[i].id);
                     parent.childNodes[i].removeAttribute("disabled");
                 }
             }
@@ -427,7 +450,7 @@ function addAttributeDisabled(parent) {
         for (var i = 0; i < parent.childNodes.length; i++) {
             if (parent.childNodes[i] !== null && parent.childNodes[i] !== undefined && parent.childNodes[i].nodeType === 1) {
                 if (parent.childNodes[i].getAttribute('editable') !== null && parent.childNodes[i].getAttribute('editable') !== undefined) {
-                    console.log('Agregando Atributo Disabled ' + parent.childNodes[i].id);
+                    console.log('Adding [Disabled] Attribute: ' + parent.childNodes[i].id);
                     parent.childNodes[i].setAttribute("disabled", "disabled");
                 }
             }
@@ -496,7 +519,7 @@ function getElement(parent, id) {
         if (elements.length > 0) {
             for (j = 0; j < elements.length; j++) {
                 if (elements[j].id === id) {
-                    console.log("Elemento Encontrado: " + elements[j].id);
+                    console.log("Element Found: " + elements[j].id);
                     result = elements[j];
                     break;
                 }
@@ -514,6 +537,34 @@ function getElement(parent, id) {
     return result;
 }
 
+function getElementByName(parent, name) {
+    var j = 0;
+    var elements = null;
+    var result = null;
+    if (parent !== null && parent.childNodes !== null && parent.childNodes !== undefined && name !== null && name !== '') {
+        elements = parent.childNodes;
+        if (elements.length > 0) {
+            for (j = 0; j < elements.length; j++) {
+                if (elements[j].getAttribute('name') === name) {
+                    console.log("Element Found: " + elements[j].name);
+                    result = elements[j];
+                    break;
+                }
+                if (elements.childNodes !== null && result === null) {
+                    result = getElementByName(elements[j], name);
+                }
+            }
+        }
+    }
+    if (parent !== null && parent !== undefined && result === null) {
+        if (parent.getAttribute('name') === name) {
+            return parent;
+        }
+    }
+    return result;
+}
+
+
 function getOptionByValue(parent, value) {
     var j = 0;
     var elements = null;
@@ -524,7 +575,7 @@ function getOptionByValue(parent, value) {
             if (elements.length > 0) {
                 for (j = 0; j < elements.length; j++) {
                     if (elements[j].value === value) {
-                        console.log("Found: " + elements[j].getAttribute("id"));
+                        console.log("Element (OPTION) Found: " + elements[j].getAttribute("id"));
                         return elements[j];
                     }
                 }
@@ -543,7 +594,7 @@ function createInputHidden(form, name, value) {
         element.setAttribute('name', name);
         element.setAttribute('value', value);
         form.appendChild(element);
-        console.log('Creado Input ' + name);
+        console.log('Creating Input: ' + name);
         return true;
     }
     return false;
@@ -555,7 +606,7 @@ function createInputHiddenTemp(form, name, value) {
         element = getElement(form, name);
         if (element !== null) {
             element.setAttribute('temp', 'true');
-            console.log('Input Oculto ' + name);
+            console.log('Setting Hidden Input: ' + name);
             return true;
         }
     }
@@ -638,8 +689,8 @@ function getActionFromButton(button) {
             if (button.getAttribute("action") === 'findall') {
                 form.setAttribute('do', 'findall');
             }
-            if (button.getAttribute("action") === 'updatestate') {
-                form.setAttribute('do', 'updatestate');
+            if (button.getAttribute("action") === 'updatestatus') {
+                form.setAttribute('do', 'updatestatus');
             }
             console.log("action: " + button.getAttribute("action"));
             return button.getAttribute("action");
@@ -678,28 +729,28 @@ function getTD(element) {
     return null;
 }
 
-function getColNameCombobox(combo) {
-    if (combo !== null && (combo.tagName === "SELECT" || combo.tagName === "DATALIST")) {
-        if (combo.getAttribute("colname") !== null && combo.getAttribute("colname") !== '') {
-            return combo.getAttribute("colname");
+function getColNameCombobox(element) {
+    if (element !== null && (element.tagName === "SELECT" || element.tagName === "DATALIST")) {
+        if (element.getAttribute("colname") !== null && element.getAttribute("colname") !== '') {
+            return element.getAttribute("colname");
         }
     }
     return null;
 }
 
-function getColValueCombobox(combo) {
-    if (combo !== null && (combo.tagName === "SELECT" || combo.tagName === "DATALIST")) {
-        if (combo.getAttribute("colvalue") !== null && combo.getAttribute("colvalue") !== '') {
-            return combo.getAttribute("colvalue");
+function getColValueCombobox(element) {
+    if (element !== null && (element.tagName === "SELECT" || element.tagName === "DATALIST")) {
+        if (element.getAttribute("colvalue") !== null && element.getAttribute("colvalue") !== '') {
+            return element.getAttribute("colvalue");
         }
     }
     return null;
 }
 
-function getOtherValueCombobox(combo) {
-    if (combo !== null && (combo.tagName === "SELECT" || combo.tagName === "DATALIST")) {
-        if (combo.getAttribute("othervalue") !== null && combo.getAttribute("othervalue") !== '') {
-            return combo.getAttribute("othervalue");
+function getOtherValueCombobox(element) {
+    if (element !== null && (element.tagName === "SELECT" || element.tagName === "DATALIST")) {
+        if (element.getAttribute("othervalue") !== null && element.getAttribute("othervalue") !== '') {
+            return element.getAttribute("othervalue");
         }
     }
     return null;
@@ -741,6 +792,31 @@ function getToken(element) {
     return null;
 }
 
+function setFindBy(element, findby) {
+    if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
+        element.setAttribute('findby', findby);
+    }
+    return null;
+}
+
+function setFindByValue(element, findbyvalue) {
+    if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
+        element.setAttribute('findbyvalue', findbyvalue);
+    }
+    return null;
+}
+
+
+function setFindbyField(fieldname, findby, findbyvalue) {
+    if (fieldname !== null && fieldname !== '' && findby !== null && findby !== '' && findbyvalue !== null && findbyvalue !== '') {
+        var field = document.getElementById(fieldname);
+        if (field !== null && field !== undefined) {
+            setFindBy(field, findby);
+            setFindByValue(field, findbyvalue);
+        }
+    }
+}
+
 function getFindBy(element) {
     if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
         if (element.getAttribute("findby") !== null && element.getAttribute("findby") !== '') {
@@ -750,19 +826,19 @@ function getFindBy(element) {
     return null;
 }
 
-function getStatusFieldName(element) {
+function getFindByValue(element) {
     if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
-        if (element.getAttribute("statusfield") !== null && element.getAttribute("statusfield") !== '') {
-            return element.getAttribute("statusfield");
+        if (element.getAttribute("findbyvalue") !== null && element.getAttribute("findbyvalue") !== '') {
+            return element.getAttribute("findbyvalue");
         }
     }
     return null;
 }
 
-function getFindByValue(element) {
+function getStatusFieldName(element) {
     if (element !== null && (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "DATALIST" || element.tagName === "TABLE" || element.tagName === "FORM")) {
-        if (element.getAttribute("findbyvalue") !== null && element.getAttribute("findbyvalue") !== '') {
-            return element.getAttribute("findbyvalue");
+        if (element.getAttribute("statusfield") !== null && element.getAttribute("statusfield") !== '') {
+            return element.getAttribute("statusfield");
         }
     }
     return null;
@@ -789,7 +865,6 @@ function getSelectedOption(element) {
 function submitAjax(formData, url, header, reload) {
     var promise = null;
     console.log('Trying Submit!. ' + Object.keys(formData));
-    console.log(formData);
     promise = $.ajax({
         method: "POST",
         url: url,
@@ -811,7 +886,7 @@ function submitAjax(formData, url, header, reload) {
                     showNotification('Error:', result.error);
                 }
                 if (result.message !== null && result.message !== undefined && result.message !== '') {
-                    showNotification('Resultado de la Operacion:', result.message);
+                    showNotification('Result:', result.message);
                 }
                 if (result.data !== null && result.data !== undefined && result.data !== '') {
                     console.log('Data: ' + result.data);
@@ -821,7 +896,7 @@ function submitAjax(formData, url, header, reload) {
                         console.log('LastId: ' + result.lastInsertId);
                         sessionStorage.setItem('LastInsertId', result.lastInsertId);
                     } catch (e) {
-                        console.log('Hubo error con el lastInsertId.');
+                        console.log('Error (lastInsertId).');
                     }
                 }
                 if (result.status !== null && result.status !== undefined && result.status === 1) {
@@ -833,13 +908,13 @@ function submitAjax(formData, url, header, reload) {
                     console.error('Hubo error - Submit!.');
                 }
             } else {
-                showNotification('Resultado de la Operacion:', 'Respuesta Nula. Hubo un error durante el proceso.');
+                showNotification('Result:', 'Null Result. There was an error during the process.');
             }
 
         },
         error: function (xhr, textStatus, errorThrown) {
             console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
-            showNotification('Error de Conexion:', 'Intente Nuevamente!');
+            showNotification('Connection error:', 'Try again later!');
         }
 
     });
@@ -849,6 +924,7 @@ function submitAjax(formData, url, header, reload) {
 function setDataForm(myform, json) {
     var columns = null, values = null, col = null, element = null;
     if (json !== null && myform !== null && myform.tagName === "FORM") {
+        console.log('Setting Data to Form!');
         columns = Array();
         if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModel(myform)) {
             for (var child in json) {
@@ -910,7 +986,7 @@ function getData(element) {
     createTempInputs(myform);
     formData = new FormData(myform);
     deleteTemporalElements(myform);
-    console.log('Loading Data Form!');
+    console.log('Getting Data to Form!');
     if (formData !== null && url !== null && url !== '') {
         promise = $.ajax({
             method: "POST",
@@ -922,10 +998,10 @@ function getData(element) {
                 if (result !== null && result !== '') {
                     try {
                         result = JSON.parse(result);
-                        console.log('Conversion Exitosa a JSON - Get Data Form!.');
+                        console.log('Parse to JSON (Successful) - getData!.');
                     } catch (e) {
                         console.log(result);
-                        console.error('Conversion Fallida a JSON - Get Data Form!.');
+                        console.error('Parse to JSON (Failed) - getData!.');
                     }
                 }
                 if (result !== null && result !== '') {
@@ -934,7 +1010,7 @@ function getData(element) {
                         showNotification('Error:', result.error);
                     }
                     if (result.message !== null && result.message !== undefined && result.message !== '') {
-                        showNotification('Resultado de la Operacion:', result.message);
+                        showNotification('Result:', result.message);
                     }
                     if (result.data !== null && result.data !== undefined && result.data !== '') {
                         object = result.data;
@@ -942,17 +1018,17 @@ function getData(element) {
                             object = JSON.parse(object);
                             setDataForm(myform, object);
                         } catch (e) {
-                            console.error("Error de Conversion JSON (Data) - Get Data Form!.");
+                            console.error("Parse DATA to JSON (Failed) - getData!.");
                         }
                     }
 
                 } else {
-                    showNotification('Error:', 'Servicio Web Falló!');
+                    showNotification('Error:', 'Web Service Fail!');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
-                showNotification('Error de Conexion:', 'Intente Nuevamente!');
+                showNotification('Connection error:', 'Try again later!');
             }
         }
         );
@@ -960,46 +1036,57 @@ function getData(element) {
     return promise;
 }
 
-function setComboboxValue(combo) {
+function setFindbyCombobox(fieldname, findby, findbyvalue) {
+    var myfield = null;
+    myfield = document.getElementById(fieldname);
+    if (myfield !== null && myfield.tagName === 'SELECT') {
+        setFindbyField(fieldname, findby, findbyvalue);
+        myfield.innerHTML = '<option value="">Ninguna</option>';
+        loadComboboxData(myfield);
+    }
+}
+
+function setComboboxValue(element) {
     var option = null;
     var selected = null;
-    if (combo !== undefined && combo !== null) {
-        selected = combo.getAttribute("selected");
-        console.log('Set Combobox Value');
-        for (var i = 0; i < combo.childNodes.length; i++) {
-            option = combo.childNodes[i];
+    if (element !== undefined && element !== null) {
+        selected = element.getAttribute("selected");
+        console.log('Setting Combobox Value.');
+        for (var i = 0; i < element.childNodes.length; i++) {
+            option = element.childNodes[i];
             if (selected !== null && (option.id === selected || option.value === selected)) {
-                console.log('Combobox Value: '+selected);
+                console.log('Combobox Value: ' + selected);
                 option.setAttribute('selected', 'selected');
             }
         }
     }
 }
 
-function setComboboxOptions(combo, json) {
+function setComboboxOptions(element, json) {
     var option = null;
     var selected = null;
-    if (combo !== null && json !== null) {
-        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModel(combo)) {
+    if (element !== null && json !== null) {
+        if (Object.keys(json).length === 1 && Object.keys(json)[0] === getModel(element)) {
             for (var child in json) {
                 json = json[child];
                 break;
             }
         }
-        selected = combo.getAttribute("selected");
+        selected = element.getAttribute("selected");
         for (var i = 0; i < json.length; i++) {
             option = document.createElement('option');
             option.setAttribute('id', json[i]['ivalue']);
             option.setAttribute('value', json[i]['ivalue']);
+            option.setAttribute('text', json[i]['iname']);
             option.setAttribute('othervalue', json[i]['iothervalue']);
             option.innerHTML = json[i]['iname'];
             if (selected !== null && (option.id === selected || option.value === selected)) {
                 option.setAttribute('selected', 'selected');
             }
-            combo.appendChild(option);
+            element.appendChild(option);
             option = null;
         }
-        console.log('Set ComboBox OK!.');
+        console.log('Set SELECT data OK!. ' + element.id);
         return true;
     }
     return false;
@@ -1033,7 +1120,7 @@ function loadComboboxData(element) {
         "findby": findby,
         "findbyvalue": findbyvalue
     };
-    console.log('Loading ComboboxData: ' + element.id);
+    console.log('Getting Data for SELECT: ' + element.id);
     if (element !== null &&
             (element.tagName === "SELECT" || element.tagName === "DATALIST") &&
             url !== null && url !== '' &&
@@ -1048,22 +1135,22 @@ function loadComboboxData(element) {
                 if (result !== null && result !== '') {
                     try {
                         result = JSON.parse(result);
-                        console.log('Conversion Exitosa a JSON - Load Combobox!.');
+                        console.log('Parse to JSON (Successful) - loadComboboxData!.');
                     } catch (e) {
                         console.log(result);
-                        console.error('Conversion Fallida a JSON - Load Combobox!.');
+                        console.error('Parse to JSON (Failed) - loadComboboxData!.');
                     }
                 }
                 if (result !== null && result !== '') {
                     object = result;
                     setComboboxOptions(element, object);
                 } else {
-                    console.error('Servicio Web Falló!.');
+                    console.error('Web Service Fail!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
-                showNotification('Error de Conexion:', 'Intente Nuevamente!');
+                showNotification('Connection error:', 'Try again later!');
             }
         }
         );
@@ -1091,7 +1178,7 @@ function addNewRowInTable(mytable) {
             tbody.appendChild(newrow);
             removeAttributeDisabled(newrow);
             resetControls(newrow);
-            console.log('Nueva Fila Agregada en Tabla ' + mytable.id);
+            console.log('New Row (TR) added to TABLE: ' + mytable.id);
         }
     }
     return newrow;
@@ -1105,15 +1192,16 @@ function deleteRowInTable(mytable) {
         mytable = getElementDocument(mytable);
     }
     if (mytable !== null && mytable.tagName === "TABLE") {
-        console.log('Eliminar Fila?');
         if (document.activeElement) {
             element = document.activeElement;
             myrow = getParentTR(element);
             if (deleteElement(myrow)) {
-                console.log('Fila Eliminada!');
+                console.log('Row (TR) Deleted!');
+                return true;
             }
         }
     }
+    return false;
 }
 
 function editRowInTable(item) {
@@ -1122,6 +1210,7 @@ function editRowInTable(item) {
         tr = getParentTR(item);
         if (tr !== null && tr !== undefined) {
             removeAttributeDisabled(tr);
+            console.log('Removing [Disabled] Attribute to inner inputs (TR)!');
             return true;
         }
     }
@@ -1253,10 +1342,10 @@ function setTableData(element, json, dynamic) {
             }
 
             if (dynamic === true) {
-                console.log('DataTable Dinamico!.');
+                console.log('Dynamic DataTable!.');
                 xtable = createDataTable(element);
             }
-            console.log('Set TableData OK!.');
+            console.log('Set TABLE data OK!. ' + element.id);
             return true;
         }
     }
@@ -1281,7 +1370,7 @@ function loadTableData(element, dynamic) {
         "findby": findby,
         "findbyvalue": findbyvalue
     };
-    console.log('Loading TableData: ' + element.id);
+    console.log('Getting Data for TABLE: ' + element.id);
 
     if (element !== null && element.tagName === "TABLE") {
         promise = $.ajax({
@@ -1292,22 +1381,22 @@ function loadTableData(element, dynamic) {
                 if (result !== null && result !== '') {
                     try {
                         result = JSON.parse(result);
-                        console.log('Conversion Exitosa a JSON - Load TableData!');
+                        console.log('Parse to JSON (Successful) - loadTableData!');
                     } catch (e) {
                         console.log(result);
-                        console.error('Conversion Fallida a JSON - Load TableData!');
+                        console.error('Parse to JSON (Failed) - loadTableData!');
                     }
                 }
                 if (result !== null && result !== '') {
                     object = result;
                     setTableData(element, object, dynamic);
                 } else {
-                    console.log('Servicio Web Falló!.');
+                    console.log('Web Service Fail!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
-                showNotification('Error de Conexion:', 'Intente Nuevamente!');
+                showNotification('Connection error:', 'Try again later!');
             }
         }
         );
@@ -1411,10 +1500,10 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
                 if (result !== null && result !== '') {
                     try {
                         result = JSON.parse(result);
-                        console.log('Conversion Exitosa a JSON - Load Name From Id!');
+                        console.log('Parse to JSON (Successful) - LoadNameFromId!');
                     } catch (e) {
                         console.log(result);
-                        console.log('Conversion Fallida a JSON - Load Name From Id!');
+                        console.log('Parse to JSON (Failed) - LoadNameFromId!');
                     }
                 }
                 if (result !== null && result !== '') {
@@ -1427,12 +1516,12 @@ function loadNameFromId(field, namefield1, namefield2, namefield3) {
                         }
                     }
                 } else {
-                    console.log('Servicio Web Falló!.');
+                    console.log('Web Service Fail!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
-                showNotification('Error de Conexion:', 'Intente Nuevamente!');
+                showNotification('Connection error:', 'Try again later!');
             }
         }
         );
@@ -1444,7 +1533,7 @@ function autoLoadNameFromId(idfield, namefield1, namefield2, namefield3) {
     if (idfield !== null) {
         field = document.getElementById(idfield);
         field.onchange = function () {
-            console.log('Getting data for ' + field.id);
+            console.log('Getting Data from Id: ' + field.id);
             loadNameFromId(field, namefield1, namefield2, namefield3);
         };
     }
@@ -1455,25 +1544,25 @@ function setLogin(data) {
         try {
             if (data['user'] !== null) {
                 localStorage.setItem("UsernameLogin", "" + data['user']);
-                console.log('UsernameLogin Almacenado');
+                console.log('UsernameLogin Stored!');
             } else {
                 localStorage.removeItem("UsernameLogin");
             }
             if (data['userrole'] !== null) {
                 localStorage.setItem("UserRoleLogin", "" + data['userrole']);
-                console.log('UserRoleLogin Almacenado');
+                console.log('UserRoleLogin Stored!');
             } else {
                 localStorage.removeItem("UserRoleLogin");
             }
             if (data['userid'] !== null) {
                 localStorage.setItem("UserIdLogin", "" + data['userid']);
-                console.log('UserIdLogin Almacenado');
+                console.log('UserIdLogin Stored!');
             } else {
                 localStorage.removeItem("UserIdLogin");
             }
             return true;
         } catch (e) {
-            console.log('No se pudo Iniciar Variables de Sesion!.');
+            console.error('Error. Could not Start Session Variables!.');
         }
     }
     return false;
@@ -1483,13 +1572,13 @@ function setToken(token) {
     try {
         if (token !== null) {
             localStorage.setItem("TokenLogin", "" + token);
-            console.log('TokenLogin Almacenado ' + token);
+            console.log('TokenLogin Stored ' + token);
             return true;
         } else {
             localStorage.removeItem("TokenLogin");
         }
     } catch (e) {
-        console.log('No se pudo Iniciar Token!. ' + token);
+        console.error('Error. Could not Start Token!.');
     }
     return false;
 }
@@ -1515,22 +1604,22 @@ function login(element, destinationPage) {
             processData: false,
             dataType: 'json',
             success: function (result, status) {
-                console.log('Resultado:' + result);
+                console.log('Result:' + result);
                 if (result !== null) {
                     if (result.error !== null && result.error !== undefined && result.error !== '') {
                         console.error(result.error);
                         showNotification('Error:', result.error);
                     }
                     if (result.message !== null && result.message !== '') {
-                        showNotification('Resultado de la Operacion:', result.message);
+                        showNotification('Result:', result.message);
                     }
 
                     if (result.status === 1) {
                         try {
                             object = JSON.parse(result.data);
-                            console.log('Conversion Exitosa a JSON - Login!');
+                            console.log('Parse to JSON (Successful) - Login!');
                         } catch (e) {
-                            console.error("Error de Conversion JSON - Login");
+                            console.error("Parse to JSON (Failed) - Login!");
                         }
                         setLogin(object);
                         if (result.token !== null && result.token !== '') {
@@ -1545,12 +1634,12 @@ function login(element, destinationPage) {
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
-                showNotification('Error de Conexion:', 'Intente Nuevamente!');
+                showNotification('Connection error:', 'Try again later!');
             }
 
         });
     } else {
-        console.error("No se encontró el Formulario.");
+        console.error("Form Not Found!");
     }
     return promise;
 }
@@ -1582,9 +1671,9 @@ function logout(url, destinationPage, token) {
                     if (result.data !== null) {
                         try {
                             object = JSON.parse(result.data);
-                            console.log('Conversion Exitosa a JSON - Logout!');
+                            console.log('Parse to JSON (Successful) - Logout!');
                         } catch (e) {
-                            console.error("Error de Conversion JSON - Logout");
+                            console.error("Error de Conversion JSON - Logout!");
                         }
                         setLogin(object);
                         setToken(null);
@@ -1594,12 +1683,12 @@ function logout(url, destinationPage, token) {
                     }
 
                 } else {
-                    console.log('Servicio Web Falló!.');
+                    console.log('Web Service Fail!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
-                showNotification('Error de Conexion:', 'Intente Nuevamente!');
+                showNotification('Connection error:', 'Try again later!');
             }
         }
         );
@@ -1635,7 +1724,7 @@ function submitJSON(url, json, action, model, token) {
                     if (result.data !== null) {
                         try {
                             object = JSON.parse(result.data);
-                            console.log('Conversion Exitosa a JSON - submitJSON!');
+                            console.log('Parse to JSON (Successful) - submitJSON!');
                         } catch (e) {
                             console.error("Error de Conversion JSON - submitJSON");
                         }
@@ -1643,12 +1732,12 @@ function submitJSON(url, json, action, model, token) {
                     }
 
                 } else {
-                    console.log('Servicio Web Falló!.');
+                    console.log('Web Service Fail!.');
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.error('Error: [' + textStatus + '] --- [' + xhr + '] --- [' + errorThrown + ']');
-                showNotification('Error de Conexion:', 'Intente Nuevamente!');
+                showNotification('Connection error:', 'Try again later!');
             }
         }
         );
@@ -1682,22 +1771,22 @@ function submitForm(element, reload) {
 
         } else {
             next = false;
-            console.error("Ruta de Destino Nula.");
+            console.error("Destination URL Null.");
         }
     } else {
         next = false;
-        console.error("No se encontró el Formulario.");
+        console.error("Form Not Found!");
     }
     return promise;
 }
 
 function submitFormConfirm(button, reload) {
     var r = false;
-    r = confirm("Está Seguro(a)?");
+    r = confirm("Are you sure?");
     if (r === true) {
         return submitForm(button, reload);
     } else {
-        console.log("Accion Cancelada.");
+        console.log("Action Canceled!");
         return false;
     }
     return false;
@@ -1742,8 +1831,10 @@ function setNameFromDataList(idfield, idfieldname, idothervalue) {
         var valuefield = null;
         var selected = null;
 
-        if (document.getElementById(idfield) !== null) {
+        if (idfield.tagName === undefined && document.getElementById(idfield) !== undefined) {
             field = document.getElementById(idfield);
+        }else{
+            field =idfield;
         }
         if (field.getAttribute('list') !== null && field.getAttribute('list') !== '') {
             datalist = field.getAttribute('list');
@@ -1782,7 +1873,11 @@ function setNameFromDataList(idfield, idfieldname, idothervalue) {
 function autoNameFromDataList(idfield, idfieldname, idothervalue) {
     var field = null;
     if (idfield !== null) {
-        field = document.getElementById(idfield);
+        if (idfield.tagName === undefined || idfield.tagName === null) {
+            field = document.getElementById(idfield);
+        }else{
+            field = idfield;
+        }
         field.oninput = function () {
             setNameFromDataList(idfield, idfieldname, idothervalue);
         };

@@ -28,7 +28,7 @@ function getWebServicePath() {
         var path = null;
         path = localStorage.getItem("WebServicePath");
         if (path === null) {
-            console.log("WebServicePath is null");
+            console.log("WebServicePath is null.");
         } else {
             return path;
         }
@@ -51,7 +51,7 @@ function getWebServiceLocalPath() {
         var path = null;
         path = localStorage.getItem("WebServiceLocalPath");
         if (path === null) {
-            console.log("WebServiceLocalPath is null");
+            console.log("WebServiceLocalPath is null.");
         } else {
             return path;
         }
@@ -252,6 +252,30 @@ function getIdEnterprise() {
     if (LocalStorageStatus()) {
         var enterprise = null;
         enterprise = localStorage.getItem("IdEnterprise");
+        if (enterprise === null) {
+            console.log("Enterprise is null");
+        } else {
+            return enterprise;
+        }
+    }
+    return null;
+}
+
+function setNameEnterprise(enterprise) {
+    if (LocalStorageStatus()) {
+        if (enterprise !== null) {
+            localStorage.removeItem("NameEnterprise");
+            localStorage.setItem("NameEnterprise", enterprise);
+            return true;
+        }
+    }
+    return false;
+}
+
+function getNameEnterprise() {
+    if (LocalStorageStatus()) {
+        var enterprise = null;
+        enterprise = localStorage.getItem("NameEnterprise");
         if (enterprise === null) {
             console.log("Enterprise is null");
         } else {

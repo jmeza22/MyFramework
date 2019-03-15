@@ -198,7 +198,7 @@ function validateForm(form) {
                         item.focus();
                         requireElement(item);
                         next = false;
-                        showAlert('Campo Vacio: Obligatorio');
+                        showAlert('Campo Vacio (' + item.id + '): Obligatorio');
                         break;
                     }
                     if (item.getAttribute('type') === 'text') {

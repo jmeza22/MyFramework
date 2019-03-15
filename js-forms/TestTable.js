@@ -23,14 +23,14 @@ function DeleteItem(item) {
         var id = null;
         var status = null;
         if (tr !== null && tr !== undefined) {
-            id = getElement(tr, 'id_testtable');
-            status = getElement(tr, 'status_testtable');
+            id = getElement(tr, getFindBy(form));
+            status = getElement(tr, getStatusFieldName(form));
         }
         if (id !== null && status !== null && mytable !== null) {
             console.log('Tratando de Eliminar id: ' + id);
             addAttributeDisabled(mytable);
             removeAttributeDisabled(tr);
-            status.value = 0;
+            status.value = '0';
             Send(item);
             deleteRowInTable(mytable);
         }

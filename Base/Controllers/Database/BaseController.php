@@ -293,7 +293,7 @@ class BaseController {
         $json = $this->select($table, $columns, $where);
         $array = json_decode($json, true);
         if ($array != null) {
-            $array = $array[$this->model];
+            $array = $array[$table];
         }
         $array = json_encode($array);
         return $array;
