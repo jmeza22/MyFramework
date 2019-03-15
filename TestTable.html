@@ -18,7 +18,7 @@ and open the template in the editor.
     </head>
     <body>
         <div><h1>Prueba Tabla</h1></div>
-        <form style="width: 100% !Important;" name="formTable" id="formTable"  method="POST" autocomplete="off" url="Base/Controllers/TestTableController.php" action="Base/Controllers/TestTableController.php" model="TestTableApp" findBy="id_testtable" mainform="true" > 
+        <form style="width: 100% !Important;" name="formTable" id="formTable"  method="POST" autocomplete="off" url="Base/Controllers/TestTableController.php" action="Base/Controllers/TestTableController.php" model="TestTableApp" findBy="id_testtable" statusfield="status_testtable" mainform="true" > 
             <div>
                 <button type="button" name="nuevaFila" id="nuevaFila" onclick="addNewRowInTable('dataTable0');">Agregar</button>
             </div>
@@ -39,9 +39,9 @@ and open the template in the editor.
                         <td> <input type="text" editable="true" disabled="disabled" required="required" name="field2_testtable[]" id="field2_testtable" value="{{field2_testtable}}"> </td>
                         <td> <input type="text" editable="true" disabled="disabled" required="required" name="field3_testtable[]" id="field3_testtable" value="{{field3_testtable}}"> </td>
                         <td>
-                            <input type="hidden" editable="false" disabled="disabled" name="status_testtable[]" id="status_testtable" value="1" >
-                            <button type="button" name="EditarFila" id="EditarFila" onclick="editRowInTable(this);">Editar</button>
-                            <button type="button" name="EliminarFila" id="EliminarFila" onclick="DeleteItem(this);">Eliminar</button>
+                            <input type="hidden"  editable="false" disabled="disabled" name="status_testtable[]" id="status_testtable" value="1" >
+                            <button type="button" name="EditarFila" id="EditarFila" class="btn btn-xs btn-warning" onclick="editRowInTable(this);">Editar</button>
+                            <button type="button" name="EliminarFila" id="EliminarFila" class="btn btn-xs btn-danger" onclick="DeleteItem(this);">Eliminar</button>
                         </td>
                     </tr>
                 </tbody>
